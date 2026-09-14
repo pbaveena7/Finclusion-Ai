@@ -1,0 +1,16 @@
+# Finclusion Educational Knowledge Base
+
+## Mutual Funds
+A mutual fund is a pool of money managed by a professional Fund Manager. It is a trust that collects money from a number of investors who share a common investment objective and invests the same in equities, bonds, money market instruments and/or other securities. Mutual funds are subject to market risks, read all scheme related documents carefully.
+
+## Systematic Investment Plan (SIP)
+SIP allows you to invest small amounts periodically (monthly, quarterly, etc.) instead of lump sums. The benefits include Rupee Cost Averaging and the Power of Compounding.
+
+## Emergency Fund
+Financial experts recommend keeping 3 to 6 months of your monthly expenses in a highly liquid and safe instrument, such as a liquid mutual fund or a bank savings account. This acts as a buffer against unforeseen circumstances like medical emergencies or job loss.
+
+## Debt-to-Income (DTI) Ratio
+Your DTI ratio is calculated by dividing your total monthly EMI obligations by your net monthly income. A DTI ratio below 30% is considered excellent. Ratios above 40% are considered high-risk and indicate severe financial stress.
+
+## Inflation
+Inflation is the rate at which the general level of prices for goods and services is rising, and, consequently, the purchasing power of currency is falling. Investments must yield returns higher than the inflation rate to generate real wealth.

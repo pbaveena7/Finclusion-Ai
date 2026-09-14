@@ -1,0 +1,25 @@
+import type { UserProfile } from '../types';
+
+export const mockUser: UserProfile = {
+  id: 'usr_001',
+  name: 'Naveen Kumar',
+  email: 'naveen.kumar@email.com',
+  phone: '+91 98765 43210',
+  age: 28,
+  gender: 'male',
+  occupation: 'Software Engineer',
+  income: 120000,
+  monthlyExpenses: 45000,
+  savings: 350000,
+  existingInvestments: 875000,
+  existingLoans: 500000,
+  existingEMI: 15000,
+  financialGoals: ['Emergency Fund', 'Home Purchase', 'Retirement', 'Child Education', 'Vacation'],
+  investmentHorizon: 'long',
+  riskTolerance: 'moderate',
+  preferredLanguage: 'en',
+  financialHealthScore: 72,
+  riskScore: 55,
+  isOnboarded: true,
+  createdAt: '2024-06-15T10:30:00Z',
+};

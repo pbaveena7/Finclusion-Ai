@@ -1,0 +1,36 @@
+model:
+  base_model_name: "mistralai/Mistral-7B-Instruct-v0.3"
+  trust_remote_code: true
+  device_map: "auto"
+
+data:
+  dataset_path: "data/seed_dataset.jsonl"
+  train_split_ratio: 0.9
+
+lora:
+  r: 64
+  lora_alpha: 16
+  lora_dropout: 0.1
+  task_type: "CAUSAL_LM"
+
+training:
+  output_dir: "./finclusion_adapter"
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 0.0002
+  logging_steps: 10
+  save_steps: 50
+  eval_steps: 50
+  max_steps: 500
+  optim: "paged_adamw_32bit"
+  fp16: true
+  bf16: false
+  max_grad_norm: 0.3
+  warmup_ratio: 0.03
+  group_by_length: true
+  lr_scheduler_type: "constant"
+
+hub:
+  push_to_hub: false
+  hub_model_id: "your_username/Finclusion-Mistral-7B-Instruct"

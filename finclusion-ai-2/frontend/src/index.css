@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    
+    --color-dark-900: #0f172a;
+    --color-dark-800: #1e293b;
+    --color-dark-700: #334155;
+    --color-dark-600: #475569;
+    
+    --color-accent-primary: #10b981;
+    --color-accent-secondary: #06b6d4;
+    
+    --color-surface-primary: rgba(30, 41, 59, 0.7);
+    --color-surface-secondary: rgba(15, 23, 42, 0.8);
+    
+    --color-border-primary: rgba(255, 255, 255, 0.1);
+    --color-border-hover: rgba(255, 255, 255, 0.2);
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-surface-primary backdrop-blur-xl border border-border-primary shadow-xl;
+  }
+  
+  .glass-strong {
+    @apply bg-surface-secondary backdrop-blur-2xl border border-border-primary shadow-2xl;
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-border-hover cursor-pointer;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  /* Typing indicator animation */
+  .typing-dot {
+    animation: typing 1.4s infinite ease-in-out both;
+  }
+  .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+  .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+  
+  @keyframes typing {
+    0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+}
+
+/* Base styling for Recharts tooltips */
+.recharts-default-tooltip {
+  @apply !bg-surface-secondary !border-border-primary !rounded-xl !shadow-2xl !backdrop-blur-xl;
+}
