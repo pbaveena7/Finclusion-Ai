@@ -40,11 +40,11 @@ export default function Sidebar() {
       initial={false}
       animate={{ width: sidebarCollapsed ? 72 : 256 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className="fixed left-0 top-0 h-full glass-strong z-40 hidden md:flex flex-col border-r border-border-primary"
+      className="fixed left-0 top-0 h-full bg-[#FFFBFE] z-40 hidden md:flex flex-col border-r border-[#E7E0EC]"
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-border-primary shrink-0">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shrink-0">
+      <div className="flex items-center gap-3 px-4 h-16 border-b border-[#E7E0EC] shrink-0">
+        <div className="w-9 h-9 rounded-xl bg-[#6750A4] flex items-center justify-center shrink-0">
           <Sparkles className="w-5 h-5 text-white" />
         </div>
         <AnimatePresence>
@@ -55,8 +55,8 @@ export default function Sidebar() {
               exit={{ opacity: 0, x: -10 }}
               className="overflow-hidden"
             >
-              <h1 className="text-sm font-bold gradient-text whitespace-nowrap">FINCLUSION AI</h1>
-              <p className="text-[10px] text-slate-500 -mt-0.5">v2.0 • AI-Powered</p>
+              <h1 className="text-sm font-bold text-[#1C1B1F] whitespace-nowrap">FINCLUSION AI</h1>
+              <p className="text-[10px] text-[#49454F] -mt-0.5">v2.0 • AI-Powered</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -71,8 +71,8 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `group relative flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? 'text-white'
-                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  ? 'text-[#1C1B1F]'
+                  : 'text-[#49454F] hover:text-[#1C1B1F] hover:bg-[#F3EDF7]'
               }`
             }
           >
@@ -81,11 +81,11 @@ export default function Sidebar() {
                 {isActive && (
                   <motion.div
                     layoutId="sidebar-active"
-                    className="absolute inset-0 bg-gradient-to-r from-emerald-500/15 to-cyan-500/10 rounded-xl border border-emerald-500/20"
+                    className="absolute inset-0 bg-[#E8DEF8] rounded-xl border border-[#6750A4]"
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
                   />
                 )}
-                <item.icon className={`w-5 h-5 shrink-0 relative z-10 ${isActive ? 'text-emerald-400' : ''}`} />
+                <item.icon className={`w-5 h-5 shrink-0 relative z-10 ${isActive ? 'text-[#6750A4]' : ''}`} />
                 <AnimatePresence>
                   {!sidebarCollapsed && (
                     <motion.span
@@ -102,7 +102,7 @@ export default function Sidebar() {
                   <motion.span
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="relative z-10 ml-auto px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-gradient-to-r from-emerald-500 to-cyan-500 text-white"
+                    className="relative z-10 ml-auto px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-[#6750A4] text-white"
                   >
                     {item.badge}
                   </motion.span>
@@ -114,10 +114,10 @@ export default function Sidebar() {
       </nav>
 
       {/* Collapse Toggle */}
-      <div className="px-3 py-3 border-t border-border-primary shrink-0">
+      <div className="px-3 py-3 border-t border-[#E7E0EC] shrink-0">
         <button
           onClick={toggleSidebar}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-sm text-[#49454F] hover:text-[#1C1B1F] hover:bg-[#F3EDF7] transition-all duration-200"
         >
           {sidebarCollapsed ? (
             <ChevronRight className="w-4 h-4" />

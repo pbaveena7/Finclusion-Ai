@@ -60,36 +60,36 @@ export default function Portfolio() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 mb-8"
       >
         <motion.div variants={itemVariants}>
-          <GlassCard padding="p-5">
-            <p className="text-sm text-slate-400 mb-1">Invested Amount</p>
-            <p className="text-2xl font-bold text-white">
+          <GlassCard padding="p-6">
+            <p className="text-sm text-[#49454F] mb-1">Invested Amount</p>
+            <p className="text-2xl font-bold text-[#1C1B1F]">
               ₹<AnimatedCounter value={portfolio.totalInvested} format="currency" />
             </p>
           </GlassCard>
         </motion.div>
         <motion.div variants={itemVariants}>
-          <GlassCard padding="p-5" glow="emerald">
-            <p className="text-sm text-slate-400 mb-1">Current Value</p>
-            <p className="text-2xl font-bold text-white">
+          <GlassCard padding="p-6" glow="emerald">
+            <p className="text-sm text-[#49454F] mb-1">Current Value</p>
+            <p className="text-2xl font-bold text-[#1C1B1F]">
               ₹<AnimatedCounter value={portfolio.currentValue} format="currency" />
             </p>
           </GlassCard>
         </motion.div>
         <motion.div variants={itemVariants}>
-          <GlassCard padding="p-5">
-            <p className="text-sm text-slate-400 mb-1">Total P&L</p>
-            <p className={`text-2xl font-bold ${portfolio.totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+          <GlassCard padding="p-6">
+            <p className="text-sm text-[#49454F] mb-1">Total P&L</p>
+            <p className={`text-2xl font-bold ${portfolio.totalPnl >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
               {portfolio.totalPnl >= 0 ? '+' : ''}₹<AnimatedCounter value={Math.abs(portfolio.totalPnl)} format="currency" />
             </p>
           </GlassCard>
         </motion.div>
         <motion.div variants={itemVariants}>
-          <GlassCard padding="p-5">
-            <p className="text-sm text-slate-400 mb-1">Returns</p>
-            <p className={`text-2xl font-bold flex items-center gap-1 ${portfolio.totalPnlPercent >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+          <GlassCard padding="p-6">
+            <p className="text-sm text-[#49454F] mb-1">Returns</p>
+            <p className={`text-2xl font-bold flex items-center gap-1 ${portfolio.totalPnlPercent >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
               {portfolio.totalPnlPercent >= 0 ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
               <AnimatedCounter value={portfolio.totalPnlPercent} format="percent" />%
             </p>
@@ -98,15 +98,15 @@ export default function Portfolio() {
       </motion.div>
 
       {/* Chart + Donut */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="lg:col-span-2"
+          className="lg:col-span-2 xl:col-span-3"
         >
-          <GlassCard padding="p-5">
-            <h2 className="text-lg font-semibold text-white mb-4">Portfolio Value Over Time</h2>
+          <GlassCard padding="p-6 h-full">
+            <h2 className="text-base font-semibold text-[#1C1B1F] mb-4">Portfolio Value Over Time</h2>
             <AreaChartComponent
               data={portfolioHistory.slice(-180)}
               height={300}
@@ -121,22 +121,24 @@ export default function Portfolio() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <GlassCard padding="p-5 h-full">
-            <h2 className="text-lg font-semibold text-white mb-2">Allocation</h2>
-            <DonutChart
-              data={portfolio.allocation}
-              centerValue={`₹${(portfolio.currentValue / 100000).toFixed(1)}L`}
-              centerLabel="Total"
-              height={200}
-            />
-            <div className="mt-3 space-y-2">
+          <GlassCard padding="p-6 h-full flex flex-col justify-center">
+            <h2 className="text-base font-semibold text-[#1C1B1F] mb-4">Allocation</h2>
+            <div className="flex-1 flex items-center justify-center">
+              <DonutChart
+                data={portfolio.allocation}
+                centerValue={`₹${(portfolio.currentValue / 100000).toFixed(1)}L`}
+                centerLabel="Total"
+                height={220}
+              />
+            </div>
+            <div className="mt-6 space-y-3">
               {portfolio.allocation.map((a) => (
                 <div key={a.category} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: a.color }} />
-                    <span className="text-slate-300">{a.category}</span>
+                    <span className="text-[#49454F] font-medium">{a.category}</span>
                   </div>
-                  <span className="text-slate-400">₹{(a.value / 1000).toFixed(0)}K • {a.percentage}%</span>
+                  <span className="text-[#1C1B1F] font-semibold">₹{(a.value / 1000).toFixed(0)}K • {a.percentage}%</span>
                 </div>
               ))}
             </div>
@@ -151,30 +153,30 @@ export default function Portfolio() {
         transition={{ delay: 0.5 }}
       >
         <GlassCard padding="p-0">
-          <div className="px-5 py-4 border-b border-border-primary">
-            <h2 className="text-lg font-semibold text-white">Holdings ({portfolio.holdings.length})</h2>
+          <div className="px-5 py-4 border-b border-[#E7E0EC]">
+            <h2 className="text-lg font-semibold text-[#1C1B1F]">Holdings ({portfolio.holdings.length})</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-border-primary">
-                  <th className="px-5 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Name</th>
-                  <th className="px-5 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Type</th>
-                  <th className="px-5 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Invested</th>
+                <tr className="border-b border-[#E7E0EC]">
+                  <th className="px-5 py-3 text-left text-xs font-semibold text-[#49454F] uppercase tracking-wider">Name</th>
+                  <th className="px-5 py-3 text-left text-xs font-semibold text-[#49454F] uppercase tracking-wider">Type</th>
+                  <th className="px-5 py-3 text-right text-xs font-semibold text-[#49454F] uppercase tracking-wider">Invested</th>
                   <th
-                    className="px-5 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white"
+                    className="px-5 py-3 text-right text-xs font-semibold text-[#49454F] uppercase tracking-wider cursor-pointer hover:text-[#1C1B1F] transition-colors"
                     onClick={() => handleSort('value')}
                   >
                     Current Value {sortBy === 'value' && (sortDir === 'desc' ? '↓' : '↑')}
                   </th>
                   <th
-                    className="px-5 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white"
+                    className="px-5 py-3 text-right text-xs font-semibold text-[#49454F] uppercase tracking-wider cursor-pointer hover:text-[#1C1B1F] transition-colors"
                     onClick={() => handleSort('pnl')}
                   >
                     P&L {sortBy === 'pnl' && (sortDir === 'desc' ? '↓' : '↑')}
                   </th>
                   <th
-                    className="px-5 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider cursor-pointer hover:text-white"
+                    className="px-5 py-3 text-right text-xs font-semibold text-[#49454F] uppercase tracking-wider cursor-pointer hover:text-[#1C1B1F] transition-colors"
                     onClick={() => handleSort('pnlPercent')}
                   >
                     Returns {sortBy === 'pnlPercent' && (sortDir === 'desc' ? '↓' : '↑')}
@@ -188,27 +190,27 @@ export default function Portfolio() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: i * 0.03 }}
-                    className="border-b border-border-primary hover:bg-white/[0.02] transition-colors"
+                    className="border-b border-[#E7E0EC] hover:bg-[#F3EDF7] transition-colors"
                   >
                     <td className="px-5 py-3.5">
-                      <p className="text-sm font-medium text-white">{h.name}</p>
+                      <p className="text-sm font-semibold text-[#1C1B1F]">{h.name}</p>
                     </td>
                     <td className="px-5 py-3.5">
                       <Badge variant={(typeColors[h.type] || 'neutral') as any} size="sm">
                         {h.type.toUpperCase()}
                       </Badge>
                     </td>
-                    <td className="px-5 py-3.5 text-right text-sm text-slate-300">
+                    <td className="px-5 py-3.5 text-right text-sm text-[#49454F] font-medium">
                       ₹{h.investedAmount.toLocaleString('en-IN')}
                     </td>
-                    <td className="px-5 py-3.5 text-right text-sm text-white font-medium">
+                    <td className="px-5 py-3.5 text-right text-sm text-[#1C1B1F] font-semibold">
                       ₹{h.currentValue.toLocaleString('en-IN')}
                     </td>
-                    <td className={`px-5 py-3.5 text-right text-sm font-medium ${h.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    <td className={`px-5 py-3.5 text-right text-sm font-semibold ${h.pnl >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                       {h.pnl >= 0 ? '+' : ''}₹{Math.abs(h.pnl).toLocaleString('en-IN')}
                     </td>
                     <td className="px-5 py-3.5 text-right">
-                      <span className={`inline-flex items-center gap-1 text-sm font-medium ${h.pnlPercent >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      <span className={`inline-flex items-center gap-1 text-sm font-semibold ${h.pnlPercent >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                         {h.pnlPercent >= 0 ? <ArrowUpRight className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
                         {h.pnlPercent >= 0 ? '+' : ''}{h.pnlPercent.toFixed(2)}%
                       </span>

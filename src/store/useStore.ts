@@ -39,6 +39,8 @@ interface AppState {
   setActivePage: (page: string) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  theme: 'material' | 'green' | 'blue' | 'purple' | 'professional';
+  setTheme: (theme: 'material' | 'green' | 'blue' | 'purple' | 'professional') => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -94,4 +96,6 @@ export const useStore = create<AppState>((set) => ({
   setActivePage: (page) => set({ activePage: page }),
   searchQuery: '',
   setSearchQuery: (query) => set({ searchQuery: query }),
+  theme: 'material',
+  setTheme: (theme) => set({ theme }),
 }));

@@ -76,7 +76,7 @@ export default function MutualFunds() {
           />
           <button
             onClick={() => setShowSIPCalc(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20 text-sm font-medium text-emerald-400 hover:text-white transition-all"
+            className="flex items-center gap-2 h-10 px-4 rounded-[16px] bg-[#6750A4] text-sm font-semibold text-white hover:bg-[#523F84] transition-all shrink-0 shadow-sm"
           >
             <Calculator className="w-4 h-4" />
             SIP Calc
@@ -89,15 +89,15 @@ export default function MutualFunds() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass rounded-xl px-4 py-3 mb-6 flex items-center justify-between"
+          className="bg-[#E8DEF8] border-none rounded-[16px] px-4 py-3 mb-6 flex items-center justify-between shadow-sm"
         >
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-300">Comparing {compareFunds.length}/3:</span>
+            <span className="text-sm font-medium text-[#1D192B]">Comparing {compareFunds.length}/3:</span>
             {compareData.map((f) => (
               <Badge key={f.schemeCode} variant="info" size="sm">{f.schemeName.split(' ').slice(0, 3).join(' ')}</Badge>
             ))}
           </div>
-          <button onClick={() => setCompareFunds([])} className="text-xs text-slate-400 hover:text-white">Clear</button>
+          <button onClick={() => setCompareFunds([])} className="text-xs font-semibold text-[#6750A4] hover:text-[#523F84]">Clear</button>
         </motion.div>
       )}
 
@@ -109,16 +109,16 @@ export default function MutualFunds() {
           className="mb-8"
         >
           <GlassCard padding="p-0">
-            <div className="px-5 py-4 border-b border-border-primary">
-              <h3 className="text-lg font-semibold text-white">Fund Comparison</h3>
+            <div className="px-5 py-4 border-b border-[#E7E0EC]">
+              <h3 className="text-lg font-bold text-[#1C1B1F]">Fund Comparison</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-border-primary">
-                    <th className="px-5 py-3 text-left text-xs font-medium text-slate-400">Metric</th>
+                  <tr className="border-b border-[#E7E0EC] bg-[#F3EDF7]">
+                    <th className="px-5 py-3 text-left text-xs font-bold text-[#49454F]">Metric</th>
                     {compareData.map((f) => (
-                      <th key={f.schemeCode} className="px-5 py-3 text-center text-xs font-medium text-slate-300">
+                      <th key={f.schemeCode} className="px-5 py-3 text-center text-xs font-bold text-[#1C1B1F]">
                         {f.schemeName.split(' ').slice(0, 3).join(' ')}
                       </th>
                     ))}
@@ -136,10 +136,10 @@ export default function MutualFunds() {
                     { label: 'Risk', fn: (f: MutualFund) => f.riskLevel },
                     { label: 'Rating', fn: (f: MutualFund) => '⭐'.repeat(f.rating) },
                   ].map((row) => (
-                    <tr key={row.label} className="border-b border-border-primary">
-                      <td className="px-5 py-2.5 text-slate-400">{row.label}</td>
+                    <tr key={row.label} className="border-b border-[#E7E0EC] hover:bg-[#E8DEF8] transition-colors">
+                      <td className="px-5 py-3 font-semibold text-[#49454F]">{row.label}</td>
                       {compareData.map((f) => (
-                        <td key={f.schemeCode} className="px-5 py-2.5 text-center text-white">{row.fn(f)}</td>
+                        <td key={f.schemeCode} className="px-5 py-3 text-center font-medium text-[#1C1B1F]">{row.fn(f)}</td>
                       ))}
                     </tr>
                   ))}
@@ -151,7 +151,7 @@ export default function MutualFunds() {
       )}
 
       {/* Fund Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
         <AnimatePresence mode="popLayout">
           {filteredFunds.map((fund, i) => (
             <motion.div
@@ -162,21 +162,21 @@ export default function MutualFunds() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ delay: i * 0.03 }}
             >
-              <GlassCard hover padding="p-5" onClick={() => setSelectedFund(fund)}>
+              <GlassCard hover padding="p-6" onClick={() => setSelectedFund(fund)}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-semibold text-white truncate pr-2">{fund.schemeName}</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">{fund.fundHouse} • {fund.subCategory}</p>
+                    <h3 className="text-sm font-bold text-[#1C1B1F] truncate pr-2">{fund.schemeName}</h3>
+                    <p className="text-xs font-medium text-[#49454F] mt-0.5">{fund.fundHouse} • {fund.subCategory}</p>
                   </div>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleCompare(fund.schemeCode);
                     }}
-                    className={`p-1.5 rounded-lg transition-colors ${
+                    className={`p-1.5 rounded-xl transition-colors ${
                       compareFunds.includes(fund.schemeCode)
-                        ? 'bg-blue-500/20 text-blue-400'
-                        : 'text-slate-500 hover:text-white hover:bg-white/5'
+                        ? 'bg-[#E8DEF8] text-[#6750A4]'
+                        : 'text-[#49454F] hover:text-[#1C1B1F] hover:bg-[#F3EDF7]'
                     }`}
                     title="Compare"
                   >
@@ -192,11 +192,11 @@ export default function MutualFunds() {
                     { label: '5Y', value: fund.returns.fiveYear },
                   ].map((r) => (
                     <div key={r.label} className="text-center">
-                      <p className={`text-sm font-bold ${r.value >= 15 ? 'text-emerald-400' : r.value >= 10 ? 'text-blue-400' : 'text-slate-300'}`}>
+                      <p className={`text-sm font-bold ${r.value >= 15 ? 'text-emerald-600' : r.value >= 10 ? 'text-[#0B57D0]' : 'text-[#49454F]'}`}>
                         {r.value}%
                       </p>
-                      <p className="text-[10px] text-slate-500">{r.label}</p>
-                      <div className="mt-1 h-1 rounded-full bg-dark-600 overflow-hidden">
+                      <p className="text-[10px] font-semibold text-[#49454F]">{r.label}</p>
+                      <div className="mt-1 h-1 rounded-full bg-[#E7E0EC] overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${Math.min(r.value * 2.5, 100)}%` }}
@@ -211,11 +211,10 @@ export default function MutualFunds() {
                   ))}
                 </div>
 
-                {/* Bottom Row */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Badge variant={riskColors[fund.riskLevel] as any} size="sm">{fund.riskLevel}</Badge>
-                    <span className="text-xs text-slate-400">NAV: ₹{fund.nav}</span>
+                    <span className="text-xs font-medium text-[#49454F]">NAV: ₹{fund.nav}</span>
                   </div>
                   <div className="flex items-center gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
@@ -228,9 +227,9 @@ export default function MutualFunds() {
                 </div>
 
                 {/* AI Tag */}
-                <div className="mt-3 flex items-start gap-2 p-2.5 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-                  <Brain className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0" />
-                  <p className="text-[11px] text-slate-300 leading-relaxed line-clamp-2">{fund.aiSuitability}</p>
+                <div className="mt-3 flex items-start gap-2 p-2.5 rounded-xl bg-[#E8DEF8] border-none">
+                  <Brain className="w-3.5 h-3.5 text-[#6750A4] mt-0.5 shrink-0" />
+                  <p className="text-[11px] font-medium text-[#1D192B] leading-relaxed line-clamp-2">{fund.aiSuitability}</p>
                 </div>
               </GlassCard>
             </motion.div>
@@ -244,8 +243,8 @@ export default function MutualFunds() {
           {/* Inputs */}
           <div className="space-y-6">
             <div>
-              <label className="text-sm text-slate-300 mb-2 block">
-                Monthly Investment: <span className="text-white font-bold">₹{sipAmount.toLocaleString('en-IN')}</span>
+              <label className="text-sm font-medium text-[#49454F] mb-2 block">
+                Monthly Investment: <span className="text-[#1C1B1F] font-bold">₹{sipAmount.toLocaleString('en-IN')}</span>
               </label>
               <input
                 type="range"
@@ -256,14 +255,14 @@ export default function MutualFunds() {
                 onChange={(e) => setSipAmount(Number(e.target.value))}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <div className="flex justify-between text-xs font-medium text-[#49454F] mt-1">
                 <span>₹500</span><span>₹1,00,000</span>
               </div>
             </div>
 
             <div>
-              <label className="text-sm text-slate-300 mb-2 block">
-                Time Period: <span className="text-white font-bold">{sipYears} years</span>
+              <label className="text-sm font-medium text-[#49454F] mb-2 block">
+                Time Period: <span className="text-[#1C1B1F] font-bold">{sipYears} years</span>
               </label>
               <input
                 type="range"
@@ -273,14 +272,14 @@ export default function MutualFunds() {
                 onChange={(e) => setSipYears(Number(e.target.value))}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <div className="flex justify-between text-xs font-medium text-[#49454F] mt-1">
                 <span>1 yr</span><span>30 yrs</span>
               </div>
             </div>
 
             <div>
-              <label className="text-sm text-slate-300 mb-2 block">
-                Expected Return: <span className="text-white font-bold">{sipRate}% p.a.</span>
+              <label className="text-sm font-medium text-[#49454F] mb-2 block">
+                Expected Return: <span className="text-[#1C1B1F] font-bold">{sipRate}% p.a.</span>
               </label>
               <input
                 type="range"
@@ -291,7 +290,7 @@ export default function MutualFunds() {
                 onChange={(e) => setSipRate(Number(e.target.value))}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <div className="flex justify-between text-xs font-medium text-[#49454F] mt-1">
                 <span>4%</span><span>25%</span>
               </div>
             </div>
@@ -299,9 +298,9 @@ export default function MutualFunds() {
 
           {/* Results */}
           <div className="space-y-4">
-            <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 border border-emerald-500/15">
-              <p className="text-sm text-slate-400 mb-1">Estimated Returns</p>
-              <p className="text-3xl font-bold gradient-text">
+            <div className="p-5 rounded-[24px] bg-[#E8DEF8] border-none">
+              <p className="text-sm font-semibold text-[#1D192B] mb-1">Estimated Returns</p>
+              <p className="text-3xl font-bold text-[#6750A4]">
                 ₹{sipResult.futureValue >= 10000000
                   ? (sipResult.futureValue / 10000000).toFixed(2) + ' Cr'
                   : sipResult.futureValue >= 100000
@@ -311,17 +310,17 @@ export default function MutualFunds() {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg bg-dark-700/50">
-                <p className="text-xs text-slate-400">Invested</p>
-                <p className="text-sm font-bold text-white">
+              <div className="p-4 rounded-[16px] bg-[#F3EDF7]">
+                <p className="text-xs font-semibold text-[#49454F]">Invested</p>
+                <p className="text-lg font-bold text-[#1C1B1F]">
                   ₹{sipResult.invested >= 100000
                     ? (sipResult.invested / 100000).toFixed(1) + 'L'
                     : sipResult.invested.toLocaleString('en-IN')}
                 </p>
               </div>
-              <div className="p-3 rounded-lg bg-dark-700/50">
-                <p className="text-xs text-slate-400">Wealth Gain</p>
-                <p className="text-sm font-bold text-emerald-400">
+              <div className="p-4 rounded-[16px] bg-[#F3EDF7]">
+                <p className="text-xs font-semibold text-[#49454F]">Wealth Gain</p>
+                <p className="text-lg font-bold text-emerald-600">
                   ₹{sipResult.returns >= 10000000
                     ? (sipResult.returns / 10000000).toFixed(2) + 'Cr'
                     : sipResult.returns >= 100000
@@ -353,15 +352,15 @@ export default function MutualFunds() {
                 { label: 'Expense Ratio', value: `${selectedFund.expenseRatio}%` },
                 { label: 'Min SIP', value: `₹${selectedFund.minSIP}` },
               ].map((s) => (
-                <div key={s.label} className="p-3 rounded-lg bg-dark-700/50">
-                  <p className="text-xs text-slate-400">{s.label}</p>
-                  <p className="text-sm font-bold text-white">{s.value}</p>
+                <div key={s.label} className="p-4 rounded-[16px] bg-[#F3EDF7]">
+                  <p className="text-xs font-medium text-[#49454F]">{s.label}</p>
+                  <p className="text-sm font-bold text-[#1C1B1F]">{s.value}</p>
                 </div>
               ))}
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-white mb-3">Returns Performance</h3>
+              <h3 className="text-sm font-bold text-[#1C1B1F] mb-3">Returns Performance</h3>
               <BarChartComponent
                 data={[
                   { name: '1 Year', value: selectedFund.returns.oneYear, color: '#10b981' },
@@ -372,24 +371,24 @@ export default function MutualFunds() {
               />
             </div>
 
-            <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-500/5 to-cyan-500/5 border border-emerald-500/10">
+            <div className="p-5 rounded-[24px] bg-[#E8DEF8] border-none">
               <div className="flex items-center gap-2 mb-2">
-                <Brain className="w-4 h-4 text-emerald-400" />
-                <h3 className="text-sm font-semibold text-white">AI Recommendation</h3>
+                <Brain className="w-5 h-5 text-[#6750A4]" />
+                <h3 className="text-sm font-bold text-[#1D192B]">AI Recommendation</h3>
               </div>
-              <p className="text-sm text-slate-300 leading-relaxed">{selectedFund.aiSuitability}</p>
+              <p className="text-sm font-medium text-[#49454F] leading-relaxed">{selectedFund.aiSuitability}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg bg-dark-700/50 flex items-center justify-between">
-                <span className="text-sm text-slate-400">Risk Level</span>
+              <div className="p-4 rounded-[16px] bg-[#F3EDF7] flex items-center justify-between">
+                <span className="text-sm font-semibold text-[#49454F]">Risk Level</span>
                 <Badge variant={riskColors[selectedFund.riskLevel] as any}>{selectedFund.riskLevel}</Badge>
               </div>
-              <div className="p-3 rounded-lg bg-dark-700/50 flex items-center justify-between">
-                <span className="text-sm text-slate-400">Rating</span>
+              <div className="p-4 rounded-[16px] bg-[#F3EDF7] flex items-center justify-between">
+                <span className="text-sm font-semibold text-[#49454F]">Rating</span>
                 <div className="flex gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className={`w-3.5 h-3.5 ${i < selectedFund.rating ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}`} />
+                    <Star key={i} className={`w-4 h-4 ${i < selectedFund.rating ? 'text-amber-400 fill-amber-400' : 'text-slate-300'}`} />
                   ))}
                 </div>
               </div>

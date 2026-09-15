@@ -25,15 +25,25 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 
 function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  const { sidebarCollapsed } = useStore();
+  const { sidebarCollapsed, theme } = useStore();
+  
   return (
-    <div className="flex min-h-screen bg-dark-900 bg-mesh">
+    <div className="flex min-h-screen bg-dark-900 bg-mesh overflow-x-hidden relative">
+      {/* Material You Atmospheric Background */}
+      {theme === 'material' && (
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full bg-[#E8DEF8] blur-3xl opacity-60 mix-blend-multiply" />
+          <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] rounded-[100px] bg-[#F3EDF7] blur-3xl opacity-80 mix-blend-multiply" />
+          <div className="absolute top-[40%] left-[20%] w-[400px] h-[400px] rounded-full bg-[#E7E0EC] blur-3xl opacity-40 mix-blend-multiply" />
+        </div>
+      )}
+
       <Sidebar />
       <main
-        className={`flex-1 transition-all duration-300 w-full ${sidebarCollapsed ? 'md:ml-[72px]' : 'md:ml-64'}`}
+        className={`flex-1 min-w-0 transition-all duration-300 relative z-10 main-content-layout ${sidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded'}`}
       >
         <TopBar />
-        <div className="min-h-[calc(100vh-4rem)] pb-12">
+        <div className="min-h-[calc(100vh-4rem)] pb-20 relative z-10">
           {children}
         </div>
       </main>
@@ -43,7 +53,12 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const { user, setUser, setPortfolio, setGoals } = useStore();
+  const { user, setUser, setPortfolio, setGoals, theme } = useStore();
+
+  // Apply Theme
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   // Initialize mock data on mount
   useEffect(() => {

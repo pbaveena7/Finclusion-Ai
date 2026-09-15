@@ -95,41 +95,43 @@ export default function FraudDetection() {
   };
 
   const riskColors = {
-    safe: { bg: 'bg-emerald-500', text: 'text-emerald-400', ring: '#10b981' },
-    caution: { bg: 'bg-amber-500', text: 'text-amber-400', ring: '#f59e0b' },
-    'high-risk': { bg: 'bg-rose-500', text: 'text-rose-400', ring: '#f43f5e' },
+    safe: { bg: 'bg-[#C4EED0]', text: 'text-emerald-700', ring: '#10b981' },
+    caution: { bg: 'bg-[#FFE6C8]', text: 'text-amber-700', ring: '#f59e0b' },
+    'high-risk': { bg: 'bg-[#FFD8E4]', text: 'text-rose-700', ring: '#f43f5e' },
   };
 
   return (
     <PageWrapper title="Fraud Detection" subtitle="AI-powered analysis to protect you from financial scams">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {/* Input Panel */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 xl:col-span-3 space-y-6">
           <GlassCard padding="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <ShieldAlert className="w-5 h-5 text-rose-400" />
-              <h2 className="text-lg font-semibold text-white">Analyze Suspicious Message</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-9 h-9 rounded-[12px] bg-[#FFD8E4] flex items-center justify-center shrink-0">
+                <ShieldAlert className="w-4 h-4 text-[#31111D]" />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-[#1C1B1F]">Analyze Suspicious Message</h2>
+                <p className="text-xs font-semibold text-[#49454F] mt-0.5">Paste any suspicious SMS, WhatsApp, email or URL below</p>
+              </div>
             </div>
-            <p className="text-sm text-slate-400 mb-4">
-              Paste any suspicious SMS, WhatsApp message, email, or URL below. Our AI will analyze it for fraud patterns.
-            </p>
 
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Paste suspicious message, offer, or URL here..."
               rows={4}
-              className="w-full px-4 py-3 bg-dark-700/50 border border-border-primary rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-rose-500/50 resize-none"
+              className="w-full px-4 py-3 bg-[#F3EDF7] border border-transparent rounded-[16px] text-sm font-semibold text-[#1C1B1F] placeholder:text-[#49454F] focus:outline-none focus:border-[#6750A4] resize-none"
             />
 
             {/* Sample inputs */}
             <div className="flex flex-wrap gap-2 mt-3 mb-4">
-              <span className="text-xs text-slate-500">Try:</span>
+              <span className="text-xs font-semibold text-[#49454F]">Try:</span>
               {sampleInputs.map((s, i) => (
                 <button
                   key={i}
                   onClick={() => setInput(s)}
-                  className="text-xs px-2 py-1 rounded-lg bg-dark-600/50 text-slate-400 hover:text-white hover:bg-dark-500/50 transition-all truncate max-w-[200px]"
+                  className="text-xs font-medium px-2 py-1 rounded-[8px] bg-[#E8DEF8] text-[#1D192B] hover:bg-[#D0BCFF] transition-all truncate max-w-[200px]"
                 >
                   {s.substring(0, 40)}...
                 </button>
@@ -139,7 +141,7 @@ export default function FraudDetection() {
             <button
               onClick={handleAnalyze}
               disabled={!input.trim() || analyzing}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-30 flex items-center justify-center gap-2"
+              className="w-full h-11 rounded-[16px] bg-[#6750A4] text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-30 flex items-center justify-center gap-2 shadow-sm"
             >
               {analyzing ? (
                 <>
@@ -171,14 +173,14 @@ export default function FraudDetection() {
                         transition={{ delay: i * 0.5 }}
                         className="flex items-center gap-3"
                       >
-                        <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                        <div className="w-5 h-5 rounded-full bg-[#E8DEF8] flex items-center justify-center">
                           <motion.div
                             animate={{ scale: [1, 1.2, 1] }}
                             transition={{ repeat: Infinity, duration: 1 }}
-                            className="w-2 h-2 rounded-full bg-emerald-400"
+                            className="w-2 h-2 rounded-full bg-[#6750A4]"
                           />
                         </div>
-                        <span className="text-sm text-slate-300">{step}</span>
+                        <span className="text-sm font-semibold text-[#1C1B1F]">{step}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -198,14 +200,14 @@ export default function FraudDetection() {
                   {/* Risk Score */}
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <p className="text-sm text-slate-400 mb-1">Risk Assessment</p>
+                      <p className="text-sm font-bold text-[#49454F] mb-1">Risk Assessment</p>
                       <p className={`text-2xl font-bold ${riskColors[result.riskLevel].text}`}>
                         {result.riskLevel === 'high-risk' ? '🚨 HIGH RISK' : result.riskLevel === 'caution' ? '⚠️ CAUTION' : '✅ SAFE'}
                       </p>
                     </div>
                     <div className="relative w-20 h-20">
                       <svg className="w-20 h-20 -rotate-90">
-                        <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(148,163,184,0.1)" strokeWidth="6" />
+                        <circle cx="40" cy="40" r="34" fill="none" stroke="#E7E0EC" strokeWidth="6" />
                         <circle
                           cx="40" cy="40" r="34" fill="none"
                           stroke={riskColors[result.riskLevel].ring}
@@ -223,14 +225,14 @@ export default function FraudDetection() {
                   {/* Red Flags */}
                   {result.redFlags.length > 0 && (
                     <div className="mb-6">
-                      <p className="text-sm font-semibold text-white mb-3">Red Flags Found ({result.redFlags.length})</p>
+                      <p className="text-sm font-bold text-[#1C1B1F] mb-3">Red Flags Found ({result.redFlags.length})</p>
                       <div className="space-y-2">
                         {result.redFlags.map((rf) => (
-                          <div key={rf.flag} className="flex items-start gap-3 p-3 rounded-lg bg-dark-700/50">
-                            <AlertTriangle className={`w-4 h-4 mt-0.5 shrink-0 ${rf.severity === 'high' ? 'text-rose-400' : 'text-amber-400'}`} />
+                          <div key={rf.flag} className="flex items-start gap-3 p-3 rounded-[12px] bg-[#FFFBFE] border border-[#E7E0EC]">
+                            <AlertTriangle className={`w-4 h-4 mt-0.5 shrink-0 ${rf.severity === 'high' ? 'text-rose-600' : 'text-amber-600'}`} />
                             <div>
-                              <p className="text-sm font-medium text-white">{rf.flag}</p>
-                              <p className="text-xs text-slate-400 mt-0.5">{rf.description}</p>
+                              <p className="text-sm font-bold text-[#1C1B1F]">{rf.flag}</p>
+                              <p className="text-xs font-semibold text-[#49454F] mt-0.5">{rf.description}</p>
                             </div>
                             <Badge variant={rf.severity === 'high' ? 'danger' : 'warning'} size="sm" className="ml-auto shrink-0">
                               {rf.severity}
@@ -242,12 +244,12 @@ export default function FraudDetection() {
                   )}
 
                   {/* Recommendation */}
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/5 to-cyan-500/5 border border-emerald-500/10">
+                  <div className="p-5 rounded-[24px] bg-[#E8DEF8] border-none">
                     <div className="flex items-center gap-2 mb-2">
-                      <Brain className="w-4 h-4 text-emerald-400" />
-                      <p className="text-sm font-semibold text-white">AI Recommendation</p>
+                      <Brain className="w-5 h-5 text-[#6750A4]" />
+                      <p className="text-sm font-bold text-[#1D192B]">AI Recommendation</p>
                     </div>
-                    <p className="text-sm text-slate-300">{result.recommendation}</p>
+                    <p className="text-sm font-medium text-[#49454F]">{result.recommendation}</p>
                   </div>
                 </GlassCard>
               </motion.div>
@@ -257,14 +259,14 @@ export default function FraudDetection() {
 
         {/* History Sidebar */}
         <div className="space-y-4">
-          <GlassCard padding="p-5">
+          <GlassCard padding="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <History className="w-4 h-4 text-slate-400" />
-              <h3 className="text-sm font-semibold text-white">Recent Checks</h3>
+              <History className="w-4 h-4 text-[#49454F]" />
+              <h3 className="text-sm font-bold text-[#1C1B1F]">Recent Checks</h3>
             </div>
 
             {fraudHistory.length === 0 ? (
-              <p className="text-sm text-slate-500 text-center py-8">No checks yet. Analyze a message to start.</p>
+              <p className="text-sm font-semibold text-[#49454F] text-center py-8">No checks yet. Analyze a message to start.</p>
             ) : (
               <div className="space-y-3">
                 {fraudHistory.slice(0, 8).map((h, i) => (
@@ -273,13 +275,13 @@ export default function FraudDetection() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: i * 0.05 }}
-                    className="p-3 rounded-lg bg-dark-700/50 cursor-pointer hover:bg-dark-600/50 transition-colors"
+                    className="p-3 rounded-[12px] bg-[#F3EDF7] cursor-pointer hover:bg-[#E8DEF8] transition-colors"
                     onClick={() => {
                       setInput(h.input);
                       setResult(h.result);
                     }}
                   >
-                    <p className="text-xs text-white truncate mb-1">{h.input.substring(0, 60)}...</p>
+                    <p className="text-xs font-semibold text-[#1C1B1F] truncate mb-1">{h.input.substring(0, 60)}...</p>
                     <div className="flex items-center justify-between">
                       <Badge
                         variant={h.result.riskLevel === 'high-risk' ? 'danger' : h.result.riskLevel === 'caution' ? 'warning' : 'success'}
@@ -288,7 +290,7 @@ export default function FraudDetection() {
                       >
                         {h.result.riskLevel}
                       </Badge>
-                      <span className="text-[10px] text-slate-500">
+                      <span className="text-[10px] font-semibold text-[#49454F]">
                         {new Date(h.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                       </span>
                     </div>
@@ -299,9 +301,9 @@ export default function FraudDetection() {
           </GlassCard>
 
           {/* Safety Tips */}
-          <GlassCard padding="p-5">
-            <h3 className="text-sm font-semibold text-white mb-3">🛡️ Safety Tips</h3>
-            <div className="space-y-2 text-xs text-slate-300">
+          <GlassCard padding="p-6">
+            <h3 className="text-sm font-bold text-[#1C1B1F] mb-3">🛡️ Safety Tips</h3>
+            <div className="space-y-2 text-xs font-semibold text-[#49454F]">
               <p>• Never share OTP, CVV, or PIN with anyone</p>
               <p>• Banks never ask for KYC via SMS links</p>
               <p>• If it sounds too good, it's probably a scam</p>

@@ -52,10 +52,10 @@ export default function Stocks() {
             <button
               key={sector}
               onClick={() => setActiveSector(sector)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+              className={`px-3 py-1.5 rounded-[12px] text-xs font-semibold whitespace-nowrap transition-all ${
                 activeSector === sector
-                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                  : 'text-slate-400 hover:text-white border border-border-primary hover:border-border-hover'
+                  ? 'bg-[#E8DEF8] text-[#1D192B] border border-transparent'
+                  : 'text-[#49454F] hover:text-[#1C1B1F] border border-[#E7E0EC] hover:bg-[#F3EDF7]'
               }`}
             >
               {sector}
@@ -64,180 +64,143 @@ export default function Stocks() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Stock Grid */}
-        <div className={`${selectedStock ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            <AnimatePresence mode="popLayout">
-              {filteredStocks.map((stock, i) => (
-                <motion.div
-                  key={stock.symbol}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ delay: i * 0.03 }}
-                >
-                  <GlassCard
-                    hover
-                    padding="p-4"
-                    onClick={() => setSelectedStock(stock)}
-                    className={selectedStock?.symbol === stock.symbol ? 'border-emerald-500/30' : ''}
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-sm font-bold text-white">{stock.symbol}</h3>
-                          {trendBadge(stock.aiInsights.trend)}
-                        </div>
-                        <p className="text-xs text-slate-400 mt-0.5 truncate max-w-[180px]">{stock.name}</p>
-                      </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleWatchlist(stock.symbol);
-                        }}
-                        className="p-1"
-                      >
-                        <Star
-                          className={`w-4 h-4 transition-colors ${
-                            watchlist.includes(stock.symbol)
-                              ? 'text-amber-400 fill-amber-400'
-                              : 'text-slate-600 hover:text-slate-400'
-                          }`}
-                        />
-                      </button>
-                    </div>
-
-                    <div className="flex items-end justify-between">
-                      <div>
-                        <p className="text-lg font-bold text-white">₹{stock.price.toLocaleString('en-IN')}</p>
-                        <p className={`text-xs font-medium flex items-center gap-1 ${stock.change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                          {stock.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                          {stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)} ({stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%)
-                        </p>
-                      </div>
-                      {/* Mini sparkline */}
-                      <div className="w-20 h-10">
-                        <AreaChartComponent
-                          data={stock.historicalPrices.slice(-15)}
-                          dataKey="price"
-                          height={40}
-                          color={stock.change >= 0 ? '#10b981' : '#f43f5e'}
-                          gradientId={`spark-${stock.symbol}`}
-                          showGrid={false}
-                          showAxis={false}
-                          showTooltip={false}
-                        />
-                      </div>
-                    </div>
-                  </GlassCard>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+      <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-140px)] min-h-[700px]">
+        {/* Market Watchlist (Left Pane) */}
+        <div className="w-full lg:w-80 flex-shrink-0 flex flex-col border border-[#E7E0EC] bg-[#FFFBFE] rounded-[24px] overflow-hidden shadow-sm">
+          <div className="px-4 py-3 border-b border-[#E7E0EC] bg-[#F3EDF7] flex justify-between items-center">
+            <span className="text-[10px] font-bold text-[#49454F] uppercase tracking-wider">Symbol</span>
+            <span className="text-[10px] font-bold text-[#49454F] uppercase tracking-wider">Price / Chg</span>
           </div>
-
-          {filteredStocks.length === 0 && (
-            <div className="text-center py-16">
-              <Search className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-400">No stocks found matching your search</p>
-            </div>
-          )}
-        </div>
-
-        {/* Stock Detail Panel */}
-        <AnimatePresence>
-          {selectedStock && (
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 30 }}
-              className="lg:col-span-1"
-            >
-              <GlassCard padding="p-0" className="sticky top-20">
-                {/* Header */}
-                <div className="px-5 py-4 border-b border-border-primary flex items-center justify-between">
-                  <div>
-                    <h2 className="text-lg font-bold text-white">{selectedStock.symbol}</h2>
-                    <p className="text-xs text-slate-400">{selectedStock.name}</p>
+          <div className="flex-1 overflow-y-auto no-scrollbar">
+            {filteredStocks.length === 0 ? (
+              <div className="text-center py-12">
+                <Search className="w-8 h-8 text-[#49454F] mx-auto mb-2 opacity-50" />
+                <p className="text-xs font-medium text-[#49454F]">No stocks found</p>
+              </div>
+            ) : (
+              filteredStocks.map((stock) => (
+                <button
+                  key={stock.symbol}
+                  onClick={() => setSelectedStock(stock)}
+                  className={`w-full text-left px-4 py-3 border-b border-[#E7E0EC] flex items-center justify-between hover:bg-[#F3EDF7] transition-colors ${
+                    selectedStock?.symbol === stock.symbol
+                      ? 'bg-[#E8DEF8] border-l-4 border-l-[#6750A4]'
+                      : 'border-l-4 border-l-transparent'
+                  }`}
+                >
+                  <div className="min-w-0 pr-2">
+                    <p className="text-sm font-bold text-[#1C1B1F] truncate">{stock.symbol}</p>
+                    <p className="text-[10px] font-medium text-[#49454F] truncate">{stock.name}</p>
                   </div>
-                  <button onClick={() => setSelectedStock(null)} className="p-1 text-slate-400 hover:text-white">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <div className="p-5 space-y-5">
-                  {/* Price */}
-                  <div>
-                    <p className="text-3xl font-bold text-white">₹{selectedStock.price.toLocaleString('en-IN')}</p>
-                    <p className={`text-sm font-medium mt-1 ${selectedStock.change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                      {selectedStock.change >= 0 ? '+' : ''}{selectedStock.change.toFixed(2)} ({selectedStock.changePercent >= 0 ? '+' : ''}{selectedStock.changePercent.toFixed(2)}%)
+                  <div className="text-right shrink-0">
+                    <p className="text-sm font-mono tabular-nums font-semibold text-[#1C1B1F]">₹{stock.price.toLocaleString('en-IN')}</p>
+                    <p className={`text-[10px] font-mono tabular-nums font-bold ${stock.change >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                      {stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
                     </p>
                   </div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
 
+        {/* Detailed Chart & Fundamentals (Right Pane) */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <AnimatePresence mode="wait">
+            {selectedStock ? (
+              <motion.div
+                key={selectedStock.symbol}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                className="flex-1 flex flex-col border border-[#E7E0EC] rounded-[24px] bg-[#FFFBFE] overflow-hidden shadow-sm"
+              >
+                {/* Header */}
+                <div className="px-6 py-4 border-b border-[#E7E0EC] flex flex-wrap gap-4 items-center justify-between bg-[#F3EDF7]">
+                  <div className="flex items-center gap-4">
+                    <div>
+                      <h2 className="text-2xl font-bold text-[#1C1B1F] flex items-center gap-2">
+                        {selectedStock.symbol}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleWatchlist(selectedStock.symbol);
+                          }}
+                          className="p-1 hover:bg-[#E8DEF8] rounded-[8px]"
+                        >
+                          <Star
+                            className={`w-4 h-4 transition-colors ${
+                              watchlist.includes(selectedStock.symbol)
+                                ? 'text-amber-400 fill-amber-400'
+                                : 'text-[#49454F] hover:text-[#1C1B1F]'
+                            }`}
+                          />
+                        </button>
+                      </h2>
+                      <p className="text-xs font-semibold text-[#49454F]">{selectedStock.name}</p>
+                    </div>
+                    <div className="h-10 w-px bg-[#E7E0EC] hidden sm:block"></div>
+                    <div className="hidden sm:block">
+                      <p className="text-2xl font-mono tabular-nums font-bold text-[#1C1B1F]">₹{selectedStock.price.toLocaleString('en-IN')}</p>
+                      <p className={`text-xs font-mono tabular-nums font-bold ${selectedStock.change >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                        {selectedStock.change >= 0 ? '+' : ''}{selectedStock.change.toFixed(2)} ({selectedStock.changePercent >= 0 ? '+' : ''}{selectedStock.changePercent.toFixed(2)}%)
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {trendBadge(selectedStock.aiInsights.trend)}
+                    <Badge variant={selectedStock.aiInsights.newsSentiment === 'positive' ? 'success' : selectedStock.aiInsights.newsSentiment === 'negative' ? 'danger' : 'warning'}>
+                      {selectedStock.aiInsights.newsSentiment} Sentiment
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Main Content Scrollable Area */}
+                <div className="flex-1 overflow-y-auto no-scrollbar p-6">
                   {/* Chart */}
-                  <AreaChartComponent
-                    data={selectedStock.historicalPrices}
-                    dataKey="price"
-                    height={180}
-                    color={selectedStock.change >= 0 ? '#10b981' : '#f43f5e'}
-                    gradientId="detailChart"
-                  />
-
-                  {/* Day Range */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3 rounded-lg bg-dark-700/50">
-                      <p className="text-xs text-slate-400">Day Low</p>
-                      <p className="text-sm font-medium text-white">₹{selectedStock.dayLow.toLocaleString('en-IN')}</p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-dark-700/50">
-                      <p className="text-xs text-slate-400">Day High</p>
-                      <p className="text-sm font-medium text-white">₹{selectedStock.dayHigh.toLocaleString('en-IN')}</p>
-                    </div>
+                  <div className="mb-6 h-[400px] border border-[#E7E0EC] rounded-[16px] bg-[#FFFBFE] p-2 shadow-sm">
+                    <AreaChartComponent
+                      data={selectedStock.historicalPrices}
+                      dataKey="price"
+                      height={380}
+                      color={selectedStock.change >= 0 ? '#10b981' : '#f43f5e'}
+                      gradientId="mainDetailChart"
+                    />
                   </div>
 
-                  {/* Fundamentals */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-white mb-3">Fundamentals</h3>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      {[
-                        { label: 'Market Cap', value: selectedStock.marketCap },
-                        { label: 'P/E Ratio', value: selectedStock.pe.toString() },
-                        { label: 'EPS', value: `₹${selectedStock.eps}` },
-                        { label: 'Volume', value: (selectedStock.volume / 1000000).toFixed(1) + 'M' },
-                        { label: '52W High', value: `₹${selectedStock.yearHigh.toLocaleString('en-IN')}` },
-                        { label: '52W Low', value: `₹${selectedStock.yearLow.toLocaleString('en-IN')}` },
-                      ].map((f) => (
-                        <div key={f.label} className="flex justify-between py-1.5 border-b border-border-primary">
-                          <span className="text-slate-400">{f.label}</span>
-                          <span className="text-white font-medium">{f.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* AI Insights */}
-                  <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-500/5 to-cyan-500/5 border border-emerald-500/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Brain className="w-4 h-4 text-emerald-400" />
-                      <h3 className="text-sm font-semibold text-white">AI Analysis</h3>
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed mb-3">{selectedStock.aiInsights.trendDescription}</p>
-
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs text-slate-400">Trend:</span>
-                      {trendBadge(selectedStock.aiInsights.trend)}
-                      <span className="text-xs text-slate-400 ml-2">Sentiment:</span>
-                      <Badge
-                        variant={selectedStock.aiInsights.newsSentiment === 'positive' ? 'success' : selectedStock.aiInsights.newsSentiment === 'negative' ? 'danger' : 'warning'}
-                      >
-                        {selectedStock.aiInsights.newsSentiment}
-                      </Badge>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Fundamentals */}
+                    <div>
+                      <h3 className="text-sm font-bold text-[#1C1B1F] mb-3 border-b border-[#E7E0EC] pb-2">Technical & Fundamentals</h3>
+                      <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                        {[
+                          { label: 'Day Range', value: `₹${selectedStock.dayLow} - ₹${selectedStock.dayHigh}` },
+                          { label: '52W Range', value: `₹${selectedStock.yearLow} - ₹${selectedStock.yearHigh}` },
+                          { label: 'Market Cap', value: selectedStock.marketCap },
+                          { label: 'Volume', value: (selectedStock.volume / 1000000).toFixed(1) + 'M' },
+                          { label: 'P/E Ratio', value: selectedStock.pe.toString() },
+                          { label: 'EPS (TTM)', value: `₹${selectedStock.eps}` },
+                        ].map((f) => (
+                          <div key={f.label} className="flex justify-between py-1.5 border-b border-[#E7E0EC]/50">
+                            <span className="text-xs font-semibold text-[#49454F]">{f.label}</span>
+                            <span className="text-xs font-mono tabular-nums text-[#1D192B] font-bold">{f.value}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
-                    <div className="mt-3">
-                      <p className="text-xs font-medium text-slate-400 mb-1">Risk Factors:</p>
-                      <div className="flex flex-wrap gap-1.5">
+                    {/* AI Analysis */}
+                    <div>
+                      <h3 className="text-sm font-bold text-[#1C1B1F] mb-3 border-b border-[#E7E0EC] pb-2 flex items-center gap-2">
+                        <Brain className="w-5 h-5 text-[#6750A4]" /> AI Analysis
+                      </h3>
+                      <p className="text-xs font-medium text-[#49454F] leading-relaxed mb-4 bg-[#F3EDF7] p-4 rounded-[16px]">
+                        {selectedStock.aiInsights.trendDescription}
+                      </p>
+                      
+                      <p className="text-xs font-bold text-[#1D192B] mb-2">Key Risk Factors</p>
+                      <div className="flex flex-wrap gap-2">
                         {selectedStock.aiInsights.riskFactors.map((r) => (
                           <Badge key={r} variant="neutral" size="sm">{r}</Badge>
                         ))}
@@ -245,10 +208,24 @@ export default function Stocks() {
                     </div>
                   </div>
                 </div>
-              </GlassCard>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex-1 flex flex-col items-center justify-center border border-[#E7E0EC] rounded-[24px] bg-[#FFFBFE] shadow-sm"
+              >
+                <div className="w-16 h-16 rounded-[16px] bg-[#F3EDF7] flex items-center justify-center mb-4">
+                  <TrendingUp className="w-8 h-8 text-[#6750A4]" />
+                </div>
+                <h3 className="text-[#1C1B1F] font-bold mb-1">Select an Asset</h3>
+                <p className="text-sm font-medium text-[#49454F]">Choose a stock from the watchlist to view its technical analysis.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </PageWrapper>
   );

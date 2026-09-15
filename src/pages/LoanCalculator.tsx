@@ -58,18 +58,18 @@ export default function LoanCalculator() {
 
   return (
     <PageWrapper title="Loan & EMI Calculator" subtitle="Calculate EMI, view amortization schedule, and check debt stress">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {/* Input Panel */}
         <div className="lg:col-span-1 space-y-6">
           <GlassCard padding="p-6">
-            <h2 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-emerald-400" /> Loan Parameters
+            <h2 className="text-lg font-bold text-[#1C1B1F] mb-5 flex items-center gap-2">
+              <Calculator className="w-5 h-5 text-[#6750A4]" /> Loan Parameters
             </h2>
 
             <div className="space-y-6">
               <div>
-                <label className="text-sm text-slate-300 mb-2 block">
-                  Loan Amount: <span className="text-white font-bold">₹{(loanAmount / 100000).toFixed(1)} L</span>
+                <label className="text-sm font-semibold text-[#49454F] mb-2 block">
+                  Loan Amount: <span className="text-[#1C1B1F] font-bold">₹{(loanAmount / 100000).toFixed(1)} L</span>
                 </label>
                 <input
                   type="range"
@@ -78,16 +78,16 @@ export default function LoanCalculator() {
                   step={50000}
                   value={loanAmount}
                   onChange={(e) => setLoanAmount(Number(e.target.value))}
-                  className="w-full"
+                  className="w-full accent-[#6750A4]"
                 />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <div className="flex justify-between text-xs font-semibold text-[#49454F] mt-1">
                   <span>₹1L</span><span>₹1 Cr</span>
                 </div>
               </div>
 
               <div>
-                <label className="text-sm text-slate-300 mb-2 block">
-                  Interest Rate: <span className="text-white font-bold">{interestRate}% p.a.</span>
+                <label className="text-sm font-semibold text-[#49454F] mb-2 block">
+                  Interest Rate: <span className="text-[#1C1B1F] font-bold">{interestRate}% p.a.</span>
                 </label>
                 <input
                   type="range"
@@ -96,16 +96,16 @@ export default function LoanCalculator() {
                   step={0.1}
                   value={interestRate}
                   onChange={(e) => setInterestRate(Number(e.target.value))}
-                  className="w-full"
+                  className="w-full accent-[#6750A4]"
                 />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <div className="flex justify-between text-xs font-semibold text-[#49454F] mt-1">
                   <span>5%</span><span>20%</span>
                 </div>
               </div>
 
               <div>
-                <label className="text-sm text-slate-300 mb-2 block">
-                  Tenure: <span className="text-white font-bold">{tenureYears} years</span>
+                <label className="text-sm font-semibold text-[#49454F] mb-2 block">
+                  Tenure: <span className="text-[#1C1B1F] font-bold">{tenureYears} years</span>
                 </label>
                 <input
                   type="range"
@@ -113,9 +113,9 @@ export default function LoanCalculator() {
                   max={30}
                   value={tenureYears}
                   onChange={(e) => setTenureYears(Number(e.target.value))}
-                  className="w-full"
+                  className="w-full accent-[#6750A4]"
                 />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <div className="flex justify-between text-xs font-semibold text-[#49454F] mt-1">
                   <span>1 yr</span><span>30 yrs</span>
                 </div>
               </div>
@@ -123,31 +123,31 @@ export default function LoanCalculator() {
           </GlassCard>
 
           {/* Debt Stress Indicator */}
-          <GlassCard padding="p-5" glow={stressLevel === 'critical' ? 'rose' : stressLevel === 'caution' ? 'amber' : 'emerald'}>
-            <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-              {stressLevel === 'critical' ? <AlertTriangle className="w-4 h-4 text-rose-400" /> : <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+          <GlassCard padding="p-5">
+            <h3 className="text-sm font-bold text-[#1C1B1F] mb-3 flex items-center gap-2">
+              {stressLevel === 'critical' ? <AlertTriangle className="w-4 h-4 text-rose-600" /> : <CheckCircle2 className="w-4 h-4 text-emerald-600" />}
               Debt Stress Indicator
             </h3>
 
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">This EMI</span>
-                <span className="text-white font-medium">₹{Math.round(emi).toLocaleString('en-IN')}</span>
+                <span className="font-semibold text-[#49454F]">This EMI</span>
+                <span className="text-[#1C1B1F] font-bold">₹{Math.round(emi).toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Existing EMIs</span>
-                <span className="text-white font-medium">₹{(user?.existingEMI || 0).toLocaleString('en-IN')}</span>
+                <span className="font-semibold text-[#49454F]">Existing EMIs</span>
+                <span className="text-[#1C1B1F] font-bold">₹{(user?.existingEMI || 0).toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Total EMI Load</span>
-                <span className="text-white font-bold">₹{Math.round(emi + (user?.existingEMI || 0)).toLocaleString('en-IN')}</span>
+                <span className="font-semibold text-[#49454F]">Total EMI Load</span>
+                <span className="text-[#1C1B1F] font-bold">₹{Math.round(emi + (user?.existingEMI || 0)).toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Monthly Income</span>
-                <span className="text-white font-medium">₹{(user?.income || 0).toLocaleString('en-IN')}</span>
+                <span className="font-semibold text-[#49454F]">Monthly Income</span>
+                <span className="text-[#1C1B1F] font-bold">₹{(user?.income || 0).toLocaleString('en-IN')}</span>
               </div>
 
-              <div className="h-3 rounded-full bg-dark-600 overflow-hidden mt-2">
+              <div className="h-3 rounded-full bg-[#E7E0EC] overflow-hidden mt-2">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${Math.min(dtiRatio, 100)}%` }}
@@ -160,7 +160,7 @@ export default function LoanCalculator() {
                 <Badge variant={stressLevel === 'critical' ? 'danger' : stressLevel === 'caution' ? 'warning' : 'success'} dot>
                   DTI Ratio: {dtiRatio.toFixed(1)}%
                 </Badge>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs font-semibold text-[#49454F]">
                   {stressLevel === 'safe' ? 'Comfortable' : stressLevel === 'caution' ? 'Manageable' : 'High Stress'}
                 </span>
               </div>
@@ -169,21 +169,21 @@ export default function LoanCalculator() {
         </div>
 
         {/* Results Panel */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 xl:col-span-3 space-y-6">
           {/* EMI Result */}
-          <GlassCard padding="p-6" glow="emerald">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="text-center">
-                <p className="text-sm text-slate-400 mb-1">Monthly EMI</p>
-                <p className="text-3xl font-bold gradient-text">₹{Math.round(emi).toLocaleString('en-IN')}</p>
+          <GlassCard padding="p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-[#E7E0EC]">
+              <div className="text-center py-2">
+                <p className="text-xs font-bold text-[#49454F] mb-1 uppercase tracking-wider">Monthly EMI</p>
+                <p className="text-3xl font-bold text-[#6750A4] tabular-nums">₹{Math.round(emi).toLocaleString('en-IN')}</p>
               </div>
-              <div className="text-center">
-                <p className="text-sm text-slate-400 mb-1">Total Interest</p>
-                <p className="text-2xl font-bold text-rose-400">₹{(totalInterest / 100000).toFixed(1)}L</p>
+              <div className="text-center py-2">
+                <p className="text-xs font-bold text-[#49454F] mb-1 uppercase tracking-wider">Total Interest</p>
+                <p className="text-2xl font-bold text-rose-600 tabular-nums">₹{(totalInterest / 100000).toFixed(1)}L</p>
               </div>
-              <div className="text-center">
-                <p className="text-sm text-slate-400 mb-1">Total Payment</p>
-                <p className="text-2xl font-bold text-white">₹{(totalPayment / 100000).toFixed(1)}L</p>
+              <div className="text-center py-2">
+                <p className="text-xs font-bold text-[#49454F] mb-1 uppercase tracking-wider">Total Payment</p>
+                <p className="text-2xl font-bold text-[#1C1B1F] tabular-nums">₹{(totalPayment / 100000).toFixed(1)}L</p>
               </div>
             </div>
           </GlassCard>
@@ -191,7 +191,7 @@ export default function LoanCalculator() {
           {/* Charts */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <GlassCard padding="p-5">
-              <h3 className="text-sm font-semibold text-white mb-3">Principal vs Interest</h3>
+              <h3 className="text-sm font-bold text-[#1C1B1F] mb-3">Principal vs Interest</h3>
               <DonutChart
                 data={[
                   { category: 'Principal', value: loanAmount, percentage: Math.round((loanAmount / totalPayment) * 100), color: '#10b981' },
@@ -201,18 +201,18 @@ export default function LoanCalculator() {
                 centerLabel="Interest"
                 height={200}
               />
-              <div className="flex justify-center gap-6 mt-3 text-xs">
+              <div className="flex justify-center gap-6 mt-3 text-xs font-semibold text-[#49454F]">
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Principal</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-500" /> Interest</span>
               </div>
             </GlassCard>
 
             <GlassCard padding="p-5">
-              <h3 className="text-sm font-semibold text-white mb-3">Balance Over Time</h3>
+              <h3 className="text-sm font-bold text-[#1C1B1F] mb-3">Balance Over Time</h3>
               <AreaChartComponent
                 data={balanceData}
                 height={200}
-                color="#3b82f6"
+                color="#6750A4"
                 gradientId="loanBalance"
                 formatValue={(v) => `₹${(v / 100000).toFixed(1)}L`}
               />
@@ -223,10 +223,10 @@ export default function LoanCalculator() {
           <GlassCard padding="p-0">
             <button
               onClick={() => setShowAmortization(!showAmortization)}
-              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors"
+              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-[#F3EDF7] transition-colors rounded-t-[24px]"
             >
-              <h3 className="text-base font-semibold text-white">Amortization Schedule</h3>
-              <span className="text-sm text-slate-400">{showAmortization ? 'Hide' : 'Show'} ({tenureYears * 12} months)</span>
+              <h3 className="text-base font-bold text-[#1C1B1F]">Amortization Schedule</h3>
+              <span className="text-sm font-semibold text-[#49454F]">{showAmortization ? 'Hide' : 'Show'} ({tenureYears * 12} months)</span>
             </button>
 
             {showAmortization && (
@@ -237,23 +237,23 @@ export default function LoanCalculator() {
               >
                 <div className="overflow-x-auto max-h-96">
                   <table className="w-full">
-                    <thead className="sticky top-0 bg-surface-secondary z-10">
-                      <tr className="border-b border-border-primary">
-                        <th className="px-4 py-2.5 text-left text-xs font-medium text-slate-400">Month</th>
-                        <th className="px-4 py-2.5 text-right text-xs font-medium text-slate-400">EMI</th>
-                        <th className="px-4 py-2.5 text-right text-xs font-medium text-slate-400">Principal</th>
-                        <th className="px-4 py-2.5 text-right text-xs font-medium text-slate-400">Interest</th>
-                        <th className="px-4 py-2.5 text-right text-xs font-medium text-slate-400">Balance</th>
+                    <thead className="sticky top-0 bg-[#F3EDF7] z-10">
+                      <tr className="border-b border-[#E7E0EC]">
+                        <th className="px-4 py-3 text-left text-xs font-bold text-[#49454F] uppercase tracking-wider">Month</th>
+                        <th className="px-4 py-3 text-right text-xs font-bold text-[#49454F] uppercase tracking-wider">EMI</th>
+                        <th className="px-4 py-3 text-right text-xs font-bold text-[#49454F] uppercase tracking-wider">Principal</th>
+                        <th className="px-4 py-3 text-right text-xs font-bold text-[#49454F] uppercase tracking-wider">Interest</th>
+                        <th className="px-4 py-3 text-right text-xs font-bold text-[#49454F] uppercase tracking-wider">Balance</th>
                       </tr>
                     </thead>
                     <tbody>
                       {amortization.slice(0, 120).map((row) => (
-                        <tr key={row.month} className="border-b border-border-primary text-sm">
-                          <td className="px-4 py-2 text-slate-300">{row.month}</td>
-                          <td className="px-4 py-2 text-right text-white">₹{row.emi.toLocaleString('en-IN')}</td>
-                          <td className="px-4 py-2 text-right text-emerald-400">₹{row.principal.toLocaleString('en-IN')}</td>
-                          <td className="px-4 py-2 text-right text-rose-400">₹{row.interest.toLocaleString('en-IN')}</td>
-                          <td className="px-4 py-2 text-right text-slate-300">₹{row.balance.toLocaleString('en-IN')}</td>
+                        <tr key={row.month} className="border-b border-[#E7E0EC]/50 text-sm hover:bg-[#F3EDF7] transition-colors">
+                          <td className="px-4 py-2 font-semibold text-[#49454F]">{row.month}</td>
+                          <td className="px-4 py-2 text-right font-semibold text-[#1C1B1F]">₹{row.emi.toLocaleString('en-IN')}</td>
+                          <td className="px-4 py-2 text-right font-bold text-emerald-600">₹{row.principal.toLocaleString('en-IN')}</td>
+                          <td className="px-4 py-2 text-right font-bold text-rose-600">₹{row.interest.toLocaleString('en-IN')}</td>
+                          <td className="px-4 py-2 text-right font-semibold text-[#49454F]">₹{row.balance.toLocaleString('en-IN')}</td>
                         </tr>
                       ))}
                     </tbody>

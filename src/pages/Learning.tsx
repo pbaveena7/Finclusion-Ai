@@ -35,57 +35,57 @@ export default function Learning() {
   return (
     <PageWrapper title="Financial Learning" subtitle="Build your financial literacy with interactive lessons and quizzes">
       {/* Stats Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-8">
         <GlassCard padding="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-purple-400" />
+            <div className="w-10 h-10 rounded-[12px] bg-[#E8DEF8] flex items-center justify-center">
+              <Trophy className="w-5 h-5 text-[#6750A4]" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white">{totalPoints}</p>
-              <p className="text-xs text-slate-400">Points Earned</p>
+              <p className="text-lg font-bold text-[#1C1B1F]">{totalPoints}</p>
+              <p className="text-xs font-semibold text-[#49454F]">Points Earned</p>
             </div>
           </div>
         </GlassCard>
         <GlassCard padding="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+            <div className="w-10 h-10 rounded-[12px] bg-[#C4EED0] flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5 text-emerald-700" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white">{completedModules}/{mockLearning.length}</p>
-              <p className="text-xs text-slate-400">Completed</p>
+              <p className="text-lg font-bold text-[#1C1B1F]">{completedModules}/{mockLearning.length}</p>
+              <p className="text-xs font-semibold text-[#49454F]">Completed</p>
             </div>
           </div>
         </GlassCard>
         <GlassCard padding="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
-              <Star className="w-5 h-5 text-amber-400" />
+            <div className="w-10 h-10 rounded-[12px] bg-[#FFE6C8] flex items-center justify-center">
+              <Star className="w-5 h-5 text-amber-700" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white">{completedModules}</p>
-              <p className="text-xs text-slate-400">Badges Earned</p>
+              <p className="text-lg font-bold text-[#1C1B1F]">{completedModules}</p>
+              <p className="text-xs font-semibold text-[#49454F]">Badges Earned</p>
             </div>
           </div>
         </GlassCard>
         <GlassCard padding="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-              <GraduationCap className="w-5 h-5 text-blue-400" />
+            <div className="w-10 h-10 rounded-[12px] bg-[#D0BCFF] flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 text-[#381E72]" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white">
+              <p className="text-lg font-bold text-[#1C1B1F]">
                 {Math.round(mockLearning.reduce((s, m) => s + m.progress, 0) / mockLearning.length)}%
               </p>
-              <p className="text-xs text-slate-400">Overall Progress</p>
+              <p className="text-xs font-semibold text-[#49454F]">Overall Progress</p>
             </div>
           </div>
         </GlassCard>
       </div>
 
       {/* Modules Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
         {mockLearning.map((mod, i) => (
           <motion.div
             key={mod.id}
@@ -93,41 +93,41 @@ export default function Learning() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08 }}
           >
-            <GlassCard hover padding="p-5" onClick={() => setSelectedModule(mod)}>
+            <GlassCard hover padding="p-6" onClick={() => setSelectedModule(mod)}>
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{mod.icon}</span>
                   <div>
-                    <h3 className="text-sm font-semibold text-white">{mod.title}</h3>
+                    <h3 className="text-sm font-bold text-[#1C1B1F]">{mod.title}</h3>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge variant={levelColors[mod.level] as any} size="sm">{mod.level}</Badge>
-                      <span className="text-xs text-slate-400">{mod.points} pts</span>
+                      <span className="text-xs font-semibold text-[#49454F]">{mod.points} pts</span>
                     </div>
                   </div>
                 </div>
                 <ProgressRing progress={mod.progress} size={50} strokeWidth={4} color={mod.isCompleted ? '#10b981' : '#3b82f6'} />
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed mb-4">{mod.description}</p>
+              <p className="text-xs font-medium text-[#49454F] leading-relaxed mb-4">{mod.description}</p>
 
               {/* Lesson bullets */}
               <div className="space-y-1.5 mb-4">
                 {mod.lessons.map((lesson) => (
                   <div key={lesson.id} className="flex items-center gap-2">
                     {lesson.isCompleted ? (
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                     ) : (
-                      <div className="w-3.5 h-3.5 rounded-full border border-slate-600" />
+                      <div className="w-3.5 h-3.5 rounded-full border border-[#49454F]" />
                     )}
-                    <span className={`text-xs ${lesson.isCompleted ? 'text-slate-400' : 'text-slate-300'}`}>{lesson.title}</span>
+                    <span className={`text-xs font-medium ${lesson.isCompleted ? 'text-[#49454F]' : 'text-[#1C1B1F]'}`}>{lesson.title}</span>
                   </div>
                 ))}
               </div>
 
               {mod.isCompleted && (
-                <div className="flex items-center gap-2 p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/15">
+                <div className="flex items-center gap-2 p-2 rounded-[8px] bg-[#C4EED0]/30 border border-[#C4EED0]">
                   <span className="text-sm">{mod.badge}</span>
-                  <span className="text-xs text-emerald-400 font-medium">Completed!</span>
+                  <span className="text-xs text-emerald-700 font-bold">Completed!</span>
                 </div>
               )}
             </GlassCard>
@@ -139,17 +139,17 @@ export default function Learning() {
       <Modal isOpen={!!selectedModule && !activeLesson} onClose={() => setSelectedModule(null)} title={`${selectedModule?.icon} ${selectedModule?.title}`} size="lg">
         {selectedModule && (
           <div className="space-y-4">
-            <p className="text-sm text-slate-300">{selectedModule.description}</p>
+            <p className="text-sm font-medium text-[#1C1B1F]">{selectedModule.description}</p>
 
-            <div className="flex items-center gap-4 p-4 rounded-xl bg-dark-700/50">
-              <ProgressRing progress={selectedModule.progress} size={60} strokeWidth={5} color="#3b82f6" />
+            <div className="flex items-center gap-4 p-4 rounded-[16px] bg-[#F3EDF7]">
+              <ProgressRing progress={selectedModule.progress} size={60} strokeWidth={5} color="#6750A4" />
               <div>
-                <p className="text-sm text-white font-medium">{selectedModule.progress}% Complete</p>
-                <p className="text-xs text-slate-400">{selectedModule.lessons.filter(l => l.isCompleted).length}/{selectedModule.lessons.length} lessons</p>
+                <p className="text-sm text-[#1C1B1F] font-bold">{selectedModule.progress}% Complete</p>
+                <p className="text-xs font-semibold text-[#49454F]">{selectedModule.lessons.filter(l => l.isCompleted).length}/{selectedModule.lessons.length} lessons</p>
               </div>
               <div className="ml-auto text-right">
-                <p className="text-sm font-bold text-amber-400">{selectedModule.points} pts</p>
-                <p className="text-xs text-slate-400">{selectedModule.badge}</p>
+                <p className="text-sm font-bold text-amber-600">{selectedModule.points} pts</p>
+                <p className="text-xs font-semibold text-[#49454F]">{selectedModule.badge}</p>
               </div>
             </div>
 
@@ -158,18 +158,18 @@ export default function Learning() {
                 key={lesson.id}
                 whileHover={{ x: 4 }}
                 onClick={() => { setActiveLesson(lesson); setQuizMode(false); resetQuiz(); }}
-                className="w-full flex items-center gap-3 p-4 rounded-xl bg-dark-700/30 hover:bg-dark-600/30 transition-colors text-left"
+                className="w-full flex items-center gap-3 p-4 rounded-[16px] bg-[#FFFBFE] border border-[#E7E0EC] hover:bg-[#F3EDF7] transition-colors text-left"
               >
                 {lesson.isCompleted ? (
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
                 ) : (
-                  <div className="w-5 h-5 rounded-full border-2 border-slate-500 shrink-0" />
+                  <div className="w-5 h-5 rounded-full border-2 border-[#49454F] shrink-0" />
                 )}
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-white">{lesson.title}</p>
-                  <p className="text-xs text-slate-400">{lesson.quiz.length} quiz question{lesson.quiz.length > 1 ? 's' : ''}</p>
+                  <p className="text-sm font-bold text-[#1C1B1F]">{lesson.title}</p>
+                  <p className="text-xs font-semibold text-[#49454F]">{lesson.quiz.length} quiz question{lesson.quiz.length > 1 ? 's' : ''}</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-slate-500" />
+                <ChevronRight className="w-4 h-4 text-[#49454F]" />
               </motion.button>
             ))}
           </div>
@@ -183,25 +183,25 @@ export default function Learning() {
             {!quizMode ? (
               <>
                 {/* Render lesson content as styled text */}
-                <div className="prose prose-invert prose-sm max-w-none">
+                <div className="prose prose-sm max-w-none text-[#1C1B1F]">
                   {activeLesson.content.split('\n').map((line, i) => {
-                    if (line.startsWith('## ')) return <h2 key={i} className="text-lg font-bold text-white mt-4 mb-2">{line.slice(3)}</h2>;
-                    if (line.startsWith('### ')) return <h3 key={i} className="text-base font-semibold text-white mt-3 mb-1">{line.slice(4)}</h3>;
-                    if (line.startsWith('> ')) return <blockquote key={i} className="border-l-2 border-emerald-500 pl-3 my-2 text-sm text-emerald-300 italic">{line.slice(2)}</blockquote>;
+                    if (line.startsWith('## ')) return <h2 key={i} className="text-lg font-bold text-[#1C1B1F] mt-4 mb-2">{line.slice(3)}</h2>;
+                    if (line.startsWith('### ')) return <h3 key={i} className="text-base font-bold text-[#1C1B1F] mt-3 mb-1">{line.slice(4)}</h3>;
+                    if (line.startsWith('> ')) return <blockquote key={i} className="border-l-4 border-[#6750A4] bg-[#E8DEF8] p-3 my-2 text-sm text-[#1D192B] rounded-r-[8px] font-medium">{line.slice(2)}</blockquote>;
                     if (line.startsWith('- **')) {
                       const match = line.match(/^- \*\*(.+?)\*\*:?\s*(.*)/);
-                      if (match) return <p key={i} className="text-sm text-slate-300 ml-4 my-1"><strong className="text-white">{match[1]}</strong>: {match[2]}</p>;
+                      if (match) return <p key={i} className="text-sm font-medium text-[#49454F] ml-4 my-1"><strong className="font-bold text-[#1C1B1F]">{match[1]}</strong>: {match[2]}</p>;
                     }
-                    if (line.startsWith('- ')) return <p key={i} className="text-sm text-slate-300 ml-4 my-1">• {line.slice(2)}</p>;
+                    if (line.startsWith('- ')) return <p key={i} className="text-sm font-medium text-[#49454F] ml-4 my-1">• {line.slice(2)}</p>;
                     if (line.startsWith('| ')) return null; // Skip tables for simplicity
                     if (line.trim() === '') return <div key={i} className="h-2" />;
-                    return <p key={i} className="text-sm text-slate-300 my-1 leading-relaxed">{line}</p>;
+                    return <p key={i} className="text-sm font-medium text-[#49454F] my-1 leading-relaxed">{line}</p>;
                   })}
                 </div>
 
                 <button
                   onClick={() => setQuizMode(true)}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border border-purple-500/20 text-purple-400 font-semibold text-sm hover:text-white transition-all"
+                  className="w-full py-3 rounded-[16px] bg-[#6750A4] text-white font-bold text-sm hover:bg-[#523F84] transition-all shadow-sm"
                 >
                   📝 Take Quiz
                 </button>
@@ -222,14 +222,14 @@ export default function Learning() {
                           <button
                             key={oi}
                             onClick={() => !showResults && setQuizAnswers({ ...quizAnswers, [qi]: oi })}
-                            className={`w-full text-left px-4 py-3 rounded-xl text-sm transition-all ${
+                            className={`w-full text-left px-4 py-3 rounded-[12px] text-sm font-medium transition-all ${
                               isCorrect
-                                ? 'bg-emerald-500/20 border border-emerald-500/30 text-emerald-400'
+                                ? 'bg-[#C4EED0]/30 border border-[#C4EED0] text-emerald-700'
                                 : isWrong
-                                ? 'bg-rose-500/20 border border-rose-500/30 text-rose-400'
+                                ? 'bg-[#FFD8E4]/30 border border-[#FFD8E4] text-rose-700'
                                 : isSelected
-                                ? 'bg-blue-500/20 border border-blue-500/30 text-blue-400'
-                                : 'bg-dark-700/50 border border-border-primary text-slate-300 hover:border-border-hover'
+                                ? 'bg-[#E8DEF8] border border-[#6750A4] text-[#1D192B]'
+                                : 'bg-[#FFFBFE] border border-[#E7E0EC] text-[#49454F] hover:bg-[#F3EDF7]'
                             }`}
                           >
                             {opt}
@@ -241,9 +241,9 @@ export default function Learning() {
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/10"
+                        className="p-4 rounded-[16px] bg-[#E8DEF8] border-none"
                       >
-                        <p className="text-xs text-emerald-300">💡 {q.explanation}</p>
+                        <p className="text-xs font-semibold text-[#1D192B]">💡 {q.explanation}</p>
                       </motion.div>
                     )}
                   </div>
@@ -253,16 +253,16 @@ export default function Learning() {
                   <button
                     onClick={handleQuizSubmit}
                     disabled={Object.keys(quizAnswers).length < activeLesson.quiz.length}
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm disabled:opacity-30"
+                    className="w-full py-3 rounded-[16px] bg-[#6750A4] text-white font-bold text-sm disabled:opacity-50 hover:bg-[#523F84] shadow-sm transition-all"
                   >
                     Submit Answers
                   </button>
                 ) : (
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/15 text-center">
-                    <p className="text-lg font-bold text-white mb-1">
+                  <div className="p-5 rounded-[24px] bg-[#C4EED0]/30 border border-[#C4EED0] text-center">
+                    <p className="text-lg font-bold text-emerald-700 mb-1">
                       Score: {activeLesson.quiz.filter((q, i) => quizAnswers[i] === q.correctIndex).length}/{activeLesson.quiz.length}
                     </p>
-                    <p className="text-xs text-slate-400">Great effort! Keep learning 🎉</p>
+                    <p className="text-xs font-semibold text-emerald-600">Great effort! Keep learning 🎉</p>
                   </div>
                 )}
               </div>

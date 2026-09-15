@@ -64,8 +64,8 @@ export default function ProgressRing({
       </svg>
       {showLabel && (
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-lg font-bold text-white">{Math.round(animatedProgress)}%</span>
-          {label && <span className="text-[10px] text-slate-400 mt-0.5">{label}</span>}
+          <span className="text-lg font-bold text-[#1C1B1F]">{Math.round(animatedProgress)}%</span>
+          {label && <span className="text-[10px] text-[#49454F] font-medium mt-0.5">{label}</span>}
         </div>
       )}
     </div>

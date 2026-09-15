@@ -3,3 +3,11 @@ node_modules/
 dist/
 build/
 .DS_Store
+
+.env.local
+
+finclusion-ai-2/frontend/.env.local
+
+.env.local
+
+*.env*

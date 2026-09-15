@@ -9,19 +9,19 @@ interface TabsProps {
 
 export default function Tabs({ tabs, activeTab, onChange, className = '' }: TabsProps) {
   return (
-    <div className={`flex gap-1 p-1 glass rounded-xl overflow-x-auto no-scrollbar ${className}`}>
+    <div className={`flex gap-1 p-1 bg-[#E8DEF8] rounded-[16px] overflow-x-auto no-scrollbar ${className}`}>
       {tabs.map((tab) => (
         <button
           key={tab}
           onClick={() => onChange(tab)}
-          className={`relative px-4 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
-            activeTab === tab ? 'text-white' : 'text-slate-400 hover:text-slate-200'
+          className={`relative px-4 py-2 text-sm font-semibold rounded-[12px] whitespace-nowrap transition-colors ${
+            activeTab === tab ? 'text-[#1D192B]' : 'text-[#49454F] hover:text-[#1C1B1F]'
           }`}
         >
           {activeTab === tab && (
             <motion.div
               layoutId="active-tab"
-              className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 rounded-lg border border-emerald-500/20"
+              className="absolute inset-0 bg-[#FFFBFE] rounded-[12px] shadow-sm"
               transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
             />
           )}

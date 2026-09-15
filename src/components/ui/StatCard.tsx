@@ -26,15 +26,15 @@ export default function StatCard({
   className = '',
 }: StatCardProps) {
   const trendColors = {
-    up: 'text-emerald-400',
-    down: 'text-rose-400',
-    neutral: 'text-slate-400',
+    up: 'text-emerald-600',
+    down: 'text-rose-600',
+    neutral: 'text-[#49454F]',
   };
 
   const trendBg = {
     up: 'bg-emerald-500/10',
     down: 'bg-rose-500/10',
-    neutral: 'bg-slate-500/10',
+    neutral: 'bg-[#E7E0EC]',
   };
 
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
@@ -43,19 +43,19 @@ export default function StatCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`glass rounded-2xl p-6 border border-white/5 hover-lift group hover:bg-white/5 transition-all duration-200 ${className}`}
+      className={`bg-[#F3EDF7] rounded-[24px] p-6 shadow-sm hover:shadow-md hover:bg-[#E8DEF8] transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 ${className}`}
     >
       <div className="flex items-start justify-between mb-3">
-        <span className="text-sm font-medium text-slate-400">{label}</span>
+        <span className="text-sm font-medium text-[#49454F]">{label}</span>
         {icon && (
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-[#6750A4]/10 flex items-center justify-center">
             {icon}
           </div>
         )}
       </div>
 
       <div className="flex items-end gap-2">
-        <span className="text-2xl font-bold text-white whitespace-nowrap flex items-center">
+        <span className="text-2xl font-bold text-[#1C1B1F] whitespace-nowrap flex items-center">
           {prefix}
           <AnimatedCounter value={value} format={format} />
           {suffix}

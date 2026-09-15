@@ -88,12 +88,12 @@ export default function Dashboard() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-2xl lg:text-3xl font-bold text-white flex flex-wrap items-center gap-1.5">
+        <h1 className="text-2xl lg:text-3xl font-bold text-[#1C1B1F] flex flex-wrap items-center gap-1.5 tracking-tight">
           <span>Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 17 ? 'Afternoon' : 'Evening'},</span>
-          <span className="gradient-text whitespace-nowrap">{user?.name?.split(' ')[0] || 'User'}</span> 
+          <span className="text-[#6750A4] whitespace-nowrap">{user?.name?.split(' ')[0] || 'User'}</span> 
           <span className="whitespace-nowrap">👋</span>
         </h1>
-        <p className="text-sm text-slate-400 mt-1">Here's your financial overview for today</p>
+        <p className="text-sm text-[#49454F] mt-1">Here's your financial overview for today</p>
       </motion.div>
 
       {/* Stats Row */}
@@ -101,7 +101,7 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 mb-8"
       >
         <motion.div variants={itemVariants}>
           <StatCard
@@ -126,17 +126,17 @@ export default function Dashboard() {
           />
         </motion.div>
         <motion.div variants={itemVariants}>
-          <div className="glass rounded-2xl p-6 border border-white/5 hover-lift group hover:bg-white/5 transition-all duration-200">
+          <div className="bg-[#F3EDF7] rounded-[24px] p-6 shadow-sm hover:shadow-md hover:bg-[#E8DEF8] transition-all duration-300 group cursor-pointer hover:-translate-y-0.5">
             <div className="flex items-start justify-between mb-2">
-              <span className="text-sm font-medium text-slate-400">Financial Health</span>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 flex items-center justify-center">
-                <Heart className="w-5 h-5 text-purple-400" />
+              <span className="text-sm font-medium text-[#49454F]">Financial Health</span>
+              <div className="w-10 h-10 rounded-xl bg-[#6750A4]/10 flex items-center justify-center">
+                <Heart className="w-5 h-5 text-[#6750A4]" />
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <ProgressRing progress={user?.financialHealthScore || 0} size={56} strokeWidth={5} color="#8b5cf6" />
+              <ProgressRing progress={user?.financialHealthScore || 0} size={56} strokeWidth={5} color="#6750A4" />
               <div>
-                <span className="text-2xl font-bold text-white">{user?.financialHealthScore}/100</span>
+                <span className="text-2xl font-bold text-[#1C1B1F]">{user?.financialHealthScore}/100</span>
                 <Badge variant="purple" size="sm" className="ml-2">Good</Badge>
               </div>
             </div>
@@ -156,25 +156,25 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Portfolio Chart — 2 cols */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+        {/* Portfolio Chart — wider on XL screens */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="lg:col-span-2"
+          className="lg:col-span-2 xl:col-span-3 h-full"
         >
-          <GlassCard padding="p-5">
+          <GlassCard padding="p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-lg font-semibold text-white">Portfolio Performance</h2>
-                <p className="text-xs text-slate-400 mt-0.5">Last 12 months</p>
+                <h2 className="text-base font-semibold text-[#1C1B1F]">Portfolio Performance</h2>
+                <p className="text-xs text-[#49454F] mt-0.5">Last 12 months</p>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold text-emerald-400">
+                <p className="text-lg font-bold text-emerald-600">
                   +₹<AnimatedCounter value={167500} format="currency" />
                 </p>
-                <p className="text-xs text-emerald-400">+19.14%</p>
+                <p className="text-xs text-emerald-600 font-medium">+19.14%</p>
               </div>
             </div>
             <AreaChartComponent
@@ -192,22 +192,24 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <GlassCard padding="p-5" className="h-full">
-            <h2 className="text-lg font-semibold text-white mb-2">Asset Allocation</h2>
-            <DonutChart
-              data={portfolio?.allocation || []}
-              centerValue={`₹${((portfolio?.currentValue || 0) / 100000).toFixed(1)}L`}
-              centerLabel="Total"
-              height={200}
-            />
-            <div className="mt-3 space-y-2">
+          <GlassCard padding="p-6" className="h-full flex flex-col justify-center">
+            <h2 className="text-base font-semibold text-[#1C1B1F] mb-4">Asset Allocation</h2>
+            <div className="flex-1 flex items-center justify-center">
+              <DonutChart
+                data={portfolio?.allocation || []}
+                centerValue={`₹${((portfolio?.currentValue || 0) / 100000).toFixed(1)}L`}
+                centerLabel="Total"
+                height={220}
+              />
+            </div>
+            <div className="mt-6 space-y-3">
               {portfolio?.allocation.slice(0, 4).map((a) => (
                 <div key={a.category} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: a.color }} />
-                    <span className="text-slate-300">{a.category}</span>
+                    <span className="text-[#49454F] font-medium">{a.category}</span>
                   </div>
-                  <span className="text-slate-400">{a.percentage}%</span>
+                  <span className="text-[#1C1B1F] font-semibold">{a.percentage}%</span>
                 </div>
               ))}
             </div>
@@ -216,19 +218,20 @@ export default function Dashboard() {
       </div>
 
       {/* Goals + Market + AI Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
         {/* Goals Progress */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
+          className="xl:col-span-2"
         >
-          <GlassCard padding="p-5 h-full">
+          <GlassCard padding="p-6 h-full">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Goals Progress</h2>
+              <h2 className="text-lg font-semibold text-[#1C1B1F]">Goals Progress</h2>
               <button
                 onClick={() => navigate('/goals')}
-                className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+                className="text-xs font-semibold text-[#6750A4] hover:text-[#7d63c5] flex items-center gap-1"
               >
                 View all <ArrowUpRight className="w-3 h-3" />
               </button>
@@ -245,7 +248,7 @@ export default function Dashboard() {
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-white truncate">
+                      <p className="text-sm font-semibold text-[#1C1B1F] truncate">
                         {goal.icon} {goal.name}
                       </p>
                       <Badge
@@ -256,10 +259,10 @@ export default function Dashboard() {
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between mt-1">
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-[#49454F]">
                         ₹{(goal.currentSavings / 100000).toFixed(1)}L / ₹{(goal.targetAmount / 100000).toFixed(1)}L
                       </p>
-                      <p className="text-xs text-slate-500">{goal.progress}%</p>
+                      <p className="text-xs font-semibold text-[#1C1B1F]">{goal.progress}%</p>
                     </div>
                   </div>
                 </div>
@@ -274,22 +277,22 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55 }}
         >
-          <GlassCard padding="p-5 h-full">
-            <h2 className="text-lg font-semibold text-white mb-4">Market Pulse</h2>
+          <GlassCard padding="p-6 h-full">
+            <h2 className="text-lg font-semibold text-[#1C1B1F] mb-4">Market Pulse</h2>
 
             {/* Nifty / Sensex */}
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <div className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-                <p className="text-xs text-slate-400">NIFTY 50</p>
-                <p className="text-lg font-bold text-white">21,456</p>
-                <p className="text-xs text-emerald-400 flex items-center gap-1">
+              <div className="p-3 rounded-[16px] bg-[#E7E0EC] border border-[#E7E0EC]">
+                <p className="text-xs text-[#49454F] font-medium">NIFTY 50</p>
+                <p className="text-lg font-bold text-[#1C1B1F]">21,456</p>
+                <p className="text-xs text-emerald-600 font-medium flex items-center gap-1">
                   <TrendingUp className="w-3 h-3" /> +0.82%
                 </p>
               </div>
-              <div className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-                <p className="text-xs text-slate-400">SENSEX</p>
-                <p className="text-lg font-bold text-white">71,232</p>
-                <p className="text-xs text-emerald-400 flex items-center gap-1">
+              <div className="p-3 rounded-[16px] bg-[#E7E0EC] border border-[#E7E0EC]">
+                <p className="text-xs text-[#49454F] font-medium">SENSEX</p>
+                <p className="text-lg font-bold text-[#1C1B1F]">71,232</p>
+                <p className="text-xs text-emerald-600 font-medium flex items-center gap-1">
                   <TrendingUp className="w-3 h-3" /> +0.65%
                 </p>
               </div>
@@ -297,25 +300,25 @@ export default function Dashboard() {
 
             {/* Top Movers */}
             <div className="space-y-2">
-              <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Top Movers</p>
+              <p className="text-xs font-semibold text-[#49454F] uppercase tracking-wider">Top Movers</p>
               {topGainers.slice(0, 3).map((s) => (
-                <div key={s.symbol} className="flex items-center justify-between py-1.5">
+                <div key={s.symbol} className="flex items-center justify-between py-1.5 px-3 -mx-3 rounded-[12px] hover:bg-[#E8DEF8] transition-colors cursor-default">
                   <div>
-                    <p className="text-sm font-medium text-white">{s.symbol}</p>
-                    <p className="text-xs text-slate-500">₹{s.price.toLocaleString('en-IN')}</p>
+                    <p className="text-sm font-bold text-[#1C1B1F]">{s.symbol}</p>
+                    <p className="text-xs font-mono tabular-nums text-[#49454F]">₹{s.price.toLocaleString('en-IN')}</p>
                   </div>
-                  <span className="text-sm font-medium text-emerald-400">
+                  <span className="text-sm font-mono tabular-nums font-semibold text-emerald-600">
                     +{s.changePercent.toFixed(2)}%
                   </span>
                 </div>
               ))}
               {topLosers.slice(0, 2).map((s) => (
-                <div key={s.symbol} className="flex items-center justify-between py-1.5">
+                <div key={s.symbol} className="flex items-center justify-between py-1.5 px-3 -mx-3 rounded-[12px] hover:bg-[#E8DEF8] transition-colors cursor-default">
                   <div>
-                    <p className="text-sm font-medium text-white">{s.symbol}</p>
-                    <p className="text-xs text-slate-500">₹{s.price.toLocaleString('en-IN')}</p>
+                    <p className="text-sm font-bold text-[#1C1B1F]">{s.symbol}</p>
+                    <p className="text-xs font-mono tabular-nums text-[#49454F]">₹{s.price.toLocaleString('en-IN')}</p>
                   </div>
-                  <span className="text-sm font-medium text-rose-400">
+                  <span className="text-sm font-mono tabular-nums font-semibold text-rose-600">
                     {s.changePercent.toFixed(2)}%
                   </span>
                 </div>
@@ -330,10 +333,10 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <GlassCard padding="p-5 h-full" glow="emerald">
+          <GlassCard padding="p-6 h-full bg-[#E8DEF8] border-none" glow="purple">
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="w-5 h-5 text-emerald-400" />
-              <h2 className="text-lg font-semibold text-white">AI Insights</h2>
+              <Sparkles className="w-5 h-5 text-[#6750A4]" />
+              <h2 className="text-lg font-semibold text-[#1D192B]">AI Insights</h2>
             </div>
 
             <div className="relative min-h-[140px]">
@@ -350,8 +353,8 @@ export default function Dashboard() {
                   className="inset-0"
                 >
                   <div className="text-3xl mb-3">{insight.icon}</div>
-                  <h3 className="text-sm font-semibold text-white mb-2">{insight.title}</h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">{insight.text}</p>
+                  <h3 className="text-sm font-bold text-[#1D192B] mb-2">{insight.title}</h3>
+                  <p className="text-sm text-[#49454F] leading-relaxed font-medium">{insight.text}</p>
                 </motion.div>
               ))}
             </div>
@@ -363,7 +366,7 @@ export default function Dashboard() {
                   key={i}
                   onClick={() => setActiveInsight(i)}
                   className={`w-2 h-2 rounded-full transition-all ${
-                    activeInsight === i ? 'bg-emerald-400 w-6' : 'bg-slate-600'
+                    activeInsight === i ? 'bg-[#6750A4] w-6' : 'bg-[#6750A4]/30'
                   }`}
                 />
               ))}
@@ -378,25 +381,25 @@ export default function Dashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
       >
-        <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+        <h2 className="text-lg font-semibold text-[#1C1B1F] mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { icon: Calculator, label: 'SIP Calculator', path: '/calculator', color: 'from-emerald-500/20 to-cyan-500/20', iconColor: 'text-emerald-400' },
-            { icon: ShieldCheck, label: 'Fraud Check', path: '/fraud', color: 'from-rose-500/20 to-pink-500/20', iconColor: 'text-rose-400' },
-            { icon: Landmark, label: 'Scheme Finder', path: '/schemes', color: 'from-amber-500/20 to-yellow-500/20', iconColor: 'text-amber-400' },
-            { icon: Sparkles, label: 'Ask AI', path: '/chat', color: 'from-purple-500/20 to-indigo-500/20', iconColor: 'text-purple-400' },
+            { icon: Calculator, label: 'SIP Calculator', path: '/calculator', bg: 'bg-[#E7E0EC]', iconColor: 'text-[#6750A4]' },
+            { icon: ShieldCheck, label: 'Fraud Check', path: '/fraud', bg: 'bg-[#FFD8E4]', iconColor: 'text-[#B3261E]' },
+            { icon: Landmark, label: 'Scheme Finder', path: '/schemes', bg: 'bg-[#FFDF99]', iconColor: 'text-[#7D5260]' },
+            { icon: Sparkles, label: 'Ask AI', path: '/chat', bg: 'bg-[#E8DEF8]', iconColor: 'text-[#6750A4]' },
           ].map((action) => (
             <motion.button
               key={action.label}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(action.path)}
-              className="glass hover-lift rounded-2xl p-4 flex flex-col items-center gap-4 text-center border border-white/5 group hover:bg-white/5 transition-all duration-200"
+              className="bg-[#F3EDF7] rounded-[24px] shadow-sm hover:shadow-md p-5 flex flex-col items-center gap-3 text-center transition-all duration-300 hover:bg-[#E8DEF8] cursor-pointer hover:-translate-y-0.5 w-full"
             >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center`}>
+              <div className={`w-12 h-12 rounded-xl ${action.bg} flex items-center justify-center`}>
                 <action.icon className={`w-6 h-6 ${action.iconColor}`} />
               </div>
-              <span className="text-sm font-medium text-slate-300">{action.label}</span>
+              <span className="text-sm font-semibold text-[#49454F]">{action.label}</span>
             </motion.button>
           ))}
         </div>

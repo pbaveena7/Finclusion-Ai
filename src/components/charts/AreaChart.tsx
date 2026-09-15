@@ -24,9 +24,9 @@ interface AreaChartProps {
 const CustomTooltip = ({ active, payload, label, formatValue }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="glass-strong rounded-lg px-3 py-2 shadow-xl border border-border-primary">
-      <p className="text-xs text-slate-400 mb-1">{label}</p>
-      <p className="text-sm font-semibold text-white">
+    <div className="bg-dark-900 rounded border border-white/10 px-3 py-1.5 shadow-2xl">
+      <p className="text-[10px] text-slate-400 mb-0.5">{label}</p>
+      <p className="text-xs font-mono tabular-nums font-medium text-white">
         {formatValue ? formatValue(payload[0].value) : `₹${payload[0].value.toLocaleString('en-IN')}`}
       </p>
     </div>
@@ -62,7 +62,7 @@ export default function AreaChartComponent({
             </linearGradient>
           </defs>
           {showGrid && (
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.06)" vertical={false} />
+            <CartesianGrid strokeDasharray="1 3" stroke="rgba(255, 255, 255, 0.05)" vertical={true} />
           )}
           {showAxis && (
             <>
@@ -100,8 +100,9 @@ export default function AreaChartComponent({
             type="monotone"
             dataKey="value"
             stroke={color}
-            strokeWidth={2}
+            strokeWidth={1.5}
             fill={`url(#${gradientId})`}
+            activeDot={{ r: 4, strokeWidth: 1, fill: color, stroke: '#fff' }}
             animationDuration={1500}
             animationEasing="ease-out"
           />

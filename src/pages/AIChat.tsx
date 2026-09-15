@@ -172,41 +172,41 @@ export default function AIChat() {
 
   return (
     <PageWrapper>
-      <div className="max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
+      <div className="max-w-3xl mx-auto h-[calc(100vh-9rem)] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-border-primary">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-[16px] bg-[#6750A4] flex items-center justify-center shrink-0">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Finclusion AI Assistant</h1>
-              <p className="text-xs text-slate-400 flex items-center gap-1">
-                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+              <h1 className="text-lg font-bold text-[#1C1B1F] leading-tight">Finclusion AI Assistant</h1>
+              <p className="text-xs font-semibold text-[#49454F] flex items-center gap-1 mt-0.5">
+                <span className="w-2 h-2 bg-emerald-600 rounded-full animate-pulse" />
                 Online • Powered by AI
               </p>
             </div>
           </div>
-          <button onClick={clearChat} className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all" title="Clear chat">
+          <button onClick={clearChat} className="w-9 h-9 flex items-center justify-center rounded-[12px] text-[#49454F] hover:text-[#1C1B1F] hover:bg-[#F3EDF7] transition-all" title="Clear chat">
             <RotateCcw className="w-4 h-4" />
           </button>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto rounded-2xl glass p-4 space-y-4 mb-4">
+        <div className="flex-1 overflow-y-auto rounded-[24px] bg-[#FFFBFE] border border-[#E7E0EC] p-4 space-y-4 mb-4 shadow-sm">
           {chatMessages.length === 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-center py-12"
             >
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center mx-auto mb-4">
-                <Brain className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 rounded-[24px] bg-[#E8DEF8] flex items-center justify-center mx-auto mb-4">
+                <Brain className="w-8 h-8 text-[#6750A4]" />
               </div>
-              <h2 className="text-lg font-semibold text-white mb-2">
+              <h2 className="text-lg font-bold text-[#1C1B1F] mb-2">
                 Hi {user?.name?.split(' ')[0] || 'there'}! I'm your AI Financial Advisor
               </h2>
-              <p className="text-sm text-slate-400 max-w-md mx-auto">
+              <p className="text-sm font-medium text-[#49454F] max-w-md mx-auto">
                 Ask me anything about investments, portfolio analysis, tax saving, government schemes, or fraud detection.
               </p>
 
@@ -218,10 +218,10 @@ export default function AIChat() {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => sendMessage(action.label)}
-                    className="flex items-center gap-2 p-3 rounded-xl bg-dark-700/50 border border-border-primary hover:border-border-hover text-left transition-all"
+                    className="flex items-center gap-2 p-3 rounded-[16px] bg-[#F3EDF7] border border-transparent hover:border-[#6750A4]/30 text-left transition-all"
                   >
                     <action.icon className={`w-4 h-4 ${action.color}`} />
-                    <span className="text-xs text-slate-300">{action.label}</span>
+                    <span className="text-xs font-semibold text-[#1C1B1F]">{action.label}</span>
                   </motion.button>
                 ))}
               </div>
@@ -237,28 +237,28 @@ export default function AIChat() {
                 className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.role === 'ai' && (
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4 text-white" />
+                  <div className="w-8 h-8 rounded-[12px] bg-[#E8DEF8] flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4 text-[#6750A4]" />
                   </div>
                 )}
                 <div
-                  className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+                  className={`max-w-[75%] rounded-[24px] px-4 py-3 ${
                     msg.role === 'user'
-                      ? 'bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20'
+                      ? 'bg-[#E8DEF8] border-none text-[#1D192B]'
                       : msg.type === 'warning'
-                      ? 'bg-rose-500/10 border border-rose-500/15'
-                      : 'bg-dark-700/50 border border-border-primary'
+                      ? 'bg-[#FFD8E4] border-none text-[#31111D]'
+                      : 'bg-[#F3EDF7] border-none text-[#1C1B1F]'
                   }`}
                 >
-                  <div className="text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">
+                  <div className="text-sm font-medium leading-relaxed whitespace-pre-wrap">
                     {msg.content.split('\n').map((line, i) => {
-                      if (line.startsWith('**') && line.endsWith('**')) return <p key={i} className="font-bold text-white my-1">{line.slice(2, -2)}</p>;
+                      if (line.startsWith('**') && line.endsWith('**')) return <p key={i} className="font-bold my-1">{line.slice(2, -2)}</p>;
                       if (line.includes('**')) {
                         return (
                           <p key={i} className="my-0.5">
                             {line.split(/(\*\*.*?\*\*)/).map((part, j) =>
                               part.startsWith('**') && part.endsWith('**')
-                                ? <strong key={j} className="text-white">{part.slice(2, -2)}</strong>
+                                ? <strong key={j} className="font-bold">{part.slice(2, -2)}</strong>
                                 : part
                             )}
                           </p>
@@ -268,13 +268,13 @@ export default function AIChat() {
                       return <p key={i} className="my-0.5">{line}</p>;
                     })}
                   </div>
-                  <p className="text-[10px] text-slate-500 mt-2">
+                  <p className="text-[10px] text-[#49454F] mt-2 font-semibold">
                     {new Date(msg.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
                 {msg.role === 'user' && (
-                  <div className="w-8 h-8 rounded-lg bg-dark-600 flex items-center justify-center shrink-0">
-                    <User className="w-4 h-4 text-slate-400" />
+                  <div className="w-8 h-8 rounded-[12px] bg-[#E7E0EC] flex items-center justify-center shrink-0">
+                    <User className="w-4 h-4 text-[#49454F]" />
                   </div>
                 )}
               </motion.div>
@@ -288,13 +288,13 @@ export default function AIChat() {
               animate={{ opacity: 1 }}
               className="flex gap-3"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shrink-0">
-                <Sparkles className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 rounded-[12px] bg-[#E8DEF8] flex items-center justify-center shrink-0">
+                <Sparkles className="w-4 h-4 text-[#6750A4]" />
               </div>
-              <div className="bg-dark-700/50 border border-border-primary rounded-2xl px-4 py-3 flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-slate-400 typing-dot" />
-                <div className="w-2 h-2 rounded-full bg-slate-400 typing-dot" />
-                <div className="w-2 h-2 rounded-full bg-slate-400 typing-dot" />
+              <div className="bg-[#F3EDF7] border-none rounded-[24px] px-4 py-3 flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-[#6750A4] typing-dot" />
+                <div className="w-2 h-2 rounded-full bg-[#6750A4] typing-dot" />
+                <div className="w-2 h-2 rounded-full bg-[#6750A4] typing-dot" />
               </div>
             </motion.div>
           )}
@@ -309,7 +309,7 @@ export default function AIChat() {
               <button
                 key={action.label}
                 onClick={() => sendMessage(action.label)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-slate-400 hover:text-white bg-dark-700/50 border border-border-primary hover:border-border-hover whitespace-nowrap transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] text-xs font-semibold text-[#49454F] hover:text-[#1D192B] bg-[#F3EDF7] hover:bg-[#E8DEF8] transition-all"
               >
                 <action.icon className={`w-3 h-3 ${action.color}`} />
                 {action.label}
@@ -319,14 +319,14 @@ export default function AIChat() {
         )}
 
         {/* Input */}
-        <form onSubmit={handleSubmit} className="flex gap-3">
+        <form onSubmit={handleSubmit} className="flex gap-3 items-center">
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask me anything about your finances..."
-            className="flex-1 px-5 py-3.5 bg-dark-700/50 border border-border-primary rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition-all"
+            className="flex-1 h-12 px-5 bg-[#F3EDF7] border border-transparent rounded-[16px] text-sm font-semibold text-[#1C1B1F] placeholder:text-[#49454F] focus:outline-none focus:border-[#6750A4] focus:ring-1 focus:ring-[#6750A4] transition-all"
             disabled={isTyping}
           />
           <motion.button
@@ -334,7 +334,7 @@ export default function AIChat() {
             whileTap={{ scale: 0.95 }}
             type="submit"
             disabled={!input.trim() || isTyping}
-            className="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-medium disabled:opacity-30 transition-opacity"
+            className="h-12 px-5 rounded-[16px] bg-[#6750A4] text-white font-semibold disabled:opacity-50 transition-opacity flex items-center justify-center shrink-0 shadow-sm hover:bg-[#523F84]"
           >
             <Send className="w-5 h-5" />
           </motion.button>

@@ -6,27 +6,34 @@ interface PageWrapperProps {
   title?: string;
   subtitle?: string;
   className?: string;
+  action?: React.ReactNode;
 }
 
-export default function PageWrapper({ children, title, subtitle, className = '' }: PageWrapperProps) {
+export default function PageWrapper({ children, title, subtitle, className = '', action }: PageWrapperProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.35, ease: 'easeOut' }}
-      className={`p-6 lg:p-8 max-w-[1600px] mx-auto w-full ${className}`}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -12 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className={`w-full mx-auto px-6 lg:px-12 py-8 ${className}`}
     >
       {(title || subtitle) && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-8"
-        >
-          {title && <h1 className="text-2xl lg:text-3xl font-bold text-white">{title}</h1>}
-          {subtitle && <p className="text-sm text-slate-400 mt-1">{subtitle}</p>}
-        </motion.div>
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            {title && (
+              <h1 className="text-2xl lg:text-3xl font-bold text-[#1C1B1F] leading-tight tracking-tight">
+                {title}
+              </h1>
+            )}
+            {subtitle && (
+              <p className="text-sm text-[#49454F] mt-2 leading-relaxed max-w-xl">
+                {subtitle}
+              </p>
+            )}
+          </div>
+          {action && <div className="shrink-0">{action}</div>}
+        </div>
       )}
       {children}
     </motion.div>

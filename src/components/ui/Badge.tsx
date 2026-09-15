@@ -7,21 +7,21 @@ interface BadgeProps {
 }
 
 const variantStyles = {
-  success: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
-  danger: 'bg-rose-500/15 text-rose-400 border-rose-500/20',
-  warning: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
-  info: 'bg-blue-500/15 text-blue-400 border-blue-500/20',
-  neutral: 'bg-slate-500/15 text-slate-400 border-slate-500/20',
-  purple: 'bg-purple-500/15 text-purple-400 border-purple-500/20',
+  success: 'bg-[#C4EED0] text-[#0F5223] border-transparent',
+  danger: 'bg-[#FFD8E4] text-[#B3261E] border-transparent',
+  warning: 'bg-[#FFDF99] text-[#7D5260] border-transparent',
+  info: 'bg-[#D3E3FD] text-[#0B57D0] border-transparent',
+  neutral: 'bg-[#E7E0EC] text-[#49454F] border-transparent',
+  purple: 'bg-[#E8DEF8] text-[#1D192B] border-transparent',
 };
 
 const dotColors = {
-  success: 'bg-emerald-400',
-  danger: 'bg-rose-400',
-  warning: 'bg-amber-400',
-  info: 'bg-blue-400',
-  neutral: 'bg-slate-400',
-  purple: 'bg-purple-400',
+  success: 'bg-[#0F5223]',
+  danger: 'bg-[#B3261E]',
+  warning: 'bg-[#7D5260]',
+  info: 'bg-[#0B57D0]',
+  neutral: 'bg-[#49454F]',
+  purple: 'bg-[#1D192B]',
 };
 
 const sizeStyles = {

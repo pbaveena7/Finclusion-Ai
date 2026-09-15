@@ -65,17 +65,17 @@ export default function Goals() {
   return (
     <PageWrapper title="Financial Goals" subtitle="Track progress towards your financial milestones">
       {/* Add Goal Button */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-end mb-8">
         <button
           onClick={() => setShowAdd(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20 text-sm font-medium text-emerald-400 hover:text-white transition-all"
+          className="flex items-center gap-2 h-10 px-5 rounded-[16px] bg-[#6750A4] text-sm font-semibold text-white hover:bg-[#523F84] transition-all shadow-sm"
         >
           <Plus className="w-4 h-4" /> Add New Goal
         </button>
       </motion.div>
 
       {/* Goals Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
         {goals.map((goal, i) => (
           <motion.div
             key={goal.id}
@@ -87,8 +87,8 @@ export default function Goals() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <p className="text-2xl mb-1">{goal.icon}</p>
-                  <h3 className="text-base font-semibold text-white">{goal.name}</h3>
-                  <p className="text-xs text-slate-400 mt-0.5">{goal.timelineYears} year{goal.timelineYears > 1 ? 's' : ''} horizon</p>
+                  <h3 className="text-base font-bold text-[#1C1B1F]">{goal.name}</h3>
+                  <p className="text-xs font-medium text-[#49454F] mt-0.5">{goal.timelineYears} year{goal.timelineYears > 1 ? 's' : ''} horizon</p>
                 </div>
                 <ProgressRing
                   progress={goal.progress}
@@ -100,20 +100,20 @@ export default function Goals() {
 
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-400">Target</span>
-                  <span className="text-white font-medium">₹{(goal.targetAmount / 100000).toFixed(1)}L</span>
+                  <span className="text-[#49454F]">Target</span>
+                  <span className="text-[#1C1B1F] font-semibold">₹{(goal.targetAmount / 100000).toFixed(1)}L</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-400">Saved</span>
-                  <span className="text-white font-medium">₹{(goal.currentSavings / 100000).toFixed(1)}L</span>
+                  <span className="text-[#49454F]">Saved</span>
+                  <span className="text-[#1C1B1F] font-semibold">₹{(goal.currentSavings / 100000).toFixed(1)}L</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-400">Monthly SIP</span>
-                  <span className="text-emerald-400 font-medium">₹{goal.monthlyContribution.toLocaleString('en-IN')}</span>
+                  <span className="text-[#49454F]">Monthly SIP</span>
+                  <span className="text-emerald-600 font-semibold">₹{goal.monthlyContribution.toLocaleString('en-IN')}</span>
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-2 rounded-full bg-dark-600 overflow-hidden">
+                <div className="h-2 rounded-full bg-[#E7E0EC] overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${goal.progress}%` }}
@@ -130,7 +130,7 @@ export default function Goals() {
                   >
                     {goal.status === 'on-track' ? 'On Track' : goal.status === 'ahead' ? 'Ahead' : 'Behind'}
                   </Badge>
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs font-semibold text-[#49454F]">
                     Projected: ₹{(goal.projectedAmount / 100000).toFixed(1)}L
                   </span>
                 </div>
@@ -151,16 +151,16 @@ export default function Goals() {
                 { label: 'Monthly SIP', value: `₹${selectedGoal.monthlyContribution.toLocaleString('en-IN')}` },
                 { label: 'Expected Return', value: `${selectedGoal.expectedReturn}% p.a.` },
               ].map((s) => (
-                <div key={s.label} className="p-3 rounded-lg bg-dark-700/50">
-                  <p className="text-xs text-slate-400">{s.label}</p>
-                  <p className="text-sm font-bold text-white">{s.value}</p>
+                <div key={s.label} className="p-3 rounded-xl bg-[#F3EDF7]">
+                  <p className="text-xs font-medium text-[#49454F]">{s.label}</p>
+                  <p className="text-sm font-bold text-[#1C1B1F]">{s.value}</p>
                 </div>
               ))}
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-emerald-400" /> Growth Projection
+              <h3 className="text-sm font-semibold text-[#1C1B1F] mb-3 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-emerald-600" /> Growth Projection
               </h3>
               <AreaChartComponent
                 data={generateProjection(selectedGoal)}
@@ -170,10 +170,10 @@ export default function Goals() {
               />
             </div>
 
-            <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-emerald-500/5 to-cyan-500/5 border border-emerald-500/10">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-[#E8DEF8] border-none">
               <div>
-                <p className="text-xs text-slate-400">SIP Needed to Stay on Track</p>
-                <p className="text-xl font-bold text-emerald-400">₹{selectedGoal.monthlySIPNeeded.toLocaleString('en-IN')}/mo</p>
+                <p className="text-xs font-semibold text-[#1D192B]">SIP Needed to Stay on Track</p>
+                <p className="text-xl font-bold text-[#6750A4]">₹{selectedGoal.monthlySIPNeeded.toLocaleString('en-IN')}/mo</p>
               </div>
               <Badge
                 variant={selectedGoal.status === 'ahead' ? 'success' : selectedGoal.status === 'behind' ? 'danger' : 'info'}
@@ -225,7 +225,7 @@ export default function Goals() {
           <button
             onClick={handleAddGoal}
             disabled={!newGoal.name}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-30"
+            className="w-full py-3 rounded-[16px] bg-[#6750A4] text-white font-semibold text-sm hover:bg-[#523F84] transition-colors disabled:opacity-50"
           >
             <Target className="w-4 h-4 inline mr-2" />
             Create Goal

@@ -43,15 +43,15 @@ export default function Modal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className={`relative w-full ${sizeClasses[size]} glass-strong rounded-2xl shadow-2xl max-h-[85vh] overflow-hidden`}
+            className={`relative w-full ${sizeClasses[size]} bg-[#FFFBFE] rounded-[24px] shadow-2xl max-h-[85vh] overflow-hidden border border-[#E7E0EC]`}
           >
             {/* Header */}
             {title && (
-              <div className="flex items-center justify-between px-6 py-4 border-b border-border-primary">
-                <h2 className="text-lg font-semibold text-white">{title}</h2>
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[#E7E0EC]">
+                <h2 className="text-lg font-bold text-[#1C1B1F]">{title}</h2>
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-xl hover:bg-[#F3EDF7] text-[#49454F] hover:text-[#1C1B1F] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -67,7 +67,7 @@ export default function Modal({
             {!title && (
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors z-10"
+                className="absolute top-4 right-4 p-1.5 rounded-xl hover:bg-[#F3EDF7] text-[#49454F] hover:text-[#1C1B1F] transition-colors z-10"
               >
                 <X className="w-5 h-5" />
               </button>

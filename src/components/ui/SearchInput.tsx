@@ -18,14 +18,14 @@ export default function SearchInput({
 
   return (
     <div className={`relative ${className}`}>
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#49454F]" />
       <input
         ref={inputRef}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full pl-10 pr-9 py-2.5 bg-dark-700/50 border border-border-primary rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/20 transition-all"
+        className="w-full pl-10 pr-9 py-2.5 bg-[#F3EDF7] border border-transparent rounded-[16px] text-sm text-[#1C1B1F] placeholder:text-[#49454F] focus:outline-none focus:border-[#6750A4] focus:ring-1 focus:ring-[#6750A4] transition-all"
       />
       {value && (
         <button
@@ -33,7 +33,7 @@ export default function SearchInput({
             onChange('');
             inputRef.current?.focus();
           }}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#49454F] hover:text-[#1C1B1F] transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
