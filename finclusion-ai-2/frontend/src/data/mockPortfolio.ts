@@ -1,4 +1,4 @@
-import type { Portfolio } from '../types';
+import type { PortfolioHolding, Portfolio } from '../types';
 
 export const mockPortfolio: Portfolio = {
   totalInvested: 875000,
@@ -6,134 +6,229 @@ export const mockPortfolio: Portfolio = {
   totalPnl: 167500,
   totalPnlPercent: 19.14,
   allocation: [
-    { category: 'Equity (Stocks)', value: 450000, percentage: 43.1, color: '#3b82f6' }, // Blue
-    { category: 'Mutual Funds', value: 380000, percentage: 36.4, color: '#10b981' }, // Emerald
-    { category: 'Fixed Deposits', value: 100000, percentage: 9.6, color: '#f59e0b' }, // Amber
-    { category: 'Gold', value: 85000, percentage: 8.2, color: '#eab308' }, // Yellow
-    { category: 'PPF', value: 27500, percentage: 2.7, color: '#8b5cf6' }, // Purple
+    { category: 'Equity MFs', value: 425000, percentage: 40.8, color: '#10b981' },
+    { category: 'Stocks', value: 215000, percentage: 20.6, color: '#3b82f6' },
+    { category: 'Debt MFs', value: 135000, percentage: 13.0, color: '#8b5cf6' },
+    { category: 'PPF', value: 120000, percentage: 11.5, color: '#f59e0b' },
+    { category: 'Gold', value: 85000, percentage: 8.2, color: '#f59e0b' },
+    { category: 'NPS', value: 42500, percentage: 4.1, color: '#06b6d4' },
+    { category: 'FD', value: 20000, percentage: 1.9, color: '#64748b' },
   ],
   holdings: [
     {
       id: 'h1',
-      symbol: 'RELIANCE',
-      name: 'Reliance Industries',
-      type: 'stock',
-      quantity: 50,
-      buyPrice: 2450,
-      currentPrice: 2980,
-      investedAmount: 122500,
-      currentValue: 149000,
-      pnl: 26500,
-      pnlPercent: 21.6,
+      symbol: 'PPFCF',
+      name: 'Parag Parikh Flexi Cap Fund',
+      type: 'mutualfund',
+      quantity: 1250,
+      buyPrice: 58.40,
+      currentPrice: 72.89,
+      investedAmount: 73000,
+      currentValue: 91112,
+      pnl: 18112,
+      pnlPercent: 24.81,
     },
     {
       id: 'h2',
-      symbol: 'HDFCBANK',
-      name: 'HDFC Bank',
-      type: 'stock',
-      quantity: 100,
-      buyPrice: 1550,
-      currentPrice: 1680,
-      investedAmount: 155000,
-      currentValue: 168000,
-      pnl: 13000,
-      pnlPercent: 8.3,
+      symbol: 'SBIBF',
+      name: 'SBI Bluechip Fund',
+      type: 'mutualfund',
+      quantity: 980,
+      buyPrice: 68.50,
+      currentPrice: 82.45,
+      investedAmount: 67130,
+      currentValue: 80801,
+      pnl: 13671,
+      pnlPercent: 20.36,
     },
     {
       id: 'h3',
-      symbol: 'TCS',
-      name: 'Tata Consultancy Services',
-      type: 'stock',
-      quantity: 30,
-      buyPrice: 3400,
-      currentPrice: 4100,
-      investedAmount: 102000,
-      currentValue: 123000,
-      pnl: 21000,
-      pnlPercent: 20.5,
+      symbol: 'HDFCMID',
+      name: 'HDFC Mid-Cap Opportunities',
+      type: 'mutualfund',
+      quantity: 560,
+      buyPrice: 118.25,
+      currentPrice: 145.32,
+      investedAmount: 66220,
+      currentValue: 81379,
+      pnl: 15159,
+      pnlPercent: 22.89,
     },
     {
       id: 'h4',
-      symbol: 'INFY',
-      name: 'Infosys',
-      type: 'stock',
-      quantity: 40,
-      buyPrice: 1650,
-      currentPrice: 1420,
-      investedAmount: 66000,
-      currentValue: 56800,
-      pnl: -9200,
-      pnlPercent: -13.9,
+      symbol: 'MIRAETS',
+      name: 'Mirae Asset Tax Saver',
+      type: 'mutualfund',
+      quantity: 1800,
+      buyPrice: 34.50,
+      currentPrice: 42.18,
+      investedAmount: 62100,
+      currentValue: 75924,
+      pnl: 13824,
+      pnlPercent: 22.26,
     },
     {
       id: 'h5',
-      symbol: 'PARAG_FLEXI',
-      name: 'Parag Parikh Flexi Cap Fund',
-      type: 'mutualfund',
-      quantity: 3500.5,
-      buyPrice: 55.4,
-      currentPrice: 68.2,
-      investedAmount: 193927,
-      currentValue: 238734,
-      pnl: 44807,
-      pnlPercent: 23.1,
+      symbol: 'RELIANCE',
+      name: 'Reliance Industries',
+      type: 'stock',
+      quantity: 20,
+      buyPrice: 2650.00,
+      currentPrice: 2945.60,
+      investedAmount: 53000,
+      currentValue: 58912,
+      pnl: 5912,
+      pnlPercent: 11.15,
     },
     {
       id: 'h6',
-      symbol: 'SBI_SMALL',
-      name: 'SBI Small Cap Fund',
-      type: 'mutualfund',
-      quantity: 1200.75,
-      buyPrice: 110.5,
-      currentPrice: 145.8,
-      investedAmount: 132682,
-      currentValue: 175069,
-      pnl: 42387,
-      pnlPercent: 31.9,
+      symbol: 'HDFCBANK',
+      name: 'HDFC Bank',
+      type: 'stock',
+      quantity: 30,
+      buyPrice: 1520.00,
+      currentPrice: 1687.25,
+      investedAmount: 45600,
+      currentValue: 50617,
+      pnl: 5017,
+      pnlPercent: 11.00,
     },
     {
       id: 'h7',
-      symbol: 'SGB_2023',
-      name: 'SGB Series I 2023-24',
+      symbol: 'INFY',
+      name: 'Infosys',
+      type: 'stock',
+      quantity: 25,
+      buyPrice: 1650.00,
+      currentPrice: 1892.40,
+      investedAmount: 41250,
+      currentValue: 47310,
+      pnl: 6060,
+      pnlPercent: 14.69,
+    },
+    {
+      id: 'h8',
+      symbol: 'TCS',
+      name: 'TCS',
+      type: 'stock',
+      quantity: 10,
+      buyPrice: 3800.00,
+      currentPrice: 4125.80,
+      investedAmount: 38000,
+      currentValue: 41258,
+      pnl: 3258,
+      pnlPercent: 8.57,
+    },
+    {
+      id: 'h9',
+      symbol: 'ICICIBANK',
+      name: 'ICICI Bank',
+      type: 'stock',
+      quantity: 30,
+      buyPrice: 1120.00,
+      currentPrice: 1245.90,
+      investedAmount: 33600,
+      currentValue: 37377,
+      pnl: 3777,
+      pnlPercent: 11.24,
+    },
+    {
+      id: 'h10',
+      symbol: 'HDFCSTD',
+      name: 'HDFC Short Term Debt Fund',
+      type: 'mutualfund',
+      quantity: 3200,
+      buyPrice: 26.80,
+      currentPrice: 28.92,
+      investedAmount: 85760,
+      currentValue: 92544,
+      pnl: 6784,
+      pnlPercent: 7.91,
+    },
+    {
+      id: 'h11',
+      symbol: 'ICICIPRCB',
+      name: 'ICICI Pru Corporate Bond',
+      type: 'mutualfund',
+      quantity: 1900,
+      buyPrice: 23.50,
+      currentPrice: 25.87,
+      investedAmount: 44650,
+      currentValue: 49153,
+      pnl: 4503,
+      pnlPercent: 10.09,
+    },
+    {
+      id: 'h12',
+      symbol: 'PPF',
+      name: 'PPF Account',
+      type: 'ppf',
+      quantity: 1,
+      buyPrice: 120000,
+      currentPrice: 133200,
+      investedAmount: 120000,
+      currentValue: 133200,
+      pnl: 13200,
+      pnlPercent: 11.00,
+    },
+    {
+      id: 'h13',
+      symbol: 'SGB2027',
+      name: 'Sovereign Gold Bond 2027',
       type: 'gold',
-      quantity: 15,
-      buyPrice: 4800,
-      currentPrice: 5666.66,
-      investedAmount: 72000,
-      currentValue: 85000,
-      pnl: 13000,
-      pnlPercent: 18.0,
+      quantity: 10,
+      buyPrice: 5800,
+      currentPrice: 7250,
+      investedAmount: 58000,
+      currentValue: 72500,
+      pnl: 14500,
+      pnlPercent: 25.00,
+    },
+    {
+      id: 'h14',
+      symbol: 'NPS',
+      name: 'NPS Tier-1 (Aggressive)',
+      type: 'nps',
+      quantity: 1,
+      buyPrice: 42500,
+      currentPrice: 51000,
+      investedAmount: 42500,
+      currentValue: 51000,
+      pnl: 8500,
+      pnlPercent: 20.00,
+    },
+    {
+      id: 'h15',
+      symbol: 'SBFD',
+      name: 'SBI FD (1 Year)',
+      type: 'fd',
+      quantity: 1,
+      buyPrice: 20000,
+      currentPrice: 21400,
+      investedAmount: 20000,
+      currentValue: 21400,
+      pnl: 1400,
+      pnlPercent: 7.00,
     },
   ],
 };
 
-// Generate 6 months of historical portfolio value for charts
-export const generatePortfolioHistory = () => {
-  const data = [];
+// Generate portfolio value history for the chart (1 year)
+export function generatePortfolioHistory(): { date: string; value: number }[] {
+  const history: { date: string; value: number }[] = [];
   const today = new Date();
-  let baseValue = 850000;
-  
-  for (let i = 180; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    
-    // Add some random walk to make it look realistic
-    const randomChange = (Math.random() - 0.45) * 5000;
-    baseValue += randomChange;
-    
-    // Add systematic investment every 30 days
-    if (i % 30 === 0) {
-      baseValue += 15000; // Monthly SIP
-    }
-    
-    data.push({
-      date: d.toISOString().split('T')[0],
-      value: Math.round(baseValue),
+  let value = 750000;
+
+  for (let i = 365; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const dailyReturn = (Math.random() - 0.45) * value * 0.005;
+    value = Math.max(value + dailyReturn, 650000);
+    history.push({
+      date: date.toISOString().split('T')[0],
+      value: Math.round(value),
     });
   }
-  
-  // Ensure the last value matches the current portfolio value
-  data[data.length - 1].value = mockPortfolio.currentValue;
-  
-  return data;
-};
+  history[history.length - 1].value = 1042500;
+  return history;
+}

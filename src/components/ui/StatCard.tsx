@@ -43,7 +43,7 @@ export default function StatCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`glass rounded-2xl p-5 hover-lift ${className}`}
+      className={`glass rounded-2xl p-6 border border-white/5 hover-lift group hover:bg-white/5 transition-all duration-200 ${className}`}
     >
       <div className="flex items-start justify-between mb-3">
         <span className="text-sm font-medium text-slate-400">{label}</span>
@@ -55,7 +55,7 @@ export default function StatCard({
       </div>
 
       <div className="flex items-end gap-2">
-        <span className="text-2xl font-bold text-white">
+        <span className="text-2xl font-bold text-white whitespace-nowrap flex items-center">
           {prefix}
           <AnimatedCounter value={value} format={format} />
           {suffix}

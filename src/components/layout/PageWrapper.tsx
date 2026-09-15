@@ -15,7 +15,7 @@ export default function PageWrapper({ children, title, subtitle, className = '' 
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className={`p-6 lg:p-8 ${className}`}
+      className={`p-6 lg:p-8 max-w-[1600px] mx-auto w-full ${className}`}
     >
       {(title || subtitle) && (
         <motion.div

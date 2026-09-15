@@ -1,6 +1,9 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import os
 from app.api.routers import auth
 from app.api.routers import chat
 from app.api.routers import health
@@ -14,10 +17,9 @@ app = FastAPI(
 )
 
 # Strict CORS Configuration
-origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

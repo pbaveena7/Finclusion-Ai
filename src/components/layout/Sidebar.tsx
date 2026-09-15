@@ -40,7 +40,7 @@ export default function Sidebar() {
       initial={false}
       animate={{ width: sidebarCollapsed ? 72 : 256 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className="fixed left-0 top-0 h-full glass-strong z-40 flex flex-col border-r border-border-primary"
+      className="fixed left-0 top-0 h-full glass-strong z-40 hidden md:flex flex-col border-r border-border-primary"
     >
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 h-16 border-b border-border-primary shrink-0">
@@ -69,10 +69,10 @@ export default function Sidebar() {
             key={item.id}
             to={item.path}
             className={({ isActive }) =>
-              `group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+              `group relative flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive
                   ? 'text-white'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.03]'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
               }`
             }
           >
@@ -117,7 +117,7 @@ export default function Sidebar() {
       <div className="px-3 py-3 border-t border-border-primary shrink-0">
         <button
           onClick={toggleSidebar}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-white/[0.03] transition-all"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200"
         >
           {sidebarCollapsed ? (
             <ChevronRight className="w-4 h-4" />

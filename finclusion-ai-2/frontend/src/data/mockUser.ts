@@ -1,19 +1,26 @@
 import type { User } from '../types';
 
 export const mockUser: User = {
-  id: 'user_123',
+  id: 'usr_001',
   name: 'Naveen Kumar',
   age: 28,
   gender: 'male',
   occupation: 'Software Engineer',
   income: 120000,
   monthlyExpenses: 45000,
-  savings: 250000,
+  savings: 350000,
   existingLoans: 500000,
   existingEMI: 15000,
-  financialGoals: ['Emergency Fund', 'Car Purchase', 'Wealth Creation'],
+  financialGoals: ['Emergency Fund', 'Home Purchase', 'Retirement', 'Child Education', 'Vacation'],
   riskTolerance: 'moderate',
-  financialHealthScore: 78,
-  riskScore: 65,
+  financialHealthScore: 72,
+  riskScore: 55,
   isOnboarded: true,
+  // Extended fields
+  email: 'naveen.kumar@email.com',
+  phone: '+91 98765 43210',
+  investmentHorizon: 'long',
+  preferredLanguage: 'en',
+  existingInvestments: 875000,
+  createdAt: '2024-06-15T10:30:00Z',
 };

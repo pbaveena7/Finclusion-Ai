@@ -88,9 +88,10 @@ export default function Dashboard() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-2xl lg:text-3xl font-bold text-white">
-          Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 17 ? 'Afternoon' : 'Evening'},{' '}
-          <span className="gradient-text">{user?.name?.split(' ')[0] || 'User'}</span> 👋
+        <h1 className="text-2xl lg:text-3xl font-bold text-white flex flex-wrap items-center gap-1.5">
+          <span>Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 17 ? 'Afternoon' : 'Evening'},</span>
+          <span className="gradient-text whitespace-nowrap">{user?.name?.split(' ')[0] || 'User'}</span> 
+          <span className="whitespace-nowrap">👋</span>
         </h1>
         <p className="text-sm text-slate-400 mt-1">Here's your financial overview for today</p>
       </motion.div>
@@ -100,7 +101,7 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
       >
         <motion.div variants={itemVariants}>
           <StatCard
@@ -125,7 +126,7 @@ export default function Dashboard() {
           />
         </motion.div>
         <motion.div variants={itemVariants}>
-          <div className="glass rounded-2xl p-5 hover-lift">
+          <div className="glass rounded-2xl p-6 border border-white/5 hover-lift group hover:bg-white/5 transition-all duration-200">
             <div className="flex items-start justify-between mb-2">
               <span className="text-sm font-medium text-slate-400">Financial Health</span>
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 flex items-center justify-center">
@@ -378,7 +379,7 @@ export default function Dashboard() {
         transition={{ delay: 0.7 }}
       >
         <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
           {[
             { icon: Calculator, label: 'SIP Calculator', path: '/calculator', color: 'from-emerald-500/20 to-cyan-500/20', iconColor: 'text-emerald-400' },
             { icon: ShieldCheck, label: 'Fraud Check', path: '/fraud', color: 'from-rose-500/20 to-pink-500/20', iconColor: 'text-rose-400' },
@@ -390,7 +391,7 @@ export default function Dashboard() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(action.path)}
-              className="glass hover-lift rounded-xl p-4 flex flex-col items-center gap-3 text-center"
+              className="glass hover-lift rounded-2xl p-4 flex flex-col items-center gap-4 text-center border border-white/5 group hover:bg-white/5 transition-all duration-200"
             >
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center`}>
                 <action.icon className={`w-6 h-6 ${action.iconColor}`} />

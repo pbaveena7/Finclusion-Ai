@@ -15,15 +15,19 @@ def generate_response(state: AgentState) -> Dict[str, Any]:
     except Exception:
         return {"messages": [{"role": "assistant", "content": "Error: LLM not initialized."}]}
 
-    system_msg = SystemMessage(
-        content=(
-            "You are Finclusion AI, an expert financial educator in India. "
-            "Using the conversation history and any data fetched from the tools, "
-            "provide a highly educational, simple, and factually grounded answer. "
-            "CRITICAL: Never guarantee returns or provide personalized financial advice. "
-            "Always explain risks and use INR (₹)."
-        )
+    system_msg_content = (
+        "You are Finclusion AI, an expert financial educator in India. "
+        "Using the conversation history and any data fetched from the tools, "
+        "provide a highly educational, simple, and factually grounded answer. "
+        "CRITICAL: Never guarantee returns or provide personalized financial advice. "
+        "Always explain risks and use INR (₹)."
     )
+    
+    if not state.get("risk_passed", True) and state.get("risk_flags"):
+        risk_warnings = "\n".join(state["risk_flags"])
+        system_msg_content += f"\n\nWARNING: Your previous draft was rejected by compliance. Reason: {risk_warnings}. Please rewrite to adhere strictly to compliance guidelines."
+        
+    system_msg = SystemMessage(content=system_msg_content)
     
     # We pass the entire message history (including tool responses) to the LLM
     messages = [system_msg] + list(state["messages"])

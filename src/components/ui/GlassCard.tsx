@@ -29,7 +29,7 @@ export default function GlassCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className={`glass rounded-2xl ${padding} ${glowClass} ${hoverClass} ${gradientClass} ${className}`}
+      className={`glass rounded-2xl border border-white/5 ${padding} ${glowClass} ${hoverClass} ${gradientClass} ${className}`}
       onClick={onClick}
       whileHover={hover ? { scale: 1.02 } : undefined}
       whileTap={onClick ? { scale: 0.98 } : undefined}

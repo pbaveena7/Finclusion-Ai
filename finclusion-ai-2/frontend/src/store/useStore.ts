@@ -1,11 +1,15 @@
 import { create } from 'zustand';
 import type { User, Portfolio, FinancialGoal, ChatMessage, FraudAnalysis } from '../types';
+import { mockUser } from '../data/mockUser';
 
 interface AppState {
   // User State
   user: User | null;
-  setUser: (user: User) => void;
+  token: string | null;
+  setUser: (user: User | null) => void;
+  setToken: (token: string | null) => void;
   updateUser: (updates: Partial<User>) => void;
+  logout: () => void;
   
   // Portfolio State
   portfolio: Portfolio | null;
@@ -32,12 +36,32 @@ interface AppState {
   toggleSidebar: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  theme: string;
+  setTheme: (theme: string) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  updateUser: (updates) => set((state) => ({ user: state.user ? { ...state.user, ...updates } : null })),
+  user: JSON.parse(localStorage.getItem('user') || 'null'),
+  token: localStorage.getItem('token'),
+  setUser: (user) => {
+    if (user) localStorage.setItem('user', JSON.stringify(user));
+    else localStorage.removeItem('user');
+    set({ user });
+  },
+  setToken: (token) => {
+    if (token) localStorage.setItem('token', token);
+    else localStorage.removeItem('token');
+    set({ token });
+  },
+  logout: () => {
+    // Keep mock user so auth is never required
+    set({ user: mockUser, token: 'dev-token' });
+  },
+  updateUser: (updates) => set((state) => {
+    const updatedUser = state.user ? { ...state.user, ...updates } : null;
+    if (updatedUser) localStorage.setItem('user', JSON.stringify(updatedUser));
+    return { user: updatedUser };
+  }),
   
   portfolio: null,
   setPortfolio: (portfolio) => set({ portfolio }),
@@ -61,4 +85,10 @@ export const useStore = create<AppState>((set) => ({
   toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
   searchQuery: '',
   setSearchQuery: (query) => set({ searchQuery: query }),
+  theme: localStorage.getItem('theme') || 'midnight',
+  setTheme: (theme) => {
+    localStorage.setItem('theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    set({ theme });
+  },
 }));

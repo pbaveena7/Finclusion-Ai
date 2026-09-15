@@ -21,12 +21,35 @@ import News from './pages/News';
 import LoanCalculator from './pages/LoanCalculator';
 import Onboarding from './pages/Onboarding';
 
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+
+function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  const { sidebarCollapsed } = useStore();
+  return (
+    <div className="flex min-h-screen bg-dark-900 bg-mesh">
+      <Sidebar />
+      <main
+        className={`flex-1 transition-all duration-300 w-full ${sidebarCollapsed ? 'md:ml-[72px]' : 'md:ml-64'}`}
+      >
+        <TopBar />
+        <div className="min-h-[calc(100vh-4rem)] pb-12">
+          {children}
+        </div>
+      </main>
+      <ChatWidget />
+    </div>
+  );
+}
+
 export default function App() {
-  const { user, setUser, setPortfolio, setGoals, sidebarCollapsed } = useStore();
+  const { user, setUser, setPortfolio, setGoals } = useStore();
 
   // Initialize mock data on mount
   useEffect(() => {
-    setUser(mockUser);
+    // We will leave user null initially if we want to show login, but for dev we can set it.
+    // If you want to force login page, comment out setUser(mockUser).
+    // setUser(mockUser);
     setPortfolio(mockPortfolio);
     setGoals(mockGoals);
   }, [setUser, setPortfolio, setGoals]);
@@ -37,34 +60,41 @@ export default function App() {
   }
 
   return (
-    <div className="flex min-h-screen bg-dark-900 bg-mesh">
-      <Sidebar />
-      <main
-        className="flex-1 transition-all duration-300"
-        style={{ marginLeft: sidebarCollapsed ? 72 : 256 }}
-      >
-        <TopBar />
-        <div className="min-h-[calc(100vh-4rem)]">
-          <AnimatePresence mode="wait">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/chat" element={<AIChat />} />
-              <Route path="/stocks" element={<Stocks />} />
-              <Route path="/mutual-funds" element={<MutualFunds />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/goals" element={<Goals />} />
-              <Route path="/schemes" element={<GovtSchemes />} />
-              <Route path="/fraud" element={<FraudDetection />} />
-              <Route path="/learn" element={<Learning />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/calculator" element={<LoanCalculator />} />
-              <Route path="/onboarding" element={<Onboarding />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </AnimatePresence>
-        </div>
-      </main>
-      <ChatWidget />
-    </div>
+    <AnimatePresence mode="wait">
+      <Routes>
+        {/* Auth Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="*"
+          element={
+            !user ? (
+              <Navigate to="/login" replace />
+            ) : (
+              <ProtectedLayout>
+                <AnimatePresence mode="wait">
+                  <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/chat" element={<AIChat />} />
+                    <Route path="/stocks" element={<Stocks />} />
+                    <Route path="/mutual-funds" element={<MutualFunds />} />
+                    <Route path="/portfolio" element={<Portfolio />} />
+                    <Route path="/goals" element={<Goals />} />
+                    <Route path="/schemes" element={<GovtSchemes />} />
+                    <Route path="/fraud" element={<FraudDetection />} />
+                    <Route path="/learn" element={<Learning />} />
+                    <Route path="/news" element={<News />} />
+                    <Route path="/calculator" element={<LoanCalculator />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </AnimatePresence>
+              </ProtectedLayout>
+            )
+          }
+        />
+      </Routes>
+    </AnimatePresence>
   );
 }

@@ -1,14 +1,16 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 // Interfaces for Web Speech API (often not fully typed in TS by default)
 interface SpeechRecognitionEvent {
-  results: { [key: number]: { [key: number]: { transcript: string } } };
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
 }
 
 export function useSpeech(languageCode: string = 'en-IN') {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState('');
+  const [interimTranscript, setInterimTranscript] = useState('');
   
   // Setup Recognition (Voice to Text)
   const [recognition, setRecognition] = useState<any>(null);
@@ -19,16 +21,37 @@ export function useSpeech(languageCode: string = 'en-IN') {
       if (SpeechRecognition) {
         const rec = new SpeechRecognition();
         rec.continuous = false;
-        rec.interimResults = false;
+        rec.interimResults = true; // Enable live transcription
         
-        rec.onresult = (event: SpeechRecognitionEvent) => {
-          const text = event.results[0][0].transcript;
-          setTranscript(text);
-          setIsListening(false);
+        rec.onresult = (event: any) => {
+          let interim = '';
+          let final = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcriptText = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              final += transcriptText;
+            } else {
+              interim += transcriptText;
+            }
+          }
+          
+          if (final) {
+            setTranscript(final);
+            setInterimTranscript('');
+            setIsListening(false);
+          } else {
+            setInterimTranscript(interim);
+          }
         };
         
-        rec.onerror = () => setIsListening(false);
-        rec.onend = () => setIsListening(false);
+        rec.onerror = () => {
+          setIsListening(false);
+          setInterimTranscript('');
+        };
+        rec.onend = () => {
+          setIsListening(false);
+          setInterimTranscript('');
+        };
         
         setRecognition(rec);
       }
@@ -46,6 +69,7 @@ export function useSpeech(languageCode: string = 'en-IN') {
     if (recognition) {
       try {
         setTranscript('');
+        setInterimTranscript('');
         recognition.start();
         setIsListening(true);
       } catch (e) {
@@ -58,6 +82,7 @@ export function useSpeech(languageCode: string = 'en-IN') {
     if (recognition) {
       recognition.stop();
       setIsListening(false);
+      setInterimTranscript('');
     }
   }, [recognition]);
 
@@ -69,6 +94,15 @@ export function useSpeech(languageCode: string = 'en-IN') {
       
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = languageCode;
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      // Try to pick a good voice
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v => v.lang.startsWith(languageCode.split('-')[0]) && v.name.toLowerCase().includes('female'))
+        || voices.find(v => v.lang.startsWith(languageCode.split('-')[0]))
+        || voices.find(v => v.lang.startsWith('en'));
+      if (preferredVoice) utterance.voice = preferredVoice;
       
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
@@ -89,6 +123,7 @@ export function useSpeech(languageCode: string = 'en-IN') {
     isListening,
     isSpeaking,
     transcript,
+    interimTranscript,
     startListening,
     stopListening,
     speak,

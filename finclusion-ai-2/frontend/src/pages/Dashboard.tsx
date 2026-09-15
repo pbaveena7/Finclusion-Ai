@@ -1,338 +1,435 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Home, TrendingUp, Target, Landmark, ShieldCheck, 
-  Sparkles, Bell, Search, LayoutDashboard, Wallet, User, Activity, AlertTriangle
+  Search, Bell, LayoutDashboard, LineChart, PieChart, 
+  Wallet, Sprout, FileText, Settings,
+  TrendingUp, Cloud, MoreVertical, CheckCircle2,
+  User, Leaf, ChevronDown
 } from 'lucide-react';
 import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip,
-  PieChart, Pie, Cell
+  AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip,
+  PieChart as RechartsPieChart, Pie, Cell, LineChart as RechartsLineChart, Line
 } from 'recharts';
+import { useStore } from '../store/useStore';
+import Sidebar from '../components/Sidebar';
+import ThemeSelector from '../components/ThemeSelector';
 
 export default function Dashboard() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, theme, setTheme } = useStore();
 
-  useEffect(() => {
-    // Fetch data from FastAPI Backend
-    const fetchDashboard = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/dashboard');
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDashboard();
-  }, []);
+  const portfolioChart = [
+    { name: 'Jan', value: 1000000 }, { name: 'Feb', value: 1050000 },
+    { name: 'Mar', value: 1100000 }, { name: 'Apr', value: 1250000 },
+    { name: 'May', value: 1200000 }, { name: 'June', value: 1386234 },
+  ];
 
-  const portfolioData = data?.portfolio_history || [];
-  const allocationData = data?.asset_allocation || [];
+  const marketRiskChart = [
+    { name: '1', value: 10 }, { name: '2', value: 12 }, { name: '3', value: 11 },
+    { name: '4', value: 15 }, { name: '5', value: 14 }, { name: '6', value: 18 },
+    { name: '7', value: 17 }, { name: '8', value: 22 },
+  ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
+  const volatilityChart = [
+    { name: '1', value: 5 }, { name: '2', value: 7 }, { name: '3', value: 6 },
+    { name: '4', value: 8 }, { name: '5', value: 7 }, { name: '6', value: 10 },
+    { name: '7', value: 9 }, { name: '8', value: 11 }, { name: '9', value: 10 },
+    { name: '10', value: 13 },
+  ];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  const fundComparisonData = [
+    { name: 'Jan', fundA: 10, benchmark: 8, fundB: 5 },
+    { name: 'Feb', fundA: 12, benchmark: 9, fundB: 7 },
+    { name: 'Mar', fundA: 11, benchmark: 10, fundB: 8 },
+    { name: 'Apr', fundA: 15, benchmark: 11, fundB: 10 },
+    { name: 'May', fundA: 14, benchmark: 12, fundB: 9 },
+    { name: 'Jun', fundA: 18, benchmark: 13, fundB: 12 },
+    { name: 'Jul', fundA: 17, benchmark: 14, fundB: 14 },
+    { name: 'Aug', fundA: 21, benchmark: 15, fundB: 15 },
+    { name: 'Sep', fundA: 20, benchmark: 16, fundB: 17 },
+    { name: 'Oct', fundA: 24, benchmark: 17, fundB: 19 },
+    { name: 'Nov', fundA: 22, benchmark: 18, fundB: 20 },
+    { name: 'Dec', fundA: 26, benchmark: 19, fundB: 22 },
+  ];
+
+  const assetAllocation = [
+    { name: 'Equities', value: 52, color: 'var(--accent-primary)' },
+    { name: 'Green Bonds', value: 21, color: 'var(--accent-secondary)' },
+    { name: 'Infrastructure', value: 14, color: 'var(--text-dim)' },
+    { name: 'Cash Reserve', value: 13, color: 'var(--border-hover)' },
+  ];
+
+  const chartTheme = {
+    primary: 'var(--accent-primary)',
+    secondary: 'var(--accent-secondary)',
+    muted: 'var(--text-muted)',
+    dim: 'var(--text-dim)',
   };
 
   return (
-    <div className="min-h-screen bg-[#090b14] text-white font-sans flex overflow-hidden">
-      
-      {/* Background Glows */}
-      <div className="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none" />
+    <div className="flex bg-transparent text-[var(--text-main)] w-full">
+      <Sidebar activeId="overview" />
 
-      {/* Sidebar - Fixed on Desktop */}
-      <motion.aside 
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className="w-64 border-r border-white/5 bg-[#131828]/50 backdrop-blur-xl flex flex-col z-20 h-screen fixed"
-      >
-        <div className="p-6 flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-gradient-to-br from-emerald-400 to-blue-500 flex items-center justify-center">
-            <span className="font-bold text-white text-sm">F</span>
-          </div>
-          <span className="font-bold text-lg tracking-tight">FINCLUSION</span>
-        </div>
-
-        <nav className="flex-1 px-4 py-6 space-y-2">
-          <p className="px-4 text-xs font-bold text-white/30 uppercase tracking-wider mb-2">Main Menu</p>
-          <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-500/10 text-emerald-400 font-medium border border-emerald-500/20">
-            <Home className="w-5 h-5" /> Dashboard
-          </Link>
-          <Link to="/stocks" className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-white hover:bg-white/5 transition-colors">
-            <TrendingUp className="w-5 h-5" /> Investments
-          </Link>
-          <Link to="/mutual-funds" className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-white hover:bg-white/5 transition-colors">
-            <Target className="w-5 h-5" /> Goal Planner
-          </Link>
-          <Link to="/schemes" className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-white hover:bg-white/5 transition-colors">
-            <Landmark className="w-5 h-5" /> Govt Schemes
-          </Link>
-          <Link to="/loans" className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-white hover:bg-white/5 transition-colors">
-            <Wallet className="w-5 h-5" /> Loans & EMIs
-          </Link>
-          
-          <p className="px-4 text-xs font-bold text-white/30 uppercase tracking-wider mt-8 mb-2">Security</p>
-          <Link to="/safety" className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-white hover:bg-white/5 transition-colors">
-            <ShieldCheck className="w-5 h-5" /> Trust & Safety
-          </Link>
-        </nav>
-
-        <div className="p-4 border-t border-white/5">
-          <div className="flex items-center gap-3 px-4 py-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-            <div>
-              <p className="text-sm font-medium">Naveen</p>
-              <p className="text-xs text-white/40">Premium Member</p>
-            </div>
-          </div>
-        </div>
-      </motion.aside>
-
-      {/* Main Content Area */}
-      <main className="flex-1 lg:ml-64 relative min-h-screen flex flex-col z-10 h-screen overflow-y-auto">
+      {/* Main Content */}
+      <main className="flex-1 lg:ml-64 relative min-h-screen flex flex-col z-10 overflow-y-auto w-full">
         
-        {/* Background glow effects */}
-        <div className="absolute top-0 left-1/2 w-3/4 h-[500px] bg-purple-500/10 rounded-full blur-[120px] -translate-x-1/2 pointer-events-none" />
-        
-        {/* Top Header */}
-        <header className="px-8 py-5 flex justify-between items-center border-b border-white/5 bg-[#090b14]/80 backdrop-blur-md sticky top-0 z-30">
-          <h1 className="text-2xl font-bold">Overview</h1>
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-              <input 
-                type="text" 
-                placeholder="Search anything..." 
-                className="bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-emerald-500 w-64"
-              />
-            </div>
-            <button className="relative text-white/60 hover:text-white">
-              <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+        {/* Topbar */}
+        <header className="px-8 py-5 flex justify-between items-center border-b backdrop-blur-md sticky top-0 z-30" style={{ background: 'var(--sidebar-bg)', borderColor: 'var(--sidebar-border)' }}>
+          <div className="relative w-96">
+            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              className="glass-input w-full rounded-full py-2 pl-11 pr-4 text-sm"
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <button className="w-10 h-10 rounded-full border flex items-center justify-center relative hover:bg-[var(--bg-card-hover)] transition-colors" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-card)' }}>
+              <Bell className="w-4 h-4 text-[var(--text-main)]" />
+              <span className="absolute top-2 right-2.5 w-2 h-2 rounded-full border-2 border-[var(--sidebar-bg)]" style={{ background: 'var(--accent-secondary)' }} />
             </button>
+            <ThemeSelector />
+            <div className="flex items-center gap-3 px-3 py-1.5 border rounded-full" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-card)' }}>
+              <div className="w-7 h-7 rounded-full flex items-center justify-center overflow-hidden" style={{ background: 'var(--accent-gradient)' }}>
+                <span className="text-white text-xs font-bold">{user?.name?.[0] || 'U'}</span>
+              </div>
+              <div className="pr-1">
+                <p className="text-xs font-bold leading-tight truncate max-w-[100px] text-[var(--text-main)]">{user?.name || 'User'}</p>
+                <p className="text-[9px] leading-tight text-[var(--text-muted)]">Premium</p>
+              </div>
+              <ChevronDown className="w-3 h-3 text-[var(--text-muted)]" />
+            </div>
           </div>
         </header>
 
-        <div className="p-8 max-w-7xl mx-auto relative z-10 w-full pb-32">
+        <div className="p-8 max-w-[1600px] mx-auto w-full">
+          
+          <div className="mb-8">
+            <h1 className="text-4xl font-extrabold mb-1 tracking-tight text-[var(--text-main)]">Dashboard</h1>
+            <p className="text-sm text-[var(--text-muted)]">Welcome back, {user?.name?.split(' ')[0] || 'Investor'}! Here is your portfolio summary.</p>
+          </div>
 
-          {/* Widgets Grid */}
           <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
+            initial="hidden" animate="show" 
+            variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } }} 
             className="grid grid-cols-12 gap-6"
           >
             
-          {/* Welcome & Net Worth (Col 8) */}
-          <motion.div 
-            variants={itemVariants}
-            className="col-span-12 lg:col-span-8 bg-[#131828]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-6 shadow-2xl flex flex-col justify-between hover:border-white/20 transition-colors"
-          >
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <p className="text-white/50 font-medium mb-1 flex items-center gap-2">Total Net Worth <LayoutDashboard className="w-4 h-4"/></p>
-                {loading ? (
-                  <div className="h-12 w-48 bg-white/10 rounded-lg animate-pulse mb-2 mt-2" />
-                ) : (
-                  <h2 className="text-4xl lg:text-5xl font-bold tracking-tight">₹{data?.net_worth?.total.toLocaleString()}</h2>
-                )}
-                <div className="flex items-center gap-2 mt-2">
-                  {loading ? (
-                    <div className="h-6 w-24 bg-white/10 rounded animate-pulse" />
-                  ) : (
-                    <>
-                      <span className="text-emerald-400 font-bold bg-emerald-400/10 px-2 py-1 rounded text-sm">+{data?.net_worth?.growth_percentage}%</span>
-                      <span className="text-white/40 text-sm">{data?.net_worth?.comparison_text}</span>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="h-[250px] w-full">
-              {loading ? (
-                <div className="w-full h-full bg-white/5 rounded-xl animate-pulse" />
-              ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={portfolioData}>
-                  <defs>
-                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="name" stroke="rgba(255,255,255,0.2)" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis hide />
-                  <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '8px' }} />
-                  <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
-                </AreaChart>
-              </ResponsiveContainer>
-              )}
-            </div>
-          </motion.div>
-
-          {/* Allocation (Col 4) */}
-          <motion.div 
-            variants={itemVariants}
-            className="col-span-12 lg:col-span-4 bg-[#131828]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-6 shadow-2xl flex flex-col hover:border-white/20 transition-colors"
-          >
-            <h3 className="font-bold mb-6">Asset Allocation</h3>
-            <div className="flex-1 flex justify-center items-center relative">
-              {loading ? (
-                <div className="w-48 h-48 rounded-full border-8 border-white/5 border-t-white/20 animate-spin" />
-              ) : (
-                <ResponsiveContainer width="100%" height={200}>
-                  <PieChart>
-                  <Pie data={allocationData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                    {allocationData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} stroke="rgba(255,255,255,0.05)" />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '8px' }} />
-                </PieChart>
-              </ResponsiveContainer>
-              )}
-              {!loading && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                  <span className="text-2xl font-bold">100%</span>
-                  <span className="text-xs text-white/50">Allocated</span>
-                </div>
-              )}
-            </div>
-            <div className="mt-4 space-y-3">
-              {allocationData.map((item, idx) => (
-                <div key={idx} className="flex justify-between items-center text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                    <span className="text-white/70">{item.name}</span>
-                  </div>
-                  <span className="font-bold">{item.value}%</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* AI Financial Coach Widget (Col 8) */}
-          <motion.div 
-            variants={itemVariants}
-            className="col-span-12 lg:col-span-8 bg-gradient-to-br from-indigo-900/40 via-purple-900/30 to-blue-900/20 backdrop-blur-2xl border border-purple-500/30 rounded-3xl p-8 shadow-[0_0_40px_rgba(139,92,246,0.15)] relative overflow-hidden group hover:border-purple-500/50 transition-colors"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/4" />
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-bold mb-4 border border-purple-500/30">
-                  <Sparkles className="w-3 h-3" /> AI FINANCIAL COACH
-                </div>
-                <h3 className="text-2xl font-bold mb-2">How can I help you grow today?</h3>
-                <p className="text-white/60 text-sm max-w-sm mb-6">Ask me to analyze your portfolio, verify a government scheme, or simulate an options payoff.</p>
-                <div className="flex bg-white/5 border border-white/10 rounded-full p-1 w-full max-w-md">
-                  <input type="text" placeholder="e.g. Optimize my tax savings..." className="bg-transparent flex-1 px-4 text-sm focus:outline-none" />
-                  <button className="bg-purple-600 hover:bg-purple-500 text-white rounded-full p-2 transition-colors">
-                    <Search className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-              <div className="w-32 h-32 rounded-full border-[8px] border-white/5 flex items-center justify-center relative shadow-[0_0_30px_rgba(168,85,247,0.4)]">
-                <div className="absolute inset-0 rounded-full border-[8px] border-purple-500 border-t-transparent animate-spin" style={{ animationDuration: '3s' }} />
-                <Sparkles className="w-10 h-10 text-purple-400" />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Goal Planner Progress (Col 4) */}
-          <motion.div 
-            variants={itemVariants}
-            className="col-span-12 md:col-span-6 lg:col-span-4 bg-[#131828]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-6 shadow-2xl flex flex-col justify-between hover:border-white/20 transition-colors"
-          >
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold flex items-center gap-2"><Target className="w-4 h-4 text-blue-400" /> Child Education</h3>
-                <span className="text-xs font-bold text-white/40">2032</span>
-              </div>
-              <div className="mb-4">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-white/60">₹12L Saved</span>
-                  <span className="font-bold">₹50L Goal</span>
-                </div>
-                <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden border border-white/10">
-                  <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" style={{ width: '24%' }} />
-                </div>
-              </div>
-            </div>
+            {/* ROW 1 */}
             
-            <div>
-              <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/5 mb-4">
-                <h3 className="font-bold flex items-center gap-2"><Home className="w-4 h-4 text-pink-400" /> Dream Home</h3>
-                <span className="text-xs font-bold text-white/40">2028</span>
+            {/* Total Portfolio Value */}
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-4 glass-card-lg p-6 flex flex-col justify-between relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity" style={{ background: 'var(--accent-primary)' }} />
+              <div className="flex justify-between items-start mb-2 relative z-10">
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-wider mb-2 flex items-center gap-2" style={{ color: 'var(--text-dim)' }}>Total Portfolio Value</p>
+                  <h2 className="text-4xl font-extrabold text-[var(--text-main)]">$1,386,234.37</h2>
+                  <p className="text-xs font-bold mt-2 flex items-center gap-1" style={{ color: 'var(--accent-primary)' }}>
+                    <TrendingUp className="w-3 h-3"/> +18.56%
+                  </p>
+                </div>
               </div>
+              <div className="h-40 w-full mt-4 -mb-6 -mx-2 relative z-10">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={portfolioChart}>
+                    <defs>
+                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={chartTheme.primary} stopOpacity={0.6}/>
+                        <stop offset="95%" stopColor={chartTheme.primary} stopOpacity={0.0}/>
+                      </linearGradient>
+                    </defs>
+                    <XAxis dataKey="name" stroke={chartTheme.dim} fontSize={10} tickLine={false} axisLine={false} dy={10} />
+                    <YAxis orientation="right" stroke={chartTheme.dim} fontSize={10} tickLine={false} axisLine={false} tickFormatter={v => v >= 1000000 ? `${v/1000000}M` : `${v/1000}K`} dx={10} />
+                    <Tooltip cursor={{ stroke: chartTheme.dim, strokeWidth: 1, strokeDasharray: '4 4' }} formatter={(val: any) => [`$${Number(val).toLocaleString()}`, 'Value']} />
+                    <Area type="monotone" dataKey="value" stroke={chartTheme.primary} strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" activeDot={{ r: 6, fill: chartTheme.primary, stroke: 'var(--bg-base)', strokeWidth: 2 }} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </motion.div>
+
+            {/* Key Highlights */}
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-5 glass-card-lg p-6 flex flex-col justify-between group">
+              <h3 className="font-bold mb-6 text-[var(--text-muted)] uppercase tracking-wider text-xs">Key Highlights</h3>
+              <div className="grid grid-cols-3 gap-4 h-full">
+                <div className="flex flex-col justify-center">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: 'var(--accent-glow-subtle)' }}>
+                    <TrendingUp className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
+                  </div>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--text-dim)' }}>Annual Growth</p>
+                  <p className="text-2xl font-bold text-[var(--text-main)]">+18.54%</p>
+                  <p className="text-[10px] mt-1" style={{ color: 'var(--text-muted)' }}>Total Last Years</p>
+                </div>
+                <div className="flex flex-col justify-center border-l border-r px-4" style={{ borderColor: 'var(--border-card)' }}>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: 'var(--accent-glow-subtle)' }}>
+                    <Leaf className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
+                  </div>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--text-dim)' }}>Sustainability</p>
+                  <p className="text-2xl font-bold text-[var(--text-main)]">89<span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>/100</span></p>
+                  <p className="text-[10px] mt-1" style={{ color: 'var(--text-muted)' }}>ESG Rating</p>
+                </div>
+                <div className="flex flex-col justify-center pl-4">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: 'var(--accent-glow-subtle)' }}>
+                    <Cloud className="w-5 h-5" style={{ color: 'var(--accent-secondary)' }} />
+                  </div>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--text-dim)' }}>Carbon Exp.</p>
+                  <p className="text-2xl font-bold text-[var(--text-main)]">-15%</p>
+                  <p className="text-[10px] mt-1 font-bold" style={{ color: 'var(--accent-secondary)' }}>Lower Than Benchmark</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Market Status */}
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-3 glass-card-lg p-6 flex flex-col justify-between">
               <div>
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-white/60">₹45L Saved</span>
-                  <span className="font-bold">₹80L Goal</span>
+                <h3 className="font-bold text-[var(--text-muted)] uppercase tracking-wider text-xs mb-1 flex items-center gap-2">Market Status</h3>
+                <p className="text-xl font-bold mt-2" style={{ color: 'var(--accent-primary)' }}>Moderate Growth</p>
+              </div>
+              
+              <div className="mt-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-xs font-bold" style={{ color: 'var(--text-dim)' }}>Risk Level</span>
                 </div>
-                <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden border border-white/10">
-                  <div className="h-full bg-gradient-to-r from-pink-500 to-rose-400 rounded-full" style={{ width: '56%' }} />
+                <div className="h-2 w-full rounded-full flex overflow-hidden border" style={{ background: 'var(--bg-base)', borderColor: 'var(--border-card)' }}>
+                  <div className="h-full w-1/3" style={{ background: 'var(--accent-primary)' }} />
+                  <div className="h-full w-1/3" style={{ background: 'var(--accent-secondary)' }} />
+                  <div className="h-full w-1/3 bg-rose-500" />
+                </div>
+                <div className="w-full relative h-2">
+                  <div className="absolute top-[-10px] left-[45%] w-4 h-4 rounded-full border-[3px]" style={{ background: 'var(--text-main)', borderColor: 'var(--bg-card)', boxShadow: '0 0 10px rgba(0,0,0,0.5)' }} />
                 </div>
               </div>
-            </div>
-          </motion.div>
 
-          {/* Trust & Fraud Status (Col 6) */}
-          <motion.div 
-            variants={itemVariants}
-            className="col-span-12 md:col-span-6 bg-emerald-900/10 backdrop-blur-xl border border-emerald-500/20 rounded-3xl p-6 shadow-2xl flex items-center gap-6 hover:border-emerald-500/40 transition-colors"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-8 h-8 text-emerald-400" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-1">Account Secured</h3>
-              <p className="text-sm text-emerald-400/80 mb-3">Fraud Detection AI is actively monitoring your transactions.</p>
-              <div className="flex gap-4 text-xs font-bold">
-                <span className="px-2 py-1 bg-white/5 rounded border border-white/10">0 Alerts</span>
-                <span className="px-2 py-1 bg-white/5 rounded border border-white/10">Last Scan: Just now</span>
+              <div className="mt-4 flex items-end justify-between">
+                <div>
+                  <p className="text-xs font-bold mb-1" style={{ color: 'var(--text-dim)' }}>Volatility (VIX)</p>
+                  <p className="text-xl font-bold text-[var(--text-main)]">13.7</p>
+                </div>
+                <div className="w-24 h-12">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={volatilityChart}>
+                      <Area type="monotone" dataKey="value" stroke="none" fill={chartTheme.dim} fillOpacity={0.3} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Loans & EMIs Status (Col 6) */}
-          <motion.div 
-            variants={itemVariants}
-            className="col-span-12 md:col-span-6 bg-[#131828]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-6 shadow-2xl flex items-center justify-between hover:border-white/20 transition-colors"
-          >
-            <div>
-              <h3 className="font-bold flex items-center gap-2 mb-1"><Activity className="w-4 h-4 text-orange-400" /> Active EMI</h3>
-              {loading ? (
-                <>
-                  <div className="h-8 w-32 bg-white/10 rounded animate-pulse mb-1 mt-2" />
-                  <div className="h-4 w-48 bg-white/10 rounded animate-pulse" />
-                </>
-              ) : (
-                <>
-                  <p className="text-3xl font-bold mb-1">₹{data?.active_emi?.amount.toLocaleString()}<span className="text-sm text-white/40 font-normal">/mo</span></p>
-                  <p className="text-xs text-white/50">{data?.active_emi?.description}</p>
-                </>
-              )}
-            </div>
-            <div className="w-16 h-16 rounded-full border-[4px] border-white/5 border-t-orange-400 flex items-center justify-center transform -rotate-45">
-              <span className="transform rotate-45 text-sm font-bold text-orange-400">
-                {loading ? '...' : `${data?.active_emi?.dti_percentage}%`}
-              </span>
-            </div>
-          </motion.div>
+            {/* ROW 2 */}
+            
+            {/* Tax Efficiency */}
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-3 glass-card-lg p-6 relative">
+              <MoreVertical className="w-4 h-4 absolute top-6 right-6" style={{ color: 'var(--text-dim)' }} />
+              <h3 className="font-bold uppercase tracking-wider text-xs mb-6 flex items-center gap-2 text-[var(--text-muted)]">Tax Efficiency</h3>
+              
+              <div className="flex items-center justify-between mt-2">
+                <div>
+                  <p className="text-xs font-bold mb-1" style={{ color: 'var(--text-dim)' }}>Efficiency Score</p>
+                  <p className="text-4xl font-extrabold text-[var(--text-main)]">88<span className="text-lg font-normal" style={{ color: 'var(--text-muted)' }}>/100</span></p>
+                  
+                  <p className="text-xs font-bold mt-6 mb-1" style={{ color: 'var(--text-dim)' }}>Annual Savings</p>
+                  <p className="text-lg font-bold" style={{ color: 'var(--accent-primary)' }}>$86,234.37</p>
+                </div>
+                <div className="w-24 h-24 relative">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RechartsPieChart>
+                      <Pie data={[{value: 88}, {value: 12}]} innerRadius={35} outerRadius={48} dataKey="value" startAngle={90} endAngle={-270} stroke="none">
+                        <Cell fill={chartTheme.primary} />
+                        <Cell fill={chartTheme.dim} opacity={0.2} />
+                      </Pie>
+                    </RechartsPieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-glow" style={{ background: 'var(--accent-glow-subtle)' }}>
+                      <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Market Risk Analysis */}
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-4 glass-card-lg p-6 relative">
+              <MoreVertical className="w-4 h-4 absolute top-6 right-6" style={{ color: 'var(--text-dim)' }} />
+              <h3 className="font-bold uppercase tracking-wider text-xs mb-4 flex items-center gap-2 text-[var(--text-muted)]"><LineChart className="w-4 h-4" /> Risk Analysis</h3>
+              
+              <div className="mb-2">
+                <p className="text-xs font-bold mb-1" style={{ color: 'var(--text-dim)' }}>Risk Profile</p>
+                <p className="text-xl font-bold" style={{ color: 'var(--accent-secondary)' }}>Balanced</p>
+              </div>
+
+              <div className="h-24 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RechartsLineChart data={marketRiskChart}>
+                    <defs>
+                      <linearGradient id="colorRisk" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="5%" stopColor={chartTheme.primary} stopOpacity={1}/>
+                        <stop offset="95%" stopColor={chartTheme.secondary} stopOpacity={1}/>
+                      </linearGradient>
+                    </defs>
+                    <Line type="monotone" dataKey="value" stroke="url(#colorRisk)" strokeWidth={3} dot={{ r: 3, fill: chartTheme.primary, strokeWidth: 0 }} />
+                  </RechartsLineChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="flex justify-between items-center mt-2 border-t pt-3" style={{ borderColor: 'var(--border-card)' }}>
+                <div className="text-center">
+                  <p className="text-[10px] font-bold uppercase mb-1" style={{ color: 'var(--text-dim)' }}>Volatility</p>
+                  <p className="text-sm font-bold text-[var(--text-main)]">13.8%</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-[10px] font-bold uppercase mb-1" style={{ color: 'var(--text-dim)' }}>Drawdown</p>
+                  <p className="text-sm font-bold text-rose-400">-9.8%</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-[10px] font-bold uppercase mb-1" style={{ color: 'var(--text-dim)' }}>Beta</p>
+                  <p className="text-sm font-bold text-[var(--text-main)]">0.98</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Ethical Investment Insights */}
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-3 glass-card-lg p-6 relative">
+              <MoreVertical className="w-4 h-4 absolute top-6 right-6" style={{ color: 'var(--text-dim)' }} />
+              <h3 className="font-bold uppercase tracking-wider text-xs mb-6 flex items-center gap-2 text-[var(--text-muted)]"><Leaf className="w-4 h-4" /> Ethical Insights</h3>
+              
+              <div className="space-y-4">
+                {[
+                  { label: 'Environment', score: 74, color: 'var(--accent-primary)' },
+                  { label: 'Governance', score: 68, color: 'var(--accent-secondary)' },
+                  { label: 'Social Impact', score: 58, color: 'var(--text-dim)' },
+                  { label: 'Sustainability', score: 95, color: 'var(--accent-primary)' },
+                ].map(item => (
+                  <div key={item.label} className="flex items-center gap-3">
+                    <div className="flex-1">
+                      <div className="flex justify-between items-center mb-1.5">
+                        <span className="text-xs font-bold" style={{ color: 'var(--text-main)' }}>{item.label}</span>
+                        <span className="text-[10px] font-bold" style={{ color: 'var(--text-muted)' }}>{item.score}/100</span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ background: 'var(--border-card)' }}>
+                        <div className="h-full rounded-full" style={{ width: `${item.score}%`, background: item.color, boxShadow: `0 0 10px ${item.color}` }} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Asset Allocation */}
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-2 lg:row-span-2 p-6 rounded-3xl relative overflow-hidden flex flex-col group" style={{ background: 'var(--accent-gradient)' }}>
+              <div className="absolute inset-0 bg-black/20" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+              
+              <h3 className="font-bold text-xs uppercase tracking-wider mb-6 relative z-10 text-white/90">Asset Allocation</h3>
+              
+              <div className="flex-1 flex flex-col items-center justify-center relative z-10 mb-8">
+                <div className="w-40 h-40 relative group-hover:scale-105 transition-transform duration-500">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RechartsPieChart>
+                      <Pie data={assetAllocation} innerRadius={45} outerRadius={75} paddingAngle={4} dataKey="value" stroke="none">
+                        {assetAllocation.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={index === 0 ? 'white' : `rgba(255,255,255,${1 - index * 0.25})`} />
+                        ))}
+                      </Pie>
+                    </RechartsPieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span className="text-xl font-extrabold text-white">100%</span>
+                    <span className="text-[9px] text-white/70 font-bold uppercase tracking-widest">Total</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3 relative z-10 mt-auto">
+                {assetAllocation.map((item, index) => (
+                  <div key={item.name} className="flex justify-between items-center text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full" style={{ background: index === 0 ? 'white' : `rgba(255,255,255,${1 - index * 0.25})` }} />
+                      <span className="text-white/90 font-medium">{item.name}</span>
+                    </div>
+                    <span className="font-extrabold text-white">{item.value}%</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* ROW 3 */}
+            
+            {/* Retrospective Fund Comparison */}
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-10 glass-card-lg p-6 flex flex-col lg:flex-row gap-8">
+              
+              <div className="flex-1">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="font-bold uppercase tracking-wider text-xs text-[var(--text-muted)]">Retrospective Comparison</h3>
+                  <div className="flex gap-1 p-1 rounded-lg border" style={{ background: 'var(--input-bg)', borderColor: 'var(--border-card)' }}>
+                    <button className="px-3 py-1 text-[10px] font-bold rounded-md shadow-sm text-white" style={{ background: 'var(--accent-gradient)' }}>1Y</button>
+                    <button className="px-3 py-1 text-[10px] font-bold rounded-md transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-card-hover)]">3Y</button>
+                    <button className="px-3 py-1 text-[10px] font-bold rounded-md transition-colors text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-card-hover)]">5Y</button>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 text-xs font-bold mb-4" style={{ color: 'var(--text-muted)' }}>
+                  <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', boxShadow: '0 0 8px var(--accent-primary)' }} /> Fund A (ESG)</div>
+                  <div className="flex items-center gap-2"><div className="w-4 h-1 rounded-full" style={{ background: 'var(--accent-secondary)' }} /> Benchmark</div>
+                  <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full" style={{ background: 'var(--text-dim)' }} /> Fund B (SRI)</div>
+                </div>
+
+                <div className="h-56 w-full relative -ml-4">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={fundComparisonData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="fundA" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={chartTheme.primary} stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor={chartTheme.primary} stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <XAxis dataKey="name" stroke={chartTheme.dim} fontSize={10} tickLine={false} axisLine={false} dy={10} />
+                      <YAxis stroke={chartTheme.dim} fontSize={10} tickLine={false} axisLine={false} tickFormatter={v => `${v}%`} dx={-5} />
+                      <Tooltip cursor={{ stroke: chartTheme.dim, strokeWidth: 1, strokeDasharray: '4 4' }} />
+                      <Area type="monotone" dataKey="fundA" stroke={chartTheme.primary} strokeWidth={2} fillOpacity={1} fill="url(#fundA)" activeDot={{ r: 4, strokeWidth: 0, fill: chartTheme.primary }} />
+                      <Area type="monotone" dataKey="fundB" stroke={chartTheme.dim} strokeWidth={2} fill="none" />
+                      <Area type="monotone" dataKey="benchmark" stroke={chartTheme.secondary} strokeWidth={2} fill="none" strokeDasharray="4 4" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Table */}
+              <div className="w-full lg:w-[450px] flex flex-col justify-center">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b" style={{ borderColor: 'var(--border-card)' }}>
+                      <th className="pb-3 font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--text-dim)' }}>Fund</th>
+                      <th className="pb-3 font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--text-dim)' }}>1Y Ret</th>
+                      <th className="pb-3 font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--text-dim)' }}>ESG</th>
+                      <th className="pb-3 font-bold text-xs uppercase tracking-wider text-right" style={{ color: 'var(--text-dim)' }}>Sharpe</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b transition-colors hover:bg-[var(--bg-card-hover)]" style={{ borderColor: 'var(--border-card)' }}>
+                      <td className="py-4 font-bold text-[var(--text-main)]">Fund A (ESG)</td>
+                      <td className="py-4 font-bold" style={{ color: 'var(--accent-primary)' }}>+22.12%</td>
+                      <td className="py-4 font-bold text-[var(--text-main)]">88</td>
+                      <td className="py-4 font-bold text-[var(--text-main)] text-right">1.24</td>
+                    </tr>
+                    <tr className="border-b transition-colors hover:bg-[var(--bg-card-hover)]" style={{ borderColor: 'var(--border-card)' }}>
+                      <td className="py-4 font-bold text-[var(--text-main)]">Benchmark</td>
+                      <td className="py-4 font-bold" style={{ color: 'var(--accent-primary)' }}>+15.50%</td>
+                      <td className="py-4 font-bold text-[var(--text-muted)]">-</td>
+                      <td className="py-4 font-bold text-[var(--text-main)] text-right">0.88</td>
+                    </tr>
+                    <tr className="transition-colors hover:bg-[var(--bg-card-hover)]">
+                      <td className="py-4 font-bold text-[var(--text-main)]">Fund B (SRI)</td>
+                      <td className="py-4 font-bold" style={{ color: 'var(--accent-primary)' }}>+18.50%</td>
+                      <td className="py-4 font-bold text-[var(--text-main)]">79</td>
+                      <td className="py-4 font-bold text-[var(--text-main)] text-right">1.08</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button className="mt-6 text-xs font-bold flex items-center gap-1 transition-colors hover:text-[var(--text-main)]" style={{ color: 'var(--accent-primary)' }}>
+                  View Full Report →
+                </button>
+              </div>
+
+            </motion.div>
 
           </motion.div>
         </div>

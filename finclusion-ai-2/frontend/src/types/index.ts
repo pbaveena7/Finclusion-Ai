@@ -1,7 +1,12 @@
+// ═══════════════════════════════════════════════════════════════
+// FINCLUSION AI 2.0 — Core Type Definitions (Merged)
+// ═══════════════════════════════════════════════════════════════
+
 export type RiskCategory = 'conservative' | 'moderate' | 'aggressive';
 export type GoalStatus = 'on-track' | 'behind' | 'ahead';
 export type Sentiment = 'positive' | 'negative' | 'neutral';
 
+// ── User & Profile ──────────────────────────────────────────
 export interface User {
   id: string;
   name: string;
@@ -18,36 +23,26 @@ export interface User {
   financialHealthScore: number;
   riskScore: number;
   isOnboarded: boolean;
+  // Extended fields from legacy
+  email?: string;
+  phone?: string;
+  investmentHorizon?: 'short' | 'medium' | 'long';
+  preferredLanguage?: 'en' | 'hi' | 'ta';
+  existingInvestments?: number;
+  createdAt?: string;
 }
 
-export interface PortfolioHolding {
-  id: string;
-  symbol: string;
-  name: string;
-  type: 'stock' | 'mutualfund' | 'etf' | 'nps' | 'ppf' | 'fd' | 'gold';
-  quantity: number;
-  buyPrice: number;
-  currentPrice: number;
-  investedAmount: number;
-  currentValue: number;
-  pnl: number;
-  pnlPercent: number;
+// Alias for backward compatibility
+export type UserProfile = User;
+
+// ── Risk Profile ─────────────────────────────────────────────
+export interface RiskQuestion {
+  id: number;
+  question: string;
+  options: { text: string; score: number }[];
 }
 
-export interface Portfolio {
-  totalInvested: number;
-  currentValue: number;
-  totalPnl: number;
-  totalPnlPercent: number;
-  holdings: PortfolioHolding[];
-  allocation: {
-    category: string;
-    value: number;
-    percentage: number;
-    color: string;
-  }[];
-}
-
+// ── Financial Goals ─────────────────────────────────────────
 export interface FinancialGoal {
   id: string;
   name: string;
@@ -64,6 +59,7 @@ export interface FinancialGoal {
   status: GoalStatus;
 }
 
+// ── Stocks ──────────────────────────────────────────────────
 export interface StockData {
   symbol: string;
   name: string;
@@ -74,112 +70,165 @@ export interface StockData {
   dayLow: number;
   yearHigh: number;
   yearLow: number;
+  // Aliases for legacy field names
+  high52w?: number;
+  low52w?: number;
   volume: number;
   marketCap: string;
   pe: number;
   eps: number;
   sector: string;
+  industry?: string;
   historicalPrices: { date: string; price: number }[];
+  // Alias for legacy field name
+  history?: { date: string; price: number }[];
   aiInsights: {
     trend: 'bullish' | 'bearish' | 'neutral';
     trendDescription: string;
     newsSentiment: Sentiment;
+    newsDescription?: string;
     riskFactors: string[];
+    fundamentalSnapshot?: string;
   };
 }
 
+// ── Mutual Funds ────────────────────────────────────────────
 export interface MutualFund {
   schemeCode: string;
   schemeName: string;
-  fundHouse: string;
-  category: string;
+  // Aliases for legacy field names used in UI components
+  id?: string;
+  name?: string;
+  risk?: string;
+  return1Y?: number;
+  return3Y?: number;
+  return5Y?: number;
+  minSip?: number;
+  category: 'equity' | 'debt' | 'hybrid' | 'elss' | 'index';
   subCategory: string;
   nav: number;
+  navDate?: string;
+  aum: string;
+  expenseRatio: number;
+  riskLevel: 'low' | 'moderate' | 'high' | 'very-high';
   returns: {
     oneYear: number;
     threeYear: number;
     fiveYear: number;
   };
-  rating: number;
-  riskLevel: string;
   minSIP: number;
-  aum: string;
-  expenseRatio: number;
+  minLumpsum?: number;
+  fundHouse: string;
+  rating: number;
   aiSuitability: string;
 }
 
+// ── Portfolio ───────────────────────────────────────────────
+export interface PortfolioHolding {
+  id: string;
+  symbol?: string;
+  name: string;
+  type: 'stock' | 'mutualfund' | 'etf' | 'nps' | 'ppf' | 'fd' | 'gold';
+  quantity: number;
+  buyPrice: number;
+  currentPrice: number;
+  investedAmount: number;
+  currentValue: number;
+  pnl: number;
+  pnlPercent: number;
+}
+
+export interface Portfolio {
+  totalInvested: number;
+  currentValue: number;
+  totalPnl: number;
+  totalPnlPercent: number;
+  allocation: {
+    category: string;
+    value: number;
+    percentage: number;
+    color: string;
+  }[];
+  holdings: PortfolioHolding[];
+}
+
+// Alias for backward compatibility
+export type PortfolioSummary = Portfolio;
+
+// ── Loan & EMI ──────────────────────────────────────────────
+export interface LoanDetails {
+  loanAmount: number;
+  interestRate: number;
+  tenureMonths: number;
+  emi: number;
+  totalPayment: number;
+  totalInterest: number;
+  debtToIncomeRatio: number;
+  financialStressScore: number;
+}
+
+export interface AmortizationRow {
+  month: number;
+  emi: number;
+  principal: number;
+  interest: number;
+  balance: number;
+}
+
+// ── Government Schemes ──────────────────────────────────────
 export interface GovtScheme {
   id: string;
   name: string;
   shortName: string;
-  category: string;
-  icon: string;
   description: string;
+  icon: string;
+  category: string;
+  interestRate: string;
   minInvestment: string;
   maxInvestment: string;
   lockInPeriod: string;
-  interestRate: string;
   taxBenefit: string;
   eligibility: {
     minAge?: number;
     maxAge?: number;
+    gender?: 'male' | 'female' | 'any';
     incomeLimit?: number;
     occupation?: string[];
-    gender?: 'male' | 'female' | 'any';
   };
   features: string[];
   officialLink: string;
 }
 
-export interface NewsItem {
-  id: string;
-  title: string;
-  description: string;
-  source: string;
-  publishedAt: string;
-  url: string;
-  sentiment: Sentiment;
-  impactLevel: 'high' | 'medium' | 'low';
-  sector: string;
-  companies: string[];
-  aiSummary: string;
-}
-
+// ── Fraud Detection ─────────────────────────────────────────
 export interface FraudAnalysis {
   riskLevel: 'safe' | 'caution' | 'high-risk';
   riskScore: number;
-  redFlags: { flag: string; description: string; severity: 'high' | 'medium' | 'low' }[];
+  confidence?: number;
+  redFlags: { flag: string; description: string; severity: 'low' | 'medium' | 'high' }[];
   recommendation: string;
   analysisDetails: string[];
 }
 
-export interface ChatMessage {
-  id: string;
-  role: 'user' | 'ai';
-  content: string;
-  timestamp: Date;
-  type?: 'text' | 'chart' | 'warning' | 'recommendation';
-}
-
+// ── Learning ────────────────────────────────────────────────
 export interface LearningModule {
   id: string;
   title: string;
   description: string;
   icon: string;
   level: 'beginner' | 'intermediate' | 'advanced';
-  progress: number;
-  isCompleted: boolean;
+  lessons: Lesson[];
   points: number;
   badge: string;
-  lessons: Lesson[];
+  isCompleted: boolean;
+  progress: number;
 }
 
 export interface Lesson {
   id: string;
   title: string;
   content: string;
-  isCompleted: boolean;
   quiz: QuizQuestion[];
+  isCompleted: boolean;
 }
 
 export interface QuizQuestion {
@@ -187,4 +236,42 @@ export interface QuizQuestion {
   options: string[];
   correctIndex: number;
   explanation: string;
+}
+
+// ── News ────────────────────────────────────────────────────
+export interface NewsItem {
+  id: string;
+  title: string;
+  description: string;
+  source: string;
+  publishedAt: string;
+  url: string;
+  imageUrl?: string;
+  sentiment: Sentiment;
+  impactLevel: 'high' | 'medium' | 'low';
+  sector: string;
+  companies: string[];
+  aiSummary: string;
+}
+
+// ── AI Chat ─────────────────────────────────────────────────
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'ai';
+  content: string;
+  timestamp: Date;
+  type?: 'text' | 'chart' | 'warning' | 'recommendation' | 'analysis';
+  data?: Record<string, unknown>;
+}
+
+// ── Onboarding ──────────────────────────────────────────────
+export type OnboardingStep = 'welcome' | 'personal' | 'financial' | 'goals' | 'risk' | 'complete';
+
+// ── Navigation ──────────────────────────────────────────────
+export interface NavItem {
+  id: string;
+  label: string;
+  icon: string;
+  path: string;
+  badge?: string;
 }

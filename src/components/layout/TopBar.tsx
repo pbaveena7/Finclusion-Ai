@@ -21,9 +21,9 @@ export default function TopBar() {
       </div>
 
       {/* Right Section */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         {/* Language Selector */}
-        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all border border-border-primary">
+        <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200 border border-border-primary">
           <Globe className="w-3.5 h-3.5" />
           EN
         </button>
@@ -32,7 +32,7 @@ export default function TopBar() {
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
+            className="relative p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200"
           >
             <Bell className="w-5 h-5" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-emerald-500 rounded-full ring-2 ring-dark-900" />
