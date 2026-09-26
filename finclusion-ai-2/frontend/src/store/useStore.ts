@@ -38,6 +38,10 @@ interface AppState {
   setSearchQuery: (query: string) => void;
   theme: string;
   setTheme: (theme: string) => void;
+  language: string;
+  setLanguage: (lang: string) => void;
+  llmApiKey: string;
+  setLlmApiKey: (key: string) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -85,10 +89,20 @@ export const useStore = create<AppState>((set) => ({
   toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
   searchQuery: '',
   setSearchQuery: (query) => set({ searchQuery: query }),
-  theme: localStorage.getItem('theme') || 'midnight',
+  theme: localStorage.getItem('theme') || 'light',
   setTheme: (theme) => {
     localStorage.setItem('theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
     set({ theme });
+  },
+  language: localStorage.getItem('language') || 'English',
+  setLanguage: (language) => {
+    localStorage.setItem('language', language);
+    set({ language });
+  },
+  llmApiKey: localStorage.getItem('llmApiKey') || '',
+  setLlmApiKey: (llmApiKey) => {
+    localStorage.setItem('llmApiKey', llmApiKey);
+    set({ llmApiKey });
   },
 }));

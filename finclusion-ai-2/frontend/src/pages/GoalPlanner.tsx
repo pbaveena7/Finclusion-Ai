@@ -12,6 +12,7 @@ import { useStore } from '../store/useStore';
 import { sendMessage } from '../api';
 import Sidebar from '../components/Sidebar';
 import { mockGoals } from '../data/mockGoals';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 const OVERVIEW_DATA = [
   { subject: 'Real Estate', A: 85, fullMark: 100 },
@@ -105,8 +106,8 @@ export default function GoalPlanner() {
         <div className="p-8 max-w-[1400px] mx-auto w-full grid grid-cols-1 xl:grid-cols-3 gap-8">
           
           {/* ── Left Column: Goal List & Radar ── */}
-          <div className="space-y-6">
-            <div className="glass-card p-6 flex flex-col items-center justify-center h-[280px]">
+          <ScrollReveal delay={0.1} className="space-y-6">
+            <div className="glass-card p-6 flex flex-col items-center justify-center h-[280px] card-hover">
               <h3 className="text-sm font-bold w-full text-left mb-2">Life Goals Balance</h3>
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={OVERVIEW_DATA}>
@@ -145,7 +146,7 @@ export default function GoalPlanner() {
                 ))}
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* ── Right Column: Goal Detail & Projection ── */}
           <div className="xl:col-span-2 space-y-6">
@@ -155,7 +156,7 @@ export default function GoalPlanner() {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}
               >
                 {/* Active Goal Header */}
-                <div className="glass-card p-8 mb-6 relative overflow-hidden">
+                <div className="glass-card p-8 mb-6 relative overflow-hidden card-hover">
                   <div className="absolute top-0 left-0 w-1 h-full" style={{ background: activeGoal.color }} />
                   
                   <div className="flex flex-col md:flex-row justify-between items-start gap-6">
@@ -198,7 +199,7 @@ export default function GoalPlanner() {
                 </div>
 
                 {/* AI Assistant Insight */}
-                <div className="glass-card border-[var(--border-card)] p-1 flex flex-col md:flex-row gap-4 mb-6 relative overflow-hidden">
+                <div className="glass-card border-[var(--border-card)] p-1 flex flex-col md:flex-row gap-4 mb-6 relative overflow-hidden card-hover">
                   <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay" style={{ background: 'var(--accent-gradient)' }} />
                   
                   <div className="w-16 flex items-center justify-center border-r shrink-0" style={{ borderColor: 'var(--border-card)' }}>
@@ -225,7 +226,7 @@ export default function GoalPlanner() {
                 </div>
 
                 {/* Projection Chart */}
-                <div className="glass-card p-6 h-[320px]">
+                <div className="glass-card p-6 h-[320px] card-hover">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-sm font-bold flex items-center gap-2"><TrendingUp className="w-4 h-4 text-[var(--accent-secondary)]" /> Growth Projection</h3>
                   </div>

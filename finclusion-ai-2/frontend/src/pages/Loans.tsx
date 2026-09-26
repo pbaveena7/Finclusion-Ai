@@ -5,6 +5,7 @@ import {
 import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useStore } from '../store/useStore';
 import Sidebar from '../components/Sidebar';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 const BANK_RATES = [
   { bank: 'SBI', home: '8.40%', personal: '11.15%', auto: '8.65%', fd: '7.10%', color: 'var(--accent-primary)' },
@@ -58,8 +59,8 @@ export default function Loans() {
           <div className="grid grid-cols-12 gap-8">
             
             {/* EMI Calculator */}
-            <div className="col-span-12 xl:col-span-8 flex flex-col gap-6">
-              <div className="glass-card-lg p-8 flex flex-col md:flex-row gap-10 items-center relative overflow-hidden group">
+            <ScrollReveal delay={0.1} className="col-span-12 xl:col-span-8 flex flex-col gap-6">
+              <div className="glass-card-lg p-8 flex flex-col md:flex-row gap-10 items-center relative overflow-hidden group card-hover">
                 <div className="absolute top-0 left-0 w-48 h-48 blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity duration-700" style={{ background: 'var(--accent-primary)' }} />
                 
                 <div className="flex-1 w-full space-y-6 relative z-10">
@@ -138,7 +139,7 @@ export default function Loans() {
               </div>
 
               {/* Tips Widget */}
-              <div className="rounded-3xl p-6 flex items-start gap-5 border relative overflow-hidden" style={{ background: 'var(--accent-glow-subtle)', borderColor: 'var(--accent-primary)' }}>
+              <div className="rounded-3xl p-6 flex items-start gap-5 border relative overflow-hidden card-hover" style={{ background: 'var(--accent-glow-subtle)', borderColor: 'var(--accent-primary)' }}>
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style={{ background: 'var(--accent-gradient)' }}>
                   <RefreshCw className="w-6 h-6 text-white" />
                 </div>
@@ -147,10 +148,10 @@ export default function Loans() {
                   <p className="text-sm leading-relaxed" style={{ color: 'var(--text-main)' }}>Paying just 1 extra EMI every year can reduce your 20-year loan tenure to just 16 years, saving you <strong className="tabular-nums" style={{ color: 'var(--accent-primary)' }}>₹{(totalInterest * 0.2).toLocaleString('en-IN')}</strong> in interest.</p>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Bank Rates Table */}
-            <div className="col-span-12 xl:col-span-4 glass-card-lg p-6 flex flex-col">
+            <ScrollReveal delay={0.2} className="col-span-12 xl:col-span-4 glass-card-lg p-6 flex flex-col card-hover">
               <h2 className="text-xl font-extrabold flex items-center gap-2 mb-6 text-[var(--text-main)]">
                 <Landmark className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} /> Live Interest Rates
               </h2>
@@ -184,7 +185,7 @@ export default function Loans() {
               <button className="w-full mt-6 py-3.5 border rounded-xl font-bold transition-all text-sm hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-main)]" style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
                 Compare All Banks
               </button>
-            </div>
+            </ScrollReveal>
 
           </div>
         </div>

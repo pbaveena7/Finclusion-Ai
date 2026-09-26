@@ -46,13 +46,14 @@ async def root():
     }
 
 
-from app.routers import chat, market, auth
+from app.routers import chat, market, auth, assets
 from app.db.database import engine, Base
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(assets.router, prefix="/api/assets", tags=["Financial Assets"])
 # app.include_router(portfolio.router, prefix="/api/portfolio", tags=["Portfolio"])
 # app.include_router(stocks.router, prefix="/api/stocks", tags=["Stocks"])
 # app.include_router(mutual_funds.router, prefix="/api/mutual-funds", tags=["Mutual Funds"])

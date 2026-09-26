@@ -9,6 +9,7 @@ import Sidebar from '../components/Sidebar';
 import ThemeSelector from '../components/ThemeSelector';
 import { useStore } from '../store/useStore';
 import type { FraudAnalysis } from '../types';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 const SAMPLE_SCAMS = [
   'Congratulations! You won ₹50 Lakh in KBC lottery. Send ₹5,000 processing fee to claim.',
@@ -120,10 +121,11 @@ export default function Safety() {
         <div className="p-8 max-w-[1600px] mx-auto w-full space-y-8">
           
           {/* Emergency Helpline Banner */}
-          <div className="p-5 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-4" style={{ background: 'rgba(239, 68, 68, 0.08)', borderColor: 'rgba(239, 68, 68, 0.25)' }}>
+          <ScrollReveal delay={0.05}>
+          <div className="p-5 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-4 card-hover" style={{ background: 'rgba(239, 68, 68, 0.08)', borderColor: 'rgba(239, 68, 68, 0.25)' }}>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0">
-                <PhoneCall className="w-5 h-5 text-red-400" />
+                <PhoneCall className="w-5 h-5 text-red-400 icon-hover" />
               </div>
               <div>
                 <p className="text-sm font-bold text-red-300">National Cyber Financial Fraud Reporting Helpline</p>
@@ -140,23 +142,33 @@ export default function Safety() {
               </a>
             </div>
           </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Input & Scanner Column */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="glass-card-lg p-6 space-y-4">
+            <ScrollReveal delay={0.1} className="lg:col-span-2 space-y-6">
+            <div className="glass-card-lg p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[var(--text-main)]">Scan Message or SMS</h3>
                   <span className="text-xs text-[var(--text-muted)]">Heuristic AI Phishing Engine</span>
                 </div>
+
+                {/* Scan animation overlay when analyzing */}
+                <div className="relative">
+                  {analyzing && (
+                    <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none z-10">
+                      <div className="scan-line" />
+                    </div>
+                  )}
 
                 <textarea
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   placeholder="Paste suspicious SMS, WhatsApp text, lottery offer, or KYC update message here..."
                   rows={5}
-                  className="glass-input w-full rounded-2xl p-4 text-sm resize-none"
+                  className="glass-input w-full rounded-2xl p-4 text-sm resize-none glow-focus"
                 />
+                </div>
 
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   {/* Sample Scams */}
@@ -177,14 +189,14 @@ export default function Safety() {
                   <button
                     onClick={handleAnalyze}
                     disabled={!input.trim() || analyzing}
-                    className="px-6 py-3 rounded-xl font-bold text-xs text-white flex items-center justify-center gap-2 hover:brightness-110 disabled:opacity-50 transition-all shrink-0"
+                    className="px-6 py-3 rounded-xl font-bold text-xs text-white flex items-center justify-center gap-2 hover:brightness-110 disabled:opacity-50 transition-all shrink-0 btn-animate"
                     style={{ background: 'linear-gradient(135deg, #ef4444, #f97316)' }}
                   >
                     {analyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldAlert className="w-4 h-4" />}
                     <span>{analyzing ? 'Scanning Heuristics...' : 'Analyze Threat'}</span>
                   </button>
                 </div>
-              </div>
+            </div>
 
               {/* Analysis Result Display */}
               <AnimatePresence>
@@ -268,11 +280,11 @@ export default function Safety() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </ScrollReveal>
 
             {/* Recent Scans History */}
-            <div className="space-y-6">
-              <div className="glass-card-lg p-6 space-y-4">
+            <ScrollReveal delay={0.18} className="space-y-6">
+              <div className="glass-card-lg p-6 space-y-4 card-hover">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-bold text-[var(--text-main)] flex items-center gap-2">
                     <History className="w-4 h-4 text-[var(--accent-primary)]" />
@@ -314,7 +326,7 @@ export default function Safety() {
               </div>
 
               {/* Safety Rules Card */}
-              <div className="glass-card p-6 space-y-3">
+              <div className="glass-card p-6 space-y-3 card-hover">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--accent-primary)]">The 4 Golden Banking Rules</h4>
                 <ul className="text-xs space-y-2 text-[var(--text-muted)]">
                   <li>• <strong>Never</strong> share UPI PIN while receiving money.</li>
@@ -323,7 +335,7 @@ export default function Safety() {
                   <li>• Always verify SMS sender ID (e.g., AD-SBIIN, VM-HDFCBK).</li>
                 </ul>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </main>

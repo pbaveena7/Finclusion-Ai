@@ -1,61 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, LineChart, PieChart, Wallet, Landmark,
-  FileText, Shield, Headphones, HelpCircle, Newspaper,
-  Calculator, ShieldCheck, BrainCircuit, LogOut, Sparkles,
-  GraduationCap, BarChart2, User, TrendingUp
+  LayoutDashboard, TrendingUp, PieChart, BarChart2, Target, Calculator,
+  Shield, Landmark, GraduationCap, Newspaper, Receipt, Palmtree,
+  PiggyBank, CreditCard, Flame, User, LogOut, ChevronLeft, ChevronRight,
+  Wallet, BrainCircuit, Sparkles, HelpCircle, Settings, Search
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import ThemeSelector from './ThemeSelector';
+import SettingsModal from './SettingsModal';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from '../hooks/useTranslation';
 
-const SIDEBAR_NAV = [
-  { id: 'overview',      label: 'Dashboard',         icon: LayoutDashboard, path: '/' },
-  { id: 'stocks',        label: 'Stocks',             icon: TrendingUp,      path: '/stocks' },
-  { id: 'mutual-funds',  label: 'Mutual Funds',       icon: PieChart,        path: '/mutual-funds' },
-  { id: 'portfolio',     label: 'Portfolio',          icon: BarChart2,       path: '/portfolio' },
-  { id: 'goals',         label: 'Goal Planner',       icon: Wallet,          path: '/goals' },
-  { id: 'loans',         label: 'Loans & SIP',        icon: Calculator,      path: '/loans' },
-  { id: 'schemes',       label: 'Govt Schemes',       icon: Landmark,        path: '/schemes' },
-  { id: 'safety',        label: 'Safety & Fraud',     icon: Shield,          path: '/safety' },
-  { id: 'learning',      label: 'Learning Hub',       icon: GraduationCap,   path: '/learning' },
-  { id: 'news',          label: 'Market News',        icon: Newspaper,       path: '/news' },
-  { id: 'profile',       label: 'My Profile',         icon: User,            path: '/profile' },
-];
-
-const QUICK_ACTIONS = [
+const NAV_SECTIONS = [
   {
-    id: 'sip',
-    label: 'SIP Calc',
-    icon: Calculator,
-    path: '/loans',
-    gradient: 'from-emerald-500 to-cyan-500',
-    glow: 'shadow-[0_4px_20px_rgba(16,185,129,0.3)]',
+    label: 'Overview',
+    items: [
+      { id: 'overview', label: 'Dashboard', icon: LayoutDashboard, path: '/' },
+    ]
   },
   {
-    id: 'fraud',
-    label: 'Fraud Check',
-    icon: ShieldCheck,
-    path: '/safety',
-    gradient: 'from-rose-500 to-pink-500',
-    glow: 'shadow-[0_4px_20px_rgba(244,63,94,0.3)]',
+    label: 'AI',
+    items: [
+      { id: 'ai', label: 'AI Assistant', icon: BrainCircuit, path: '/ai-assistant' },
+    ]
   },
   {
-    id: 'schemes',
-    label: 'Schemes',
-    icon: Landmark,
-    path: '/schemes',
-    gradient: 'from-amber-500 to-orange-500',
-    glow: 'shadow-[0_4px_20px_rgba(245,158,11,0.3)]',
+    label: 'Invest',
+    items: [
+      { id: 'stocks', label: 'Stocks', icon: TrendingUp, path: '/stocks' },
+      { id: 'mutual-funds', label: 'Mutual Funds', icon: PieChart, path: '/mutual-funds' },
+      { id: 'portfolio', label: 'Portfolio', icon: BarChart2, path: '/portfolio' },
+      { id: 'options', label: 'Options', icon: Flame, path: '/options' },
+    ]
   },
   {
-    id: 'ai',
-    label: 'Ask AI',
-    icon: BrainCircuit,
-    path: '/ai-assistant',
-    gradient: 'from-violet-500 to-purple-500',
-    glow: 'shadow-[0_4px_20px_rgba(139,92,246,0.3)]',
+    label: 'Plan',
+    items: [
+      { id: 'goals', label: 'Goals', icon: Target, path: '/goals' },
+      { id: 'loans', label: 'Loan Calculator', icon: Calculator, path: '/loans' },
+      { id: 'tax', label: 'Tax Planner', icon: Receipt, path: '/tax' },
+      { id: 'retirement', label: 'FIRE Calculator', icon: Palmtree, path: '/retirement' },
+      { id: 'fd-calculator', label: 'FD Calculator', icon: PiggyBank, path: '/fd-calculator' },
+      { id: 'credit-score', label: 'Credit Score', icon: CreditCard, path: '/credit-score' },
+    ]
+  },
+  {
+    label: 'Protect',
+    items: [
+      { id: 'safety', label: 'Fraud Detection', icon: Shield, path: '/safety' },
+    ]
+  },
+  {
+    label: 'Discover',
+    items: [
+      { id: 'schemes', label: 'Govt Schemes', icon: Landmark, path: '/schemes' },
+      { id: 'learning', label: 'Learn', icon: GraduationCap, path: '/learning' },
+      { id: 'news', label: 'News & Insights', icon: Newspaper, path: '/news' },
+    ]
   },
 ];
 
@@ -66,160 +69,152 @@ interface SidebarProps {
 export default function Sidebar({ activeId }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useStore();
+  const { user, logout, sidebarCollapsed: collapsed, toggleSidebar } = useStore();
+  const { t } = useTranslation();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // Match current path to a nav item
-  const currentId = activeId ?? (
-    SIDEBAR_NAV.find(n => n.path === location.pathname)?.id ??
-    (location.pathname === '/' ? 'overview' : 'overview')
-  );
+  const currentPath = location.pathname;
+  const allItems = NAV_SECTIONS.flatMap(s => s.items);
+  const currentId = activeId ?? (allItems.find(n => n.path === currentPath)?.id ?? 'overview');
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const w = collapsed ? 'w-[72px]' : 'w-[260px]';
+
   return (
-    <aside className="w-64 border-r flex flex-col z-20 h-screen fixed backdrop-blur-xl" style={{ background: 'var(--sidebar-bg)', borderColor: 'var(--sidebar-border)' }}>
-      
-      {/* Subtle glow accent at top */}
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'var(--accent-gradient)', opacity: 0.4 }} />
-      
-      {/* Logo */}
-      <div className="p-6 flex items-center gap-3 shrink-0">
-        <motion.div 
-          whileHover={{ rotate: 12, scale: 1.1 }}
-          className="w-9 h-9 rounded-xl flex items-center justify-center shadow-glow relative overflow-hidden"
-          style={{ background: 'var(--accent-gradient)' }}
-        >
-          <Sparkles className="w-5 h-5 text-white relative z-10" />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
-        </motion.div>
-        <div className="leading-tight">
-          <span className="font-extrabold text-sm tracking-wider uppercase block" style={{ color: 'var(--text-main)' }}>Finclusion</span>
-          <span className="font-medium text-[10px] tracking-widest uppercase block gradient-text">AI 2.0</span>
-        </div>
+    <>
+    <aside className={`hidden lg:flex ${w} border-r flex-col z-20 h-screen fixed transition-all duration-300 ease-in-out`}
+      style={{ background: 'var(--sidebar-bg)', borderColor: 'var(--sidebar-border)' }}>
+
+      {/* ── Logo ───────────────────────────────────── */}
+      <div className={`shrink-0 flex items-center ${collapsed ? 'justify-center px-0' : 'px-5'} py-5 border-b`} style={{ borderColor: 'var(--sidebar-border)' }}>
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+            style={{ background: 'var(--accent-gradient)' }}>
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          {!collapsed && (
+            <div className="leading-tight overflow-hidden">
+              <span className="font-bold text-sm tracking-tight block" style={{ color: 'var(--text-main)' }}>FINCLUSION AI</span>
+              <span className="text-[10px] font-medium block" style={{ color: 'var(--text-dim)' }}>v2.0 • AI-Powered</span>
+            </div>
+          )}
+        </Link>
       </div>
 
-      {/* Main Nav — scrollable */}
-      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto no-scrollbar">
-        {SIDEBAR_NAV.map(nav => {
-          const isActive = currentId === nav.id;
-          return (
-            <motion.div key={nav.id} whileHover={{ x: 4 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                to={nav.path}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-300 relative group ${
-                  isActive
-                    ? 'text-white'
-                    : 'hover:bg-[var(--bg-card)]'
-                }`}
-                style={isActive ? {} : { color: 'var(--text-muted)' }}
-              >
-                {/* Active background */}
-                {isActive && (
-                  <motion.div 
-                    layoutId="activeNav"
-                    className="absolute inset-0 rounded-xl shadow-glow-sm"
-                    style={{ background: 'var(--accent-gradient)', opacity: 0.9 }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                  />
-                )}
-                {/* Active glow bar */}
-                {isActive && (
-                  <motion.div 
-                    layoutId="activeGlow"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 rounded-r-full"
-                    style={{ background: 'var(--accent-primary)', boxShadow: `0 0 12px var(--glow-color)` }}
-                  />
-                )}
-                <nav.icon className={`w-4 h-4 shrink-0 relative z-10 transition-colors ${isActive ? 'text-white' : 'group-hover:text-[var(--text-main)]'}`} />
-                <span className="relative z-10">{nav.label}</span>
-              </Link>
-            </motion.div>
-          );
-        })}
+      {/* ── Nav ────────────────────────────────────── */}
+      <nav className="flex-1 overflow-y-auto no-scrollbar py-3 px-2">
+        {NAV_SECTIONS.map(section => (
+          <div key={section.label} className="mb-1">
+            {!collapsed && (
+              <p className="px-3 pt-4 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.08em]"
+                style={{ color: 'var(--text-dim)' }}>
+                {t(`section.${section.label.toLowerCase()}`) !== `section.${section.label.toLowerCase()}` 
+                  ? t(`section.${section.label.toLowerCase()}`) 
+                  : section.label}
+              </p>
+            )}
+            {collapsed && <div className="my-2 mx-auto w-6 h-px" style={{ background: 'var(--border-card)' }} />}
 
-        {/* Quick Actions */}
-        <div className="pt-4 pb-2">
-          <p className="text-[10px] font-bold uppercase tracking-widest px-4 mb-3" style={{ color: 'var(--text-dim)' }}>
-            Quick Actions
-          </p>
-          <div className="grid grid-cols-2 gap-2 px-1">
-            {QUICK_ACTIONS.map((action, i) => (
-              <motion.div
-                key={action.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * i }}
-                whileHover={{ scale: 1.06, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  to={action.path}
-                  className="flex flex-col items-center gap-2 p-3 rounded-2xl border transition-all duration-300 group hover:border-transparent"
-                  style={{ background: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
+            {section.items.map(nav => {
+              const isActive = currentId === nav.id;
+              const translatedLabel = t(`nav.${nav.id}`) !== `nav.${nav.id}` ? t(`nav.${nav.id}`) : nav.label;
+              return (
+                <Link key={nav.id} to={nav.path}
+                  className={`flex items-center gap-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 relative group
+                    ${collapsed ? 'justify-center px-0 py-2.5 mx-auto w-11' : 'px-3 py-[7px]'}
+                    ${isActive
+                      ? ''
+                      : 'hover:bg-[var(--sidebar-item-hover)]'
+                    }`}
+                  style={isActive ? {
+                    background: 'var(--sidebar-item-active)',
+                    color: 'var(--accent-primary)',
+                  } : {
+                    color: 'var(--text-muted)',
+                  }}
+                  title={collapsed ? translatedLabel : undefined}
                 >
-                  <div
-                    className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.gradient} ${action.glow} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <action.icon className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-[10px] font-bold text-center leading-tight transition-colors" style={{ color: 'var(--text-muted)' }}>
-                    {action.label}
-                  </span>
+                  {/* Active indicator bar */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeIndicator"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-r-full"
+                      style={{ height: 18, background: 'var(--accent-primary)' }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+
+                  <nav.icon className="w-[18px] h-[18px] shrink-0" />
+                  {!collapsed && <span className="truncate">{translatedLabel}</span>}
+
+                  {/* Tooltip for collapsed */}
+                  {collapsed && (
+                    <div className="absolute left-full ml-2 px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none"
+                      style={{ background: 'var(--bg-card)', color: 'var(--text-main)', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-card)' }}>
+                      {translatedLabel}
+                    </div>
+                  )}
                 </Link>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
-        </div>
+        ))}
       </nav>
 
-      {/* Bottom section */}
-      <div className="p-4 space-y-1 border-t shrink-0" style={{ borderColor: 'var(--sidebar-border)' }}>
-        <Link
-          to="/support"
-          className="flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-semibold transition-all hover:bg-[var(--bg-card)]"
-          style={{ color: 'var(--text-muted)' }}
-        >
-          <Headphones className="w-4 h-4" /> Support
-        </Link>
-        <Link
-          to="/help"
-          className="flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-semibold transition-all hover:bg-[var(--bg-card)]"
-          style={{ color: 'var(--text-muted)' }}
-        >
-          <HelpCircle className="w-4 h-4" /> Help Center
-        </Link>
-
-        {/* Professional Theme Switcher */}
-        <div className="pt-2 pb-1">
-          <ThemeSelector />
-        </div>
-
-        {/* User card */}
-        <div className="mt-2 p-2.5 rounded-xl border flex items-center justify-between" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-card)' }}>
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm uppercase shrink-0" style={{ background: 'var(--accent-gradient)' }}>
-              {user?.name?.[0] || 'U'}
-            </div>
-            <div className="overflow-hidden">
-              <p className="text-xs font-bold truncate max-w-[90px]" style={{ color: 'var(--text-main)' }}>{user?.name || 'User'}</p>
-              <p className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Premium ✦</p>
-            </div>
+      {/* ── Bottom ──────────────────────────────────── */}
+      <div className="shrink-0 border-t px-2 py-3 space-y-1" style={{ borderColor: 'var(--sidebar-border)' }}>
+        {!collapsed && (
+          <div className="px-1 pb-2 flex gap-2 justify-between">
+            <ThemeSelector />
+            <LanguageSwitcher />
           </div>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleLogout}
-            className="hover:text-red-400 transition-colors p-1.5 rounded-lg hover:bg-red-500/10"
-            style={{ color: 'var(--text-muted)' }}
-            title="Sign out / Switch account"
-          >
-            <LogOut className="w-4 h-4" />
-          </motion.button>
+        )}
+
+        {/* Settings button */}
+        <button onClick={() => setIsSettingsOpen(true)}
+          className="w-full flex items-center justify-center gap-2 py-1.5 mb-2 rounded-lg text-xs font-medium transition-colors hover:bg-[var(--sidebar-item-hover)]"
+          style={{ color: 'var(--text-main)' }}>
+          {collapsed ? <Settings className="w-4 h-4" /> : <><Settings className="w-4 h-4" /> <span>Settings</span></>}
+        </button>
+
+        {/* Collapse toggle */}
+        <button onClick={toggleSidebar}
+          className="w-full flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-medium transition-colors"
+          style={{ color: 'var(--text-dim)' }}>
+          {collapsed ? <ChevronRight className="w-4 h-4" /> : <><ChevronLeft className="w-4 h-4" /> <span>Collapse</span></>}
+        </button>
+
+        {/* User */}
+        <div className={`rounded-lg border flex items-center ${collapsed ? 'justify-center p-2' : 'justify-between p-2.5'}`}
+          style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border-card)' }}>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-white font-semibold text-xs shrink-0"
+              style={{ background: 'var(--accent-gradient)' }}>
+              {user?.name?.[0] || 'N'}
+            </div>
+            {!collapsed && (
+              <div className="overflow-hidden">
+                <p className="text-xs font-semibold truncate max-w-[100px]" style={{ color: 'var(--text-main)' }}>{user?.name || 'Naveen'}</p>
+                <p className="text-[10px]" style={{ color: 'var(--text-dim)' }}>Premium</p>
+              </div>
+            )}
+          </div>
+          {!collapsed && (
+            <button onClick={handleLogout}
+              className="p-1 rounded hover:bg-[var(--bg-card-hover)] transition-colors"
+              style={{ color: 'var(--text-dim)' }}
+              title="Sign out">
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
       </div>
     </aside>
+    <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+    </>
   );
 }

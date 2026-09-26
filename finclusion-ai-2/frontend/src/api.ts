@@ -14,6 +14,30 @@ function getAuthHeaders() {
 }
 
 export async function sendMessage(messages: Message[], language: string) {
+  const llmApiKey = localStorage.getItem('llmApiKey');
+  
+  if (llmApiKey) {
+    try {
+      const prompt = `You are Finclusion AI, a premium, elite financial assistant. Always respond in the language: ${language}. Keep responses highly professional, insightful, and formatted cleanly. User request: ${messages[messages.length - 1].content}`;
+      
+      const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${llmApiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
+      
+      if (geminiResponse.ok) {
+        const geminiData = await geminiResponse.json();
+        const reply = geminiData.candidates[0].content.parts[0].text;
+        return { answer: reply, response: reply, status: "llm_success" };
+      }
+    } catch (e) {
+      console.warn("Direct LLM API call failed, falling back to backend/NLP", e);
+    }
+  }
+
   try {
     const response = await fetch(`${API_URL}/api/chat`, {
       method: "POST",
@@ -135,13 +159,43 @@ export async function fetchMe() {
 }
 
 export async function fetchIndices() {
-  const response = await fetch(`${API_URL}/api/market/indices`);
-  if (!response.ok) throw new Error("Failed to fetch indices");
-  return response.json();
+  try {
+    const response = await fetch(`${API_URL}/api/market/indices`);
+    if (response.ok) return await response.json();
+  } catch (err) {
+    console.warn("Backend market data unavailable, using fallback", err);
+  }
+  return { nifty: [{ time: '9:15', close: 24200 }, { time: '15:30', close: 24350 }], sensex: [{ time: '9:15', close: 79500 }, { time: '15:30', close: 79800 }] };
 }
 
 export async function fetchQuote(symbol: string) {
-  const response = await fetch(`${API_URL}/api/market/quote/${symbol}`);
-  if (!response.ok) throw new Error("Failed to fetch quote");
-  return response.json();
+  try {
+    const response = await fetch(`${API_URL}/api/market/quote/${symbol}`);
+    if (response.ok) return await response.json();
+  } catch (err) {
+    console.warn("Backend quote unavailable, using fallback", err);
+  }
+  return { symbol, price: 100, change: 0, changePercent: 0, history: [] };
+}
+
+export async function searchAssets(category?: string, query?: string, page: number = 1, pageSize: number = 20) {
+  try {
+    const params = new URLSearchParams();
+    if (category && category.toLowerCase() !== 'all') params.append('category', category);
+    if (query) params.append('q', query);
+    params.append('page', page.toString());
+    params.append('page_size', pageSize.toString());
+
+    const response = await fetch(`${API_URL}/api/assets/search?${params.toString()}`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (err) {
+    console.warn("Failed to fetch assets from backend", err);
+  }
+  return { data: [], total: 0, page, page_size: pageSize };
 }

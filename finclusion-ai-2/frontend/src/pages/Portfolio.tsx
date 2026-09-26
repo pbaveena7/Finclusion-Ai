@@ -12,6 +12,7 @@ import Sidebar from '../components/Sidebar';
 import ThemeSelector from '../components/ThemeSelector';
 import { useStore } from '../store/useStore';
 import { mockPortfolio } from '../data/mockPortfolio';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 const ASSET_TYPES = ['all', 'stock', 'mutualfund', 'gold', 'fd', 'ppf'];
 
@@ -88,8 +89,9 @@ export default function Portfolio() {
         <div className="p-8 max-w-[1600px] mx-auto w-full space-y-8">
           
           {/* Summary Metric Cards */}
+          <ScrollReveal delay={0.1}>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 relative overflow-hidden group">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 relative overflow-hidden group card-hover">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Portfolio Value</span>
                 <Wallet className="w-4 h-4 text-[var(--accent-primary)]" />
@@ -101,7 +103,7 @@ export default function Portfolio() {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card p-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card p-6 card-hover">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Total Invested</span>
                 <DollarSign className="w-4 h-4 text-[var(--accent-secondary)]" />
@@ -110,7 +112,7 @@ export default function Portfolio() {
               <p className="mt-3 text-xs text-[var(--text-muted)]">Across 5 Asset Classes</p>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-6 card-hover">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Total Profit / Return</span>
                 <TrendingUp className="w-4 h-4 text-emerald-400" />
@@ -123,7 +125,7 @@ export default function Portfolio() {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card p-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card p-6 card-hover">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Health & Risk Index</span>
                 <ShieldCheck className="w-4 h-4 text-[var(--accent-primary)]" />
@@ -132,11 +134,13 @@ export default function Portfolio() {
               <p className="mt-3 text-xs text-emerald-400 font-semibold">Low Volatility • Well Diversified</p>
             </motion.div>
           </div>
+          </ScrollReveal>
 
           {/* Charts Row */}
+          <ScrollReveal delay={0.2}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Allocation Donut */}
-            <div className="glass-card-lg p-6 lg:col-span-1 flex flex-col justify-between">
+            <div className="glass-card-lg p-6 lg:col-span-1 flex flex-col justify-between card-hover">
               <div>
                 <h3 className="text-base font-bold mb-1 text-[var(--text-main)]">Asset Allocation</h3>
                 <p className="text-xs text-[var(--text-muted)] mb-4">Target vs Current Diversification</p>
@@ -185,7 +189,7 @@ export default function Portfolio() {
             </div>
 
             {/* Growth Curve */}
-            <div className="glass-card-lg p-6 lg:col-span-2 flex flex-col justify-between">
+            <div className="glass-card-lg p-6 lg:col-span-2 flex flex-col justify-between card-hover">
               <div className="flex justify-between items-center mb-4">
                 <div>
                   <h3 className="text-base font-bold mb-1 text-[var(--text-main)]">Portfolio Growth Trajectory</h3>
@@ -217,9 +221,11 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
 
           {/* Holdings Section */}
-          <div className="glass-card-lg p-6 space-y-5">
+          <ScrollReveal delay={0.3}>
+          <div className="glass-card-lg p-6 space-y-5 card-hover">
             <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
               <div>
                 <h3 className="text-xl font-bold text-[var(--text-main)]">Asset Holdings Breakdown</h3>
@@ -315,6 +321,7 @@ export default function Portfolio() {
               </table>
             </div>
           </div>
+          </ScrollReveal>
         </div>
       </main>
     </div>

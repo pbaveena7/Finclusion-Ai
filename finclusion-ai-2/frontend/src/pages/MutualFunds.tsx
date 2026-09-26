@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { mockMutualFunds as mutualFunds } from '../data/mockMutualFunds';
 import { useStore } from '../store/useStore';
 import Sidebar from '../components/Sidebar';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 const RISK_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   'low':        { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20' },
@@ -127,6 +128,7 @@ export default function MutualFunds() {
                 </div>
 
                 {/* Fund Cards */}
+                <ScrollReveal delay={0.1}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                   {filteredFunds.map((fund, idx) => {
                     const riskStyle = getRiskStyle(fund.risk ?? fund.riskLevel);
@@ -138,7 +140,7 @@ export default function MutualFunds() {
                       <motion.div 
                         key={fund.id ?? fund.schemeCode}
                         initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}
-                        className={`glass-card p-6 transition-all duration-300 ${isExpanded ? 'border-[var(--accent-primary)] shadow-glow-sm bg-[var(--bg-card-hover)]' : 'hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)]'}`}
+                        className={`glass-card p-6 transition-all duration-300 card-hover ${isExpanded ? 'border-[var(--accent-primary)] shadow-glow-sm bg-[var(--bg-card-hover)]' : 'hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)]'}`}
                       >
                         <div className="flex items-start justify-between mb-5">
                           <div className="flex-1 min-w-0 pr-4">
@@ -228,6 +230,7 @@ export default function MutualFunds() {
                     );
                   })}
                 </div>
+                </ScrollReveal>
               </motion.div>
             )}
 
@@ -236,8 +239,8 @@ export default function MutualFunds() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   
                   {/* Controls Panel */}
-                  <div className="lg:col-span-1 space-y-6">
-                    <div className="glass-card-lg p-6">
+                  <ScrollReveal delay={0.1} className="lg:col-span-1 space-y-6">
+                    <div className="glass-card-lg p-6 card-hover">
                       <h3 className="font-bold mb-6 flex items-center gap-2 text-lg">
                         <Target className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} /> SIP Target
                       </h3>
@@ -276,10 +279,10 @@ export default function MutualFunds() {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </ScrollReveal>
 
                   {/* Results Panel */}
-                  <div className="lg:col-span-2 space-y-6">
+                  <ScrollReveal delay={0.2} className="lg:col-span-2 space-y-6">
                     
                     <div className="grid grid-cols-3 gap-4">
                       {[
@@ -289,7 +292,7 @@ export default function MutualFunds() {
                       ].map(card => (
                         <div 
                           key={card.label} 
-                          className="glass-card p-5 text-center transition-all hover:scale-[1.02]"
+                          className="glass-card p-5 text-center transition-all card-hover"
                           style={card.highlight ? { borderColor: 'var(--accent-primary)', boxShadow: '0 0 20px var(--accent-glow-subtle)' } : {}}
                         >
                           <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-dim)' }}>{card.label}</p>
@@ -300,7 +303,7 @@ export default function MutualFunds() {
                       ))}
                     </div>
 
-                    <div className="glass-card-lg p-6">
+                    <div className="glass-card-lg p-6 card-hover">
                       <h3 className="font-bold mb-6 text-sm">Wealth Projection Over Time</h3>
                       <div className="h-[320px] -ml-4 w-[calc(100%+16px)]">
                         <ResponsiveContainer width="100%" height="100%">
@@ -347,7 +350,7 @@ export default function MutualFunds() {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 </div>
               </motion.div>
             )}

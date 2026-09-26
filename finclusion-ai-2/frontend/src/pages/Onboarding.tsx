@@ -331,7 +331,7 @@ export default function Onboarding() {
                           <button
                             key={opt.score}
                             onClick={() => setAnswers(prev => ({ ...prev, [qIdx]: opt.score }))}
-                            className={`p-3 rounded-xl border text-xs font-semibold text-left transition-all ${
+                            className={`p-3 rounded-xl border text-xs font-semibold text-left transition-all card-hover ${
                               isChosen ? 'border-[var(--accent-primary)]' : 'border-white/5 hover:border-white/20'
                             }`}
                             style={{ background: isChosen ? 'var(--accent-glow-subtle)' : 'var(--input-bg)', color: isChosen ? 'var(--accent-primary)' : 'var(--text-main)' }}

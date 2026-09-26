@@ -9,6 +9,7 @@ import ThemeSelector from '../components/ThemeSelector';
 import { useStore } from '../store/useStore';
 import { mockNews } from '../data/mockNews';
 import type { NewsItem } from '../types';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 export default function News() {
   const { user } = useStore();
@@ -63,7 +64,8 @@ export default function News() {
         <div className="p-8 max-w-[1600px] mx-auto w-full space-y-8">
           
           {/* Market Sentiment Barometer Banner */}
-          <div className="glass-card-lg p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+          <ScrollReveal delay={0.1}>
+          <div className="glass-card-lg p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden card-hover">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center border shrink-0" style={{ background: 'var(--accent-glow-subtle)', borderColor: 'var(--border-card)' }}>
                 <Sparkles className="w-6 h-6" style={{ color: 'var(--accent-primary)' }} />
@@ -126,8 +128,10 @@ export default function News() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
 
           {/* News Cards Grid */}
+          <ScrollReveal delay={0.2}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredNews.map((item, idx) => {
               const isPositive = item.sentiment === 'positive';
@@ -140,7 +144,7 @@ export default function News() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
                   onClick={() => setSelectedNews(item)}
-                  className="glass-card-lg p-6 flex flex-col justify-between cursor-pointer group hover:border-[var(--border-hover)] hover:scale-[1.01] transition-all"
+                  className="glass-card-lg p-6 flex flex-col justify-between cursor-pointer group hover:border-[var(--border-hover)] hover:scale-[1.01] transition-all card-hover"
                 >
                   <div>
                     {/* Meta bar */}
@@ -202,6 +206,7 @@ export default function News() {
               );
             })}
           </div>
+          </ScrollReveal>
         </div>
       </main>
 

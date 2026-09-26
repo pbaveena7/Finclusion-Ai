@@ -63,7 +63,7 @@ export default function AIFinancialAssistant() {
 
   const { isListening, isSpeaking, transcript, interimTranscript, startListening, stopListening, speak, stopSpeaking, hasSpeechRecognition } = useSpeech(language);
 
-  // Auto-greeting on load
+  // Auto-greeting on load — runs once only
   useEffect(() => {
     if (!hasGreeted) {
       let greeting = "Hello! I'm Finclusion AI, your personal financial analyst. Tap the microphone or type a question to get started.";
@@ -73,7 +73,8 @@ export default function AIFinancialAssistant() {
       speak(greeting);
       setHasGreeted(true);
     }
-  }, [language, hasGreeted, speak]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally empty — only run once on mount
 
   // Handle voice transcript updates — send to Groq when speech recognition finishes
   useEffect(() => {
@@ -213,7 +214,7 @@ export default function AIFinancialAssistant() {
                 <button 
                   key={i}
                   onClick={() => sendMsg(q)}
-                  className="glass-card p-3.5 text-xs text-left transition-all duration-200 hover:border-[var(--accent-primary)] hover:bg-[var(--bg-card-hover)] hover:scale-[1.01] flex items-center justify-between group"
+                  className="glass-card p-3.5 text-xs text-left transition-all duration-200 hover:border-[var(--accent-primary)] hover:bg-[var(--bg-card-hover)] hover:scale-[1.01] flex items-center justify-between group card-hover"
                   style={{ color: 'var(--text-main)', borderColor: 'var(--border-card)' }}
                 >
                   <span className="group-hover:text-[var(--accent-primary)] transition-colors">"{q}"</span>

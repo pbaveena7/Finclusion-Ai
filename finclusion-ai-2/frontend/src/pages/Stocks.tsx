@@ -13,6 +13,7 @@ import { topStocks, sectorPerformance } from '../data/marketData';
 import { useStore } from '../store/useStore';
 import { fetchIndices } from '../api';
 import Sidebar from '../components/Sidebar';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 export default function Stocks() {
   const user = useStore(state => state.user);
@@ -98,6 +99,7 @@ export default function Stocks() {
           </div>
 
           {/* Index Cards */}
+          <ScrollReveal delay={0.1}>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[
               { name: 'NIFTY 50', val: niftyCurrent, prev: niftyPrev },
@@ -112,7 +114,7 @@ export default function Stocks() {
                 <div 
                   key={idx.name}
                   onClick={() => setActiveIndex(idx.name)}
-                  className={`glass-card p-5 cursor-pointer transition-all duration-300 ${isActive ? 'bg-[var(--bg-card-hover)] shadow-glow-sm' : 'hover:bg-[var(--bg-card-hover)] hover:border-[var(--border-hover)]'}`}
+                  className={`glass-card p-5 cursor-pointer transition-all duration-300 card-hover ${isActive ? 'bg-[var(--bg-card-hover)] shadow-glow-sm' : 'hover:bg-[var(--bg-card-hover)] hover:border-[var(--border-hover)]'}`}
                   style={isActive ? { borderColor: 'var(--accent-primary)' } : {}}
                 >
                   <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-dim)' }}>{idx.name}</p>
@@ -125,10 +127,11 @@ export default function Stocks() {
               );
             })}
           </div>
+          </ScrollReveal>
 
           <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} initial="hidden" animate="show" className="grid grid-cols-12 gap-6 mb-8">
             {/* Index Chart */}
-            <div className="col-span-12 lg:col-span-8 glass-card-lg p-6">
+            <div className="col-span-12 lg:col-span-8 glass-card-lg p-6 card-hover">
               <div className="flex justify-between items-center mb-6">
                 <div>
                   <h3 className="font-bold uppercase tracking-wider text-xs mb-1" style={{ color: 'var(--text-muted)' }}>{activeIndex} — 1 Year Performance</h3>
@@ -160,7 +163,7 @@ export default function Stocks() {
             </div>
 
             {/* Sector Performance */}
-            <div className="col-span-12 lg:col-span-4 rounded-3xl p-6 relative flex flex-col group overflow-hidden border" style={{ background: 'var(--input-bg)', borderColor: 'var(--border-card)' }}>
+            <div className="col-span-12 lg:col-span-4 rounded-3xl p-6 relative flex flex-col group overflow-hidden border card-hover" style={{ background: 'var(--input-bg)', borderColor: 'var(--border-card)' }}>
               <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity" style={{ background: 'var(--accent-secondary)' }} />
               <h3 className="font-bold uppercase tracking-wider text-xs mb-6 relative z-10" style={{ color: 'var(--text-main)' }}>Sector Performance (1Y)</h3>
               <div className="h-[220px] relative z-10 -ml-4">
@@ -215,7 +218,7 @@ export default function Stocks() {
                 <motion.div 
                   initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}
                   key={stock.symbol} 
-                  className="glass-card overflow-hidden transition-all duration-300 hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)]"
+                  className="glass-card overflow-hidden transition-all duration-300 hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] card-hover"
                 >
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-3">
@@ -300,7 +303,7 @@ export default function Stocks() {
           </motion.div>
 
           {/* Options Payoff Analyzer */}
-          <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} initial="hidden" animate="show" className="glass-card-lg p-6 mb-8">
+          <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} initial="hidden" animate="show" className="glass-card-lg p-6 mb-8 card-hover">
             <h3 className="text-xl font-bold mb-2 text-[var(--text-main)]">Options Payoff Analyzer</h3>
             <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>Visualize P&L at expiry for Nifty options.</p>
             

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="midnight">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,6 +11,74 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Inline theme init: runs before React to prevent flash -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+
+    <!-- ── Google Translate — CSS-only suppression (no JS observer = no blink) -->
+    <style>
+      /*
+       * Use CSS !important exclusively to hide Google Translate UI.
+       * No MutationObserver — that was fighting Google's JS and causing the blink.
+       * CSS wins silently over inline styles injected by Google's script.
+       */
+
+      /* Hide ALL Google Translate iframes and UI containers */
+      .goog-te-banner-frame.skiptranslate,
+      .goog-te-balloon-frame,
+      .goog-te-menu-frame,
+      .goog-te-ftab-float,
+      #goog-gt-tt,
+      .goog-tooltip,
+      .goog-tooltip:hover,
+      .goog-text-highlight,
+      .goog-te-spinner-pos,
+      .goog-logo-link,
+      .goog-te-gadget-icon,
+      .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+      .VIpgJd-ZVi9od-aZ2wEe,
+      .VIpgJd-yAWNEb-hvhgNd,
+      .VIpgJd-yAWNEb-hvhgNd-axAV1 {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+      }
+
+      /* Target the iframe Google injects at the top of <body> */
+      body > iframe[id*="translate"],
+      body > iframe.skiptranslate {
+        display: none !important;
+        height: 0 !important;
+      }
+
+      /* CRITICAL: Google sets body { top: 56px } via inline style.
+         We override it here. This is the main cause of the layout shift/blink. */
+      body {
+        top: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+
+      /* Hide our widget mount point */
+      #google_translate_element {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

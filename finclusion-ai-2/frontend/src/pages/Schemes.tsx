@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
 import { useStore } from '../store/useStore';
 import { mockSchemes } from '../data/mockSchemes';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 const CATEGORIES = ['All', 'savings', 'women', 'pension', 'housing', 'agriculture', 'insurance'];
 const ALL_TAGS = ['Tax Free', 'Govt Backed', 'High Interest', 'Retirement', 'Low Premium', 'First-Home Buyer', 'Collateral Free', 'Zero Balance'];
@@ -73,6 +74,7 @@ export default function Schemes() {
           </div>
 
           {/* ── Stats bar ── */}
+          <ScrollReveal delay={0.1}>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
             {[
               { icon: '🏛️', label: 'Total Schemes', val: mockSchemes.length },
@@ -80,7 +82,7 @@ export default function Schemes() {
               { icon: '💰', label: 'With Tax Benefit', val: mockSchemes.filter(s => s.taxBenefit !== 'None').length },
               { icon: '⭐', label: 'Featured', val: 3 },
             ].map(stat => (
-              <div key={stat.label} className="glass-card p-4 flex items-center gap-3">
+              <div key={stat.label} className="glass-card p-4 flex items-center gap-3 card-hover">
                 <span className="text-2xl">{stat.icon}</span>
                 <div>
                   <p className="text-xl font-extrabold" style={{ color: 'var(--accent-primary)' }}>{stat.val}</p>
@@ -89,8 +91,10 @@ export default function Schemes() {
               </div>
             ))}
           </div>
+          </ScrollReveal>
 
           {/* ── Category tabs ── */}
+          <ScrollReveal delay={0.15}>
           <div className="flex gap-2 flex-wrap mb-4">
             {CATEGORIES.map(c => (
               <button 
@@ -107,8 +111,10 @@ export default function Schemes() {
               </button>
             ))}
           </div>
+          </ScrollReveal>
 
           {/* ── Schemes list ── */}
+          <ScrollReveal delay={0.2}>
           <div className="space-y-4 mt-8">
             {filtered.length === 0 ? (
               <div className="text-center py-20">
@@ -121,7 +127,7 @@ export default function Schemes() {
                 <motion.div 
                   initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}
                   key={scheme.id} 
-                  className={`glass-card overflow-hidden transition-all duration-300 ${expandedId === scheme.id ? 'border-[var(--accent-primary)] shadow-glow-sm' : 'hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)]'}`}
+                  className={`glass-card overflow-hidden transition-all duration-300 card-hover ${expandedId === scheme.id ? 'border-[var(--accent-primary)] shadow-glow-sm' : 'hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)]'}`}
                 >
                   {/* ── Card header (click to expand) ── */}
                   <button
@@ -220,6 +226,7 @@ export default function Schemes() {
               ))
             )}
           </div>
+          </ScrollReveal>
         </div>
       </main>
     </div>

@@ -13,9 +13,12 @@ import {
 import { useStore } from '../store/useStore';
 import Sidebar from '../components/Sidebar';
 import ThemeSelector from '../components/ThemeSelector';
+import { useTranslation } from '../hooks/useTranslation';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 export default function Dashboard() {
   const { user, theme, setTheme } = useStore();
+  const { t } = useTranslation();
 
   const portfolioChart = [
     { name: 'Jan', value: 1000000 }, { name: 'Feb', value: 1050000 },
@@ -104,8 +107,8 @@ export default function Dashboard() {
         <div className="p-8 max-w-[1600px] mx-auto w-full">
           
           <div className="mb-8">
-            <h1 className="text-4xl font-extrabold mb-1 tracking-tight text-[var(--text-main)]">Dashboard</h1>
-            <p className="text-sm text-[var(--text-muted)]">Welcome back, {user?.name?.split(' ')[0] || 'Investor'}! Here is your portfolio summary.</p>
+            <h1 className="text-4xl font-extrabold mb-1 tracking-tight text-[var(--text-main)]">{t('nav.overview')}</h1>
+            <p className="text-sm text-[var(--text-muted)]">{t('dashboard.welcome')}, {user?.name?.split(' ')[0] || 'Investor'}! Here is your portfolio summary.</p>
           </div>
 
           <motion.div 
@@ -117,7 +120,7 @@ export default function Dashboard() {
             {/* ROW 1 */}
             
             {/* Total Portfolio Value */}
-            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-4 glass-card-lg p-6 flex flex-col justify-between relative overflow-hidden group">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-4 glass-card-lg p-6 flex flex-col justify-between relative overflow-hidden group card-hover">
               <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity" style={{ background: 'var(--accent-primary)' }} />
               <div className="flex justify-between items-start mb-2 relative z-10">
                 <div>
@@ -147,7 +150,7 @@ export default function Dashboard() {
             </motion.div>
 
             {/* Key Highlights */}
-            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-5 glass-card-lg p-6 flex flex-col justify-between group">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-5 glass-card-lg p-6 flex flex-col justify-between group card-hover">
               <h3 className="font-bold mb-6 text-[var(--text-muted)] uppercase tracking-wider text-xs">Key Highlights</h3>
               <div className="grid grid-cols-3 gap-4 h-full">
                 <div className="flex flex-col justify-center">
@@ -178,7 +181,7 @@ export default function Dashboard() {
             </motion.div>
 
             {/* Market Status */}
-            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-3 glass-card-lg p-6 flex flex-col justify-between">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-3 glass-card-lg p-6 flex flex-col justify-between card-hover">
               <div>
                 <h3 className="font-bold text-[var(--text-muted)] uppercase tracking-wider text-xs mb-1 flex items-center gap-2">Market Status</h3>
                 <p className="text-xl font-bold mt-2" style={{ color: 'var(--accent-primary)' }}>Moderate Growth</p>
@@ -216,7 +219,7 @@ export default function Dashboard() {
             {/* ROW 2 */}
             
             {/* Tax Efficiency */}
-            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-3 glass-card-lg p-6 relative">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-3 glass-card-lg p-6 relative card-hover">
               <MoreVertical className="w-4 h-4 absolute top-6 right-6" style={{ color: 'var(--text-dim)' }} />
               <h3 className="font-bold uppercase tracking-wider text-xs mb-6 flex items-center gap-2 text-[var(--text-muted)]">Tax Efficiency</h3>
               
@@ -247,7 +250,7 @@ export default function Dashboard() {
             </motion.div>
 
             {/* Market Risk Analysis */}
-            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-4 glass-card-lg p-6 relative">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-4 glass-card-lg p-6 relative card-hover">
               <MoreVertical className="w-4 h-4 absolute top-6 right-6" style={{ color: 'var(--text-dim)' }} />
               <h3 className="font-bold uppercase tracking-wider text-xs mb-4 flex items-center gap-2 text-[var(--text-muted)]"><LineChart className="w-4 h-4" /> Risk Analysis</h3>
               
@@ -287,7 +290,7 @@ export default function Dashboard() {
             </motion.div>
 
             {/* Ethical Investment Insights */}
-            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-3 glass-card-lg p-6 relative">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 md:col-span-4 lg:col-span-3 glass-card-lg p-6 relative card-hover">
               <MoreVertical className="w-4 h-4 absolute top-6 right-6" style={{ color: 'var(--text-dim)' }} />
               <h3 className="font-bold uppercase tracking-wider text-xs mb-6 flex items-center gap-2 text-[var(--text-muted)]"><Leaf className="w-4 h-4" /> Ethical Insights</h3>
               
@@ -354,7 +357,7 @@ export default function Dashboard() {
             {/* ROW 3 */}
             
             {/* Retrospective Fund Comparison */}
-            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-10 glass-card-lg p-6 flex flex-col lg:flex-row gap-8">
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="col-span-12 lg:col-span-10 glass-card-lg p-6 flex flex-col lg:flex-row gap-8 card-hover">
               
               <div className="flex-1">
                 <div className="flex justify-between items-center mb-6">

@@ -9,6 +9,7 @@ import ThemeSelector from '../components/ThemeSelector';
 import { useStore } from '../store/useStore';
 import { mockLearning } from '../data/mockLearning';
 import type { LearningModule, Lesson } from '../types';
+import ScrollReveal from '../components/animations/ScrollReveal';
 
 export default function Learning() {
   const { user } = useStore();
@@ -75,8 +76,9 @@ export default function Learning() {
         <div className="p-8 max-w-[1600px] mx-auto w-full space-y-8">
           
           {/* Stats Header Banner */}
+          <ScrollReveal delay={0.1}>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 flex items-center gap-4">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 flex items-center gap-4 card-hover">
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center border" style={{ background: 'rgba(168,85,247,0.1)', borderColor: 'rgba(168,85,247,0.2)' }}>
                 <Trophy className="w-6 h-6 text-purple-400" />
               </div>
@@ -86,7 +88,7 @@ export default function Learning() {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card p-6 flex items-center gap-4">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card p-6 flex items-center gap-4 card-hover">
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center border" style={{ background: 'var(--accent-glow-subtle)', borderColor: 'var(--border-card)' }}>
                 <CheckCircle2 className="w-6 h-6" style={{ color: 'var(--accent-primary)' }} />
               </div>
@@ -96,7 +98,7 @@ export default function Learning() {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-6 flex items-center gap-4">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-6 flex items-center gap-4 card-hover">
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center border" style={{ background: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.2)' }}>
                 <Star className="w-6 h-6 text-amber-400" />
               </div>
@@ -106,7 +108,7 @@ export default function Learning() {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card p-6 flex items-center gap-4">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card p-6 flex items-center gap-4 card-hover">
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center border" style={{ background: 'rgba(56,189,248,0.1)', borderColor: 'rgba(56,189,248,0.2)' }}>
                 <Award className="w-6 h-6 text-sky-400" />
               </div>
@@ -135,8 +137,10 @@ export default function Learning() {
             </div>
             <span className="text-xs text-[var(--text-muted)]">{filteredModules.length} Modules Available</span>
           </div>
+          </ScrollReveal>
 
           {/* Modules Grid */}
+          <ScrollReveal delay={0.2}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredModules.map((mod, i) => (
               <motion.div
@@ -144,7 +148,7 @@ export default function Learning() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
-                className="glass-card-lg p-6 flex flex-col justify-between group hover:border-[var(--border-hover)] transition-all"
+                className="glass-card-lg p-6 flex flex-col justify-between group hover:border-[var(--border-hover)] transition-all card-hover"
               >
                 <div>
                   <div className="flex items-start justify-between mb-4">
@@ -196,6 +200,7 @@ export default function Learning() {
               </motion.div>
             ))}
           </div>
+          </ScrollReveal>
         </div>
       </main>
 
